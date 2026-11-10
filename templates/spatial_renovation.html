@@ -1,21 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section class="section" style="padding-top: 60px;">
-  <div style="max-width: 1100px; margin: 0 auto;">
-    <div style="text-align: center; margin-bottom: 50px;">
-      <span class="section-tag">SPATIAL REVITALIZATION ｜ TURNKEY DESIGN</span>
-      <h1 class="section-title">老屋空間活化 ｜ 注入日式侘寂美學，實現租金倍數翻揚</h1>
-      <p class="section-desc" id="tts-spatial">
-        台南擁有大量具備歷史韻味的 30 至 50 年透天老宅與公寓。窩在家團隊由建築美學與資深室內設計師主持，專注「小額高坪效老屋翻新」。以日式侘寂的大地色調、隱藏式收納與高耐久材質，解決老宅管線腐朽與採光問題，平均提升租金收益達 80%~160%！
-      </p>
-      <div style="margin-top: 20px;">
-        <button class="btn-tts-tour" data-tts-target="#tts-spatial">
-          <span class="tts-icon">🔊</span>
-          <span class="tts-label">語音專人導覽老屋活化特色</span>
-        </button>
-      </div>
+<!-- Subpage Warm Banner -->
+<div style="background: linear-gradient(135deg, rgba(254, 253, 250, 0.92) 0%, rgba(246, 241, 233, 0.85) 100%), url('{{ url_for('static', filename='images/case_townhouse.jpg') }}') center/cover no-repeat; padding: 75px 24px; border-bottom: 1px solid rgba(220, 215, 205, 0.6); text-align: center;">
+  <div style="max-width: 900px; margin: 0 auto;">
+    <span class="section-tag">SPATIAL REVITALIZATION ｜ TURNKEY DESIGN</span>
+    <h1 class="section-title" style="font-size: 38px; margin-bottom: 16px;">老屋空間活化 ｜ 注入日式侘寂美學，實現租金倍數翻揚</h1>
+    <p class="section-desc" id="tts-spatial" style="font-size: 16px; line-height: 1.8; color: #555;">
+      台南擁有大量具備歷史韻味的 30 至 50 年透天老宅與公寓。窩在家團隊由建築美學與資深室內設計師主持，專注「小額高坪效老屋翻新」。以日式侘寂的大地色調、隱藏式收納與高耐久材質，解決老宅管線腐朽與採光問題，平均提升租金收益達 80%~160%！
+    </p>
+    <div style="margin-top: 22px;">
+      <button class="btn-tts-tour" data-tts-target="#tts-spatial">
+        <span class="tts-icon">🔊</span>
+        <span class="tts-label">語音專人導覽老屋活化特色</span>
+      </button>
     </div>
+  </div>
+</div>
+
+<section class="section" style="padding-top: 70px;">
+  <div style="max-width: 1160px; margin: 0 auto;">
 
     <!-- 4 Key Construction Features -->
     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-bottom: 50px;">

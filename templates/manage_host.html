@@ -1,21 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section class="section" style="padding-top: 60px;">
-  <div style="max-width: 1100px; margin: 0 auto;">
-    <div style="text-align: center; margin-bottom: 50px;">
-      <span class="section-tag">MANAGE HOST ｜ GUARANTEED RETURN</span>
-      <h1 class="section-title">台南包租代管 ｜ 保證月租進帳，真正的零空屋被動收入</h1>
-      <p class="section-desc" id="tts-manage-host">
-        「包租代管」是由窩在家與房東簽署 3 至 5 年包租長約，由窩在家成為承租方，每個月固定將協議租金準時撥入房東帳戶。即便遇到換約空置期或房客遲繳租金，一切風險皆由窩在家全額承擔，房東無須負擔任何空屋損失！
-      </p>
-      <div style="margin-top: 20px;">
-        <button class="btn-tts-tour" data-tts-target="#tts-manage-host">
-          <span class="tts-icon">🔊</span>
-          <span class="tts-label">語音專人導覽本頁重點</span>
-        </button>
-      </div>
+<!-- Subpage Warm Banner -->
+<div style="background: linear-gradient(135deg, rgba(254, 253, 250, 0.92) 0%, rgba(246, 241, 233, 0.85) 100%), url('{{ url_for('static', filename='images/hero_home_bg.jpg') }}') center/cover no-repeat; padding: 75px 24px; border-bottom: 1px solid rgba(220, 215, 205, 0.6); text-align: center;">
+  <div style="max-width: 900px; margin: 0 auto;">
+    <span class="section-tag">MANAGE HOST ｜ GUARANTEED RETURN</span>
+    <h1 class="section-title" style="font-size: 38px; margin-bottom: 16px;">台南包租代管 ｜ 保證月租進帳，真正的零空屋安心被動收入</h1>
+    <p class="section-desc" id="tts-manage-host" style="font-size: 16px; line-height: 1.8; color: #555;">
+      「包租代管」是由窩在家與房東簽署 3 至 5 年包租長約，由窩在家成為承租方，每個月固定將協議租金準時撥入房東帳戶。即便遇到換約空置期或房客遲繳租金，一切風險皆由窩在家全額承擔，房東無須負擔任何空屋損失！
+    </p>
+    <div style="margin-top: 22px;">
+      <button class="btn-tts-tour" data-tts-target="#tts-manage-host">
+        <span class="tts-icon">🔊</span>
+        <span class="tts-label">語音專人導覽本頁重點</span>
+      </button>
     </div>
+  </div>
+</div>
+
+<section class="section" style="padding-top: 70px;">
+  <div style="max-width: 1160px; margin: 0 auto;">
 
     <!-- 4 Major Guarantees -->
     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-bottom: 60px;">

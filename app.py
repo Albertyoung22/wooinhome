@@ -150,8 +150,20 @@ def seed_initial_data():
 
 # Application startup initialization
 with app.app_context():
-    db.create_all()
-    seed_initial_data()
+    try:
+        db.create_all()
+    except Exception as e:
+        if "already exists" in str(e).lower():
+            pass
+        else:
+            print(f"[DB Init Notice] {e}")
+
+    try:
+        seed_initial_data()
+    except Exception as e:
+        db.session.rollback()
+        print(f"[Seed Notice] {e}")
+
     # Attempt to restore from cloud backup if available
     try:
         restore_from_github(db)

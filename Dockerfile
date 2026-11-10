@@ -27,6 +27,6 @@ EXPOSE 5000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:${PORT}/api/health || exit 1
 
-# Start gunicorn
-CMD ["sh", "-c", "gunicorn app:app --bind 0.0.0.0:${PORT} --workers 2 --threads 4"]
+# Start gunicorn with preload to prevent worker database race conditions
+CMD ["sh", "-c", "gunicorn --preload app:app --bind 0.0.0.0:${PORT} --workers 1 --threads 4"]
 

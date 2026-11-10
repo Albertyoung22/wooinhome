@@ -1,21 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section class="section" style="padding-top: 60px;">
-  <div style="max-width: 1100px; margin: 0 auto;">
-    <div style="text-align: center; margin-bottom: 50px;">
-      <span class="section-tag">MANAGE AGENT ｜ MAXIMUM YIELD</span>
-      <h1 class="section-title">台南代租代管 ｜ 嚴選優質房客，掌握市場最高租金行情</h1>
-      <p class="section-desc" id="tts-manage-agent">
-        「代租代管」適合期望保留租約主導權，並追求市場頂標租金回報的房東。窩在家團隊以專業行銷管道為您快速招租，透過 4 道嚴格徵信程序替您篩選房客，並全權代理點交、修繕、催繳與租後管家日常，收取合理的服務費，讓您的資產發揮最高投報潛能！
-      </p>
-      <div style="margin-top: 20px;">
-        <button class="btn-tts-tour" data-tts-target="#tts-manage-agent">
-          <span class="tts-icon">🔊</span>
-          <span class="tts-label">語音專人導覽本頁重點</span>
-        </button>
-      </div>
+<!-- Subpage Warm Banner -->
+<div style="background: linear-gradient(135deg, rgba(254, 253, 250, 0.92) 0%, rgba(246, 241, 233, 0.85) 100%), url('{{ url_for('static', filename='images/case_apartment.jpg') }}') center/cover no-repeat; padding: 75px 24px; border-bottom: 1px solid rgba(220, 215, 205, 0.6); text-align: center;">
+  <div style="max-width: 900px; margin: 0 auto;">
+    <span class="section-tag">MANAGE AGENT ｜ MAXIMUM YIELD</span>
+    <h1 class="section-title" style="font-size: 38px; margin-bottom: 16px;">台南代租代管 ｜ 嚴選優質房客，掌握市場最高租金行情</h1>
+    <p class="section-desc" id="tts-manage-agent" style="font-size: 16px; line-height: 1.8; color: #555;">
+      「代租代管」適合期望保留租約主導權，並追求市場頂標租金回報的房東。窩在家團隊以專業行銷管道為您快速招租，透過 4 道嚴格徵信程序替您篩選房客，並全權代理點交、修繕、催繳與租後管家日常，收取合理的服務費，讓您的資產發揮最高投報潛能！
+    </p>
+    <div style="margin-top: 22px;">
+      <button class="btn-tts-tour" data-tts-target="#tts-manage-agent">
+        <span class="tts-icon">🔊</span>
+        <span class="tts-label">語音專人導覽本頁重點</span>
+      </button>
     </div>
+  </div>
+</div>
+
+<section class="section" style="padding-top: 70px;">
+  <div style="max-width: 1160px; margin: 0 auto;">
 
     <!-- 4 Screening Filters -->
     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-bottom: 60px;">

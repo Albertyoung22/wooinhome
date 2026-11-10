@@ -1,21 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section class="section" style="padding-top: 60px;">
-  <div style="max-width: 1100px; margin: 0 auto;">
-    <div style="text-align: center; margin-bottom: 50px;">
-      <span class="section-tag">ROI & CAPEX SIMULATOR</span>
-      <h1 class="section-title">物業空間活化與租金增值試算中心</h1>
-      <p class="section-desc" id="tts-calc">
-        想知道您的台南老屋翻新後能租多少？立即透過本試算系統，根據您的物業坪數、格局與預計改造深度，即時模擬預估月租金成長、年收租金增加、回本週期以及政府法定租稅優惠節稅額度！
-      </p>
-      <div style="margin-top: 18px;">
-        <button class="btn-tts-tour" data-tts-target="#tts-calc">
-          <span class="tts-icon">🔊</span>
-          <span class="tts-label">語音專人導覽試算功能</span>
-        </button>
-      </div>
+<!-- Subpage Warm Banner -->
+<div style="background: linear-gradient(135deg, rgba(254, 253, 250, 0.92) 0%, rgba(246, 241, 233, 0.85) 100%), url('{{ url_for('static', filename='images/hero_living_cozy.jpg') }}') center/cover no-repeat; padding: 75px 24px; border-bottom: 1px solid rgba(220, 215, 205, 0.6); text-align: center;">
+  <div style="max-width: 900px; margin: 0 auto;">
+    <span class="section-tag">ROI & CAPEX SIMULATOR</span>
+    <h1 class="section-title" style="font-size: 38px; margin-bottom: 16px;">物業空間活化與租金增值試算中心</h1>
+    <p class="section-desc" id="tts-calc" style="font-size: 16px; line-height: 1.8; color: #555;">
+      想知道您的台南老屋翻新後能租多少？立即透過本試算系統，根據您的物業坪數、格局與預計改造深度，即時模擬預估月租金成長、年收租金增加、回本週期以及政府法定租稅優惠節稅額度！
+    </p>
+    <div style="margin-top: 22px;">
+      <button class="btn-tts-tour" data-tts-target="#tts-calc">
+        <span class="tts-icon">🔊</span>
+        <span class="tts-label">語音專人導覽試算功能</span>
+      </button>
     </div>
+  </div>
+</div>
+
+<section class="section" style="padding-top: 70px;">
+  <div style="max-width: 1160px; margin: 0 auto;">
 
     <!-- The Calculator Component -->
     <div class="calc-card-container">
