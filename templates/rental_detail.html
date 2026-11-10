@@ -1,0 +1,252 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section" style="padding-top: 40px; padding-bottom: 80px;">
+  <div style="max-width: 1200px; margin: 0 auto;">
+
+    <!-- Breadcrumb -->
+    <nav style="display: flex; gap: 8px; font-size: 13.5px; color: #888; margin-bottom: 24px;">
+      <a href="/" data-spa style="color: #666;">首頁</a>
+      <span>/</span>
+      <a href="/rentals" data-spa style="color: #666;">精選招租 (Rentals)</a>
+      <span>/</span>
+      <span style="color: var(--color-accent-dark); font-weight: 600;">{{ listing.title }}</span>
+    </nav>
+
+    <!-- Top Title & Price Summary -->
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px; margin-bottom: 28px;">
+      <div>
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+          <span style="background: rgba(184, 145, 88, 0.15); color: var(--color-accent-dark); font-size: 13px; font-weight: 600; padding: 3px 10px; border-radius: 4px;">
+            房源編號：{{ listing.code }}
+          </span>
+          {% if listing.status == 'available' %}
+          <span style="background: #2f855a; color: #fff; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 4px;">
+            🟢 招租中
+          </span>
+          {% else %}
+          <span style="background: #718096; color: #fff; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 4px;">
+            ⚪ 已出租
+          </span>
+          {% endif %}
+          <span style="font-size: 13px; color: #777;">{{ listing.district }} ｜ {{ listing.category }}</span>
+        </div>
+        <h1 style="font-family: var(--font-serif); font-size: 28px; color: var(--color-dark-bg); margin: 0 0 8px;">
+          {{ listing.title }}
+        </h1>
+        <div style="font-size: 14px; color: #666; display: flex; align-items: center; gap: 6px;">
+          <span>📍</span> <span>{{ listing.address_summary }}</span>
+        </div>
+      </div>
+
+      <div style="text-align: right;">
+        <div style="font-size: 13px; color: #888; margin-bottom: 2px;">月租金 (含專人代管服務)</div>
+        <div style="font-family: var(--font-serif); font-size: 36px; font-weight: 700; color: var(--color-accent-dark); line-height: 1;">
+          NT$ {{ "{:,}".format(listing.rent_price) }}
+          <span style="font-size: 14px; font-family: var(--font-sans); color: #777; font-weight: 400;">/ 月</span>
+        </div>
+        <div style="font-size: 12px; color: #999; margin-top: 4px;">
+          管理費：{% if listing.management_fee %}NT$ {{ listing.management_fee }}/月{% else %}無 (包含於租金){% endif %} ｜ 押金：{{ listing.deposit_months }} 個月
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content Layout: Gallery & Details on Left, Booking Sidebar on Right -->
+    <div style="display: grid; grid-template-columns: 2.2fr 1fr; gap: 36px; align-items: start;">
+
+      <!-- Left Column: Gallery & Info -->
+      <div>
+        
+        <!-- Main Interactive Photo Display -->
+        <div style="background: #111; border-radius: 12px; overflow: hidden; height: 480px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; box-shadow: var(--shadow-md);">
+          <img id="detail-main-img" src="{{ listing.cover_image or url_for('static', filename='images/hero_living_cozy.jpg') }}" alt="{{ listing.title }}" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+        </div>
+
+        <!-- Thumbnails Row -->
+        {% set imgs = listing.to_dict().gallery %}
+        {% if imgs and imgs|length > 1 %}
+        <div style="display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 30px;">
+          {% for img in imgs %}
+          <img src="{{ img }}" alt="Thumb {{ loop.index }}" 
+               onclick="document.getElementById('detail-main-img').src='{{ img }}'"
+               style="width: 90px; height: 65px; object-fit: cover; border-radius: 6px; cursor: pointer; border: 2px solid {% if loop.first %}var(--color-accent){% else %}transparent{% endif %}; flex-shrink: 0;"
+               onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Property Core Specs Grid -->
+        <div style="background: #fff; border-radius: var(--radius-md); padding: 26px; border: 1px solid rgba(110, 103, 95, 0.12); box-shadow: var(--shadow-sm); margin-bottom: 30px;">
+          <h3 style="font-family: var(--font-serif); font-size: 20px; color: var(--color-dark-bg); margin-bottom: 20px; border-bottom: 1px solid #f0ede8; padding-bottom: 12px;">
+            物件基本規格與條件
+          </h3>
+
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; font-size: 14px;">
+            <div style="background: #faf8f5; padding: 12px 16px; border-radius: 6px;">
+              <span style="color: #888; font-size: 12.5px; display: block;">物業格局</span>
+              <strong style="color: #333; font-size: 15px;">{{ listing.layout }}</strong>
+            </div>
+            <div style="background: #faf8f5; padding: 12px 16px; border-radius: 6px;">
+              <span style="color: #888; font-size: 12.5px; display: block;">權狀/室內坪數</span>
+              <strong style="color: #333; font-size: 15px;">約 {{ listing.area_ping }} 坪</strong>
+            </div>
+            <div style="background: #faf8f5; padding: 12px 16px; border-radius: 6px;">
+              <span style="color: #888; font-size: 12.5px; display: block;">所在樓層</span>
+              <strong style="color: #333; font-size: 15px;">{{ listing.floor_info }}</strong>
+            </div>
+            <div style="background: #faf8f5; padding: 12px 16px; border-radius: 6px;">
+              <span style="color: #888; font-size: 12.5px; display: block;">最短租期</span>
+              <strong style="color: #333; font-size: 15px;">一年起租</strong>
+            </div>
+            <div style="background: #faf8f5; padding: 12px 16px; border-radius: 6px;">
+              <span style="color: #888; font-size: 12.5px; display: block;">租金補貼</span>
+              <strong style="color: #2f855a; font-size: 15px;">可申請 300 億租補</strong>
+            </div>
+            <div style="background: #faf8f5; padding: 12px 16px; border-radius: 6px;">
+              <span style="color: #888; font-size: 12.5px; display: block;">公證契約</span>
+              <strong style="color: #333; font-size: 15px;">法院公證保障</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Features & Equipment Chips -->
+        <div style="background: #fff; border-radius: var(--radius-md); padding: 26px; border: 1px solid rgba(110, 103, 95, 0.12); box-shadow: var(--shadow-sm); margin-bottom: 30px;">
+          <h3 style="font-family: var(--font-serif); font-size: 20px; color: var(--color-dark-bg); margin-bottom: 18px; border-bottom: 1px solid #f0ede8; padding-bottom: 12px;">
+            生活設施與配備亮點
+          </h3>
+          <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            {% for f in listing.features.split(',') %}
+            <span style="background: #fbf9f5; border: 1px solid #e8e2d8; color: #444; font-size: 13.5px; padding: 6px 14px; border-radius: 20px; font-weight: 500;">
+              ✨ {{ f.strip() }}
+            </span>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Detailed Description -->
+        <div style="background: #fff; border-radius: var(--radius-md); padding: 26px; border: 1px solid rgba(110, 103, 95, 0.12); box-shadow: var(--shadow-sm); margin-bottom: 30px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid #f0ede8; padding-bottom: 12px;">
+            <h3 style="font-family: var(--font-serif); font-size: 20px; color: var(--color-dark-bg); margin: 0;">
+              房源詳情與生活機能
+            </h3>
+            <button class="btn-tts-tour" data-tts-text="{{ listing.title }}。{{ listing.description }}。生活機能：{{ listing.traffic_surroundings }}">
+              <span class="tts-icon">🔊</span>
+              <span class="tts-label">語音聆聽重點</span>
+            </button>
+          </div>
+
+          <div style="font-size: 15px; line-height: 1.85; color: #444; margin-bottom: 20px;">
+            {{ listing.description }}
+          </div>
+
+          {% if listing.traffic_surroundings %}
+          <div style="background: #faf8f5; border-left: 3px solid var(--color-accent); padding: 14px 18px; font-size: 14px; color: #555; line-height: 1.7; border-radius: 0 6px 6px 0;">
+            <strong>🚲 周邊交通與生活機能：</strong><br>
+            {{ listing.traffic_surroundings }}
+          </div>
+          {% endif %}
+        </div>
+
+      </div>
+
+      <!-- Right Column: Sticky Booking Card -->
+      <div style="position: sticky; top: 90px;">
+        <div style="background: #fff; border-radius: var(--radius-md); padding: 30px; border: 1px solid rgba(184, 145, 88, 0.3); box-shadow: var(--shadow-md);">
+          <div style="text-align: center; margin-bottom: 20px;">
+            <span class="section-tag">SCHEDULE A TOUR</span>
+            <h3 style="font-family: var(--font-serif); font-size: 22px; color: var(--color-dark-bg); margin-top: 4px;">
+              預約專人帶看賞屋
+            </h3>
+            <p style="font-size: 13px; color: #777;">一對一專屬物業管家親自解說，全程免仲介費</p>
+          </div>
+
+          <form id="detail-booking-form" onsubmit="submitDetailBooking(event)">
+            <input type="hidden" name="rental_id" value="{{ listing.id }}">
+            <input type="hidden" name="rental_code" value="{{ listing.code }}">
+            <input type="hidden" name="rental_title" value="{{ listing.title }}">
+
+            <div style="margin-bottom: 12px;">
+              <label class="form-label" style="font-size: 13px;">姓名 <span style="color: #e53e3e;">*</span></label>
+              <input type="text" name="renter_name" required placeholder="如：林先生 / 陳小姐" class="form-control" style="font-size: 14px; padding: 10px;">
+            </div>
+
+            <div style="margin-bottom: 12px;">
+              <label class="form-label" style="font-size: 13px;">手機號碼 <span style="color: #e53e3e;">*</span></label>
+              <input type="tel" name="renter_phone" required placeholder="如：0912-345-678" class="form-control" style="font-size: 14px; padding: 10px;">
+            </div>
+
+            <div style="margin-bottom: 12px;">
+              <label class="form-label" style="font-size: 13px;">LINE ID (方便發送定位)</label>
+              <input type="text" name="renter_line_id" placeholder="如：line_id_88" class="form-control" style="font-size: 14px; padding: 10px;">
+            </div>
+
+            <div style="margin-bottom: 12px;">
+              <label class="form-label" style="font-size: 13px;">承租人職業 / 身分</label>
+              <input type="text" name="renter_occupation" placeholder="如：南科工程師 / 外商主管" class="form-control" style="font-size: 14px; padding: 10px;">
+            </div>
+
+            <div style="margin-bottom: 14px;">
+              <label class="form-label" style="font-size: 13px;">希望帶看時段</label>
+              <select name="preferred_datetime" class="form-control" style="font-size: 13.5px; padding: 10px;">
+                <option value="平日晚上 (18:30~20:30)">平日晚上 (18:30 ~ 20:30)</option>
+                <option value="平日下午 (14:00~17:00)">平日下午 (14:00 ~ 17:00)</option>
+                <option value="週末全天皆可">週末全天皆可 (週六、週日)</option>
+                <option value="電話聯繫後確認">電話聯繫後確認精確時段</option>
+              </select>
+            </div>
+
+            <div style="margin-bottom: 18px;">
+              <label class="form-label" style="font-size: 13px;">備註或起租需求</label>
+              <textarea name="notes" rows="2" placeholder="如：下月初需起租..." class="form-control" style="font-size: 13.5px; padding: 8px;"></textarea>
+            </div>
+
+            <button type="submit" id="btn-submit-detail-booking" class="btn-primary" style="width: 100%; padding: 12px; font-size: 15px;">
+              確認送出預約申請
+            </button>
+          </form>
+
+          <div style="margin-top: 20px; border-top: 1px solid #f0ede8; padding-top: 16px; text-align: center;">
+            <div style="font-size: 12.5px; color: #888; margin-bottom: 6px;">或撥打專人服務專線</div>
+            <a href="tel:06-289-4168" style="font-weight: 700; color: var(--color-accent-dark); font-size: 16px; text-decoration: none;">
+              📞 (06) 289-4168
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+function submitDetailBooking(e) {
+  e.preventDefault();
+  const btn = document.getElementById('btn-submit-detail-booking');
+  btn.disabled = true;
+  btn.textContent = '資料傳送中...';
+
+  const formData = new FormData(document.getElementById('detail-booking-form'));
+
+  fetch('/api/rentals/booking', {
+    method: 'POST',
+    body: formData
+  })
+  .then(res => res.json())
+  .then(data => {
+    btn.disabled = false;
+    btn.textContent = '確認送出預約申請';
+    if (data.success) {
+      alert(data.message);
+      document.getElementById('detail-booking-form').reset();
+    } else {
+      alert('預約失敗：' + (data.message || '請檢查網路連線'));
+    }
+  })
+  .catch(err => {
+    btn.disabled = false;
+    btn.textContent = '確認送出預約申請';
+    alert('系統傳輸異常，請稍後再試或致電專線：(06) 289-4168');
+  });
+}
+</script>
+{% endblock %}

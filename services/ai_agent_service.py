@@ -63,7 +63,7 @@ Specializing in retrofitting 30-50 year heritage townhouses in Tainan into high-
 대만 타이난 노후 주택을 모던 미니멀리즘 감성으로 탈바꿈시켜 임대 수익률을 80%~160% 극대화합니다."""
     },
     'process': {
-        'keywords': ['流程', '步驟', '如何開始', '簽約', '帶看', '收費', '費用', 'process', 'flow', '流れ', '절차'],
+        'keywords': ['流程', '步驟', '如何開始', '簽約', '收費', '費用', 'process', 'flow', '流れ', '절차'],
         'reply_zh': """【窩在家 5 大標準委託流程】
 1. **線上諮詢與估價**：填寫官網 RFQ 表單或加 LINE 溝通初步需求。
 2. **現場專人屋況評估**：丈量尺寸、勘查採光結構、產出市場租金分析報告。
@@ -78,16 +78,36 @@ Specializing in retrofitting 30-50 year heritage townhouses in Tainan into high-
 5. Multi-Channel Marketing & Dedicated Butler Maintenance""",
         'reply_ja': """【5つのステップで安心委託】
 1. オンラインお問い合わせ
-2. 現地調査と賃料査定
-3. 公証役場での契約締結
-4. 内装リノベーション（オプション）
-5. 入居者募集と専任執事管理""",
-        'reply_ko': """[5단계 전문 위탁 절차]
-1. 온라인 상담 신청
+2. 現地調査および家賃査定
+3. 法的効力を持つ公正証書契約の締結
+4. 内装リノベーション施工（オプション）
+5. 入居者募集および日常の管理・家賃送金""",
+        'reply_ko': """[5단계 전문 위탁 프로세스]
+1. 온라인 상담 접수
 2. 현장 실사 및 적정 임대료 분석
-3. 법원 공증 계약 체결
-4. 공간 리모델링 및 홈스타일링 (선택)
-5. 마케팅 임차인 유치 및 전담 버틀러 관리"""
+3. 법원 공증 계약 체결로 안전성 확보
+4. 필요시 맞춤형 리모델링 시공
+5. 임차인 선별 입주 및 전담 매니저의 월간 정산 관리"""
+    },
+    'rentals': {
+        'keywords': ['租屋', '找房', '招租', '套房', '想租', '看房', '預約帶看', '租金補貼', '租補', '南科租屋', 'rent', 'rental', 'viewing', '部屋探し', '賃貸', '방구하기'],
+        'reply_zh': """【窩在好宅 ｜ 精選優質好宅出租與預約賞屋】
+窩在家所有招租房源皆具備「水電安全檢驗、全套一級節能變頻家電、乾濕分離衛浴與法院公證契約保障」，拒絕假房源，全程免仲介費！
+🏡 **熱門在架好宅類別**：
+1. **南科/永康 獨立露台套房**：月租 13,800 元起，配備獨立洗脫烘與智慧門禁。
+2. **善化 LM 特區 高階景觀套房**：騎車 5 分鐘抵達南科，專屬室內機車位。
+3. **東區文化中心 侘寂美透天**：4 房天井日光宅，適合家庭或設計團隊。
+4. **中西區文創慢活公寓**：日光中島開放廚房，漫步國華神農街。
+👉 您可點擊上方導覽列【精選招租】或前往 `/rentals` 瀏覽全景相簿，並直接填表預約專人一對一實地帶看！所有物件均可合法申辦 300 億中央租金補貼。""",
+        'reply_en': """[Curated Rentals & Private Viewings]
+All WOO IN HOME rental properties are professionally inspected with full appliance setup, legal notarization, and zero broker fees!
+Browse our portfolio of suites and apartments in Yungkang, East District, and Shan-Hua (STSP Tech Park) under the 'Rentals' tab. Schedule a viewing online anytime!""",
+        'reply_ja': """【厳選賃貸物件・内見のご案内】
+当社管理物件はすべて設備完備・安全検査済み・仲介手数料無料！
+台南市内および南科（サイエンスパーク）周辺の高品質ワンルーム・ファミリー向けマンションをご用意。メニューの「賃貸物件」よりオンライン内見予約が可能です。""",
+        'reply_ko': """[프리미엄 임대 매물 및 현장 방문 안내]
+모든 매물은 수전/전기 안전 점검 완료, 풀옵션 가전 완비, 중개수수료 무료!
+상단 '임대 매물' 메뉴에서 남과(STSP) 인근 원룸 및 아파트 실사진을 확인하시고 온라인 방문 예약을 신청하세요."""
     }
 }
 

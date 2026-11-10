@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8">
+  <title>招租與帶看管理 ｜ 窩在家 CRM 管理後台</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+  <style>
+    .tab-btn {
+      padding: 10px 20px;
+      font-size: 15px;
+      font-weight: 600;
+      border: none;
+      background: none;
+      cursor: pointer;
+      color: #777;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s ease;
+    }
+    .tab-btn.active {
+      color: var(--color-accent-dark);
+      border-bottom-color: var(--color-accent);
+      background: #faf8f5;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+  </style>
+</head>
+<body class="admin-body">
+  <header class="admin-header">
+    <div style="display: flex; align-items: center; gap: 14px;">
+      <span class="admin-brand">WOO IN HOME ｜ CRM 管理後台</span>
+      <span style="font-size: 12px; background: rgba(184, 145, 88, 0.2); color: #e5c99e; padding: 2px 8px; border-radius: 4px;">企業專業版</span>
+    </div>
+    <nav class="admin-nav">
+      <a href="/admin/dashboard">詢價單管理 (RFQ)</a>
+      <a href="/admin/rentals" class="active">招租與帶看管理 (Rentals)</a>
+      <a href="/admin/settings">系統參數與雲端備份</a>
+      <a href="/rentals" target="_blank" style="color: #68d391;">預覽招租專區 ↗</a>
+      <a href="/" target="_blank">前台官網 ↗</a>
+      <a href="/admin/logout" style="color: #fc8181;">登出</a>
+    </nav>
+  </header>
+
+  <main class="admin-container">
+    {% if msg %}
+    <div style="background: #c6f6d5; color: #22543d; padding: 14px 20px; border-radius: 8px; margin-bottom: 24px; font-weight: 600;">
+      ✅ {{ msg }}
+    </div>
+    {% endif %}
+
+    <!-- Top KPI Stats Row -->
+    <div class="admin-stats-row" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 28px;">
+      <div class="admin-stat-card" style="border-left-color: #319795;">
+        <div class="admin-stat-val" style="color: #319795;">{{ rentals|length }}</div>
+        <div class="admin-stat-title">在庫管理房源總數</div>
+      </div>
+      <div class="admin-stat-card" style="border-left-color: #38a169;">
+        <div class="admin-stat-val" style="color: #38a169;">{{ active_count }}</div>
+        <div class="admin-stat-title">前台招租中 (Available)</div>
+      </div>
+      <div class="admin-stat-card" style="border-left-color: #718096;">
+        <div class="admin-stat-val" style="color: #718096;">{{ rented_count }}</div>
+        <div class="admin-stat-title">已滿租委託 (Rented)</div>
+      </div>
+      <div class="admin-stat-card" style="border-left-color: #805ad5;">
+        <div class="admin-stat-val" style="color: #805ad5;">{{ pending_bookings }}</div>
+        <div class="admin-stat-title">待聯繫預約看屋 (Leads)</div>
+      </div>
+    </div>
+
+    <!-- Management Main Card -->
+    <div class="admin-card">
+      <!-- Tabs Header -->
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #ede8e0; margin-bottom: 24px; padding-bottom: 4px;">
+        <div style="display: flex; gap: 8px;">
+          <button class="tab-btn active" onclick="switchTab('rentals-list')">
+            🏠 招租房源庫 ({{ rentals|length }})
+          </button>
+          <button class="tab-btn" onclick="switchTab('viewings-list')">
+            📅 房客預約帶看清單 ({{ bookings|length }})
+          </button>
+        </div>
+        <div>
+          <button class="btn-admin btn-admin-primary" onclick="openAddRentalModal()">
+            + 新增待租房源
+          </button>
+        </div>
+      </div>
+
+      <!-- Tab 1: Rental Listings Management -->
+      <div id="tab-rentals-list" class="tab-content active">
+        <div style="overflow-x: auto;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th style="width: 70px;">封面</th>
+                <th>編號</th>
+                <th>房源標題</th>
+                <th>區域 / 型態</th>
+                <th>月租金</th>
+                <th>坪數 / 格局</th>
+                <th>設備標籤</th>
+                <th>目前狀態</th>
+                <th>狀態切換</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for r in rentals %}
+              <tr>
+                <td>
+                  <img src="{{ r.cover_image or url_for('static', filename='images/hero_living_cozy.jpg') }}" alt="{{ r.title }}" style="width: 60px; height: 45px; object-fit: cover; border-radius: 4px;">
+                </td>
+                <td><strong style="color: #b89158; font-family: monospace;">{{ r.code }}</strong></td>
+                <td>
+                  <strong>{{ r.title }}</strong>
+                  <div style="font-size: 12px; color: #888;">📍 {{ r.address_summary }}</div>
+                </td>
+                <td>{{ r.district }} ｜ {{ r.category }}</td>
+                <td><strong style="color: #b89158; font-size: 15px;">NT$ {{ "{:,}".format(r.rent_price) }}</strong></td>
+                <td>{{ r.area_ping }} 坪 ｜ {{ r.layout }}</td>
+                <td style="max-width: 180px; font-size: 12px; color: #666;">
+                  {{ r.features }}
+                </td>
+                <td>
+                  {% if r.status == 'available' %}
+                  <span class="badge-status" style="background: #c6f6d5; color: #22543d;">🟢 招租中</span>
+                  {% elif r.status == 'reserved' %}
+                  <span class="badge-status" style="background: #feebc8; color: #c05621;">🟡 已預約</span>
+                  {% else %}
+                  <span class="badge-status" style="background: #edf2f7; color: #4a5568;">⚪ 已出租</span>
+                  {% endif %}
+                </td>
+                <td>
+                  <form method="POST" action="/admin/rentals/status/{{ r.id }}" style="margin: 0;">
+                    <select name="status" onchange="this.form.submit()" class="form-control" style="font-size: 12px; padding: 4px 6px;">
+                      <option value="available" {% if r.status == 'available' %}selected{% endif %}>招租中</option>
+                      <option value="reserved" {% if r.status == 'reserved' %}selected{% endif %}>已預約</option>
+                      <option value="rented" {% if r.status == 'rented' %}selected{% endif %}>已出租</option>
+                    </select>
+                  </form>
+                </td>
+                <td>
+                  <div style="display: flex; gap: 6px;">
+                    <a href="/rentals/{{ r.code }}" target="_blank" class="btn-admin btn-admin-outline" style="padding: 4px 8px; font-size: 12px;" title="預覽房源詳情">
+                      檢視
+                    </a>
+                    <form method="POST" action="/admin/rentals/delete/{{ r.id }}" style="margin: 0;" onsubmit="return confirm('確定要刪除房源 【{{ r.title }}】 嗎？此操作無法撤銷。');">
+                      <button type="submit" class="btn-admin" style="background: #fed7d7; color: #9b2c2c; border: none; padding: 4px 8px; font-size: 12px; border-radius: 4px; cursor: pointer;">
+                        刪除
+                      </button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+              {% else %}
+              <tr>
+                <td colspan="10" style="text-align: center; padding: 48px; color: #888;">
+                  目前無房源資料，請點擊上方「+ 新增待租房源」進行建立。
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab 2: Viewing Bookings Management -->
+      <div id="tab-viewings-list" class="tab-content">
+        <div style="overflow-x: auto;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>申請時間</th>
+                <th>客戶姓名</th>
+                <th>聯絡電話 / LINE</th>
+                <th>預約房源物件</th>
+                <th>希望帶看時段 / 職業</th>
+                <th>客戶備註</th>
+                <th>處理狀態</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for b in bookings %}
+              <tr>
+                <td style="font-size: 12.5px; color: #777;">{{ b.created_at.strftime('%Y-%m-%d %H:%M') if b.created_at else '' }}</td>
+                <td><strong>{{ b.renter_name }}</strong></td>
+                <td>
+                  <a href="tel:{{ b.renter_phone }}" style="color: #2b6cb0; font-weight: bold;">{{ b.renter_phone }}</a>
+                  {% if b.renter_line_id %}
+                  <div style="font-size: 12px; color: #059669;">LINE: {{ b.renter_line_id }}</div>
+                  {% endif %}
+                </td>
+                <td>
+                  <strong style="color: var(--color-accent-dark);">{{ b.rental_code or '' }}</strong>
+                  <div style="font-size: 13px;">{{ b.rental_title or '一般諮詢' }}</div>
+                </td>
+                <td>
+                  <div style="font-weight: 600;">{{ b.preferred_datetime or '皆可' }}</div>
+                  {% if b.renter_occupation %}
+                  <div style="font-size: 12px; color: #666;">身分：{{ b.renter_occupation }}</div>
+                  {% endif %}
+                </td>
+                <td style="font-size: 13px; color: #666;">{{ b.notes or '-' }}</td>
+                <td>
+                  <form method="POST" action="/admin/bookings/status/{{ b.id }}" style="margin: 0;">
+                    <select name="status" onchange="this.form.submit()" class="form-control" style="font-size: 12px; padding: 4px 6px;">
+                      <option value="pending" {% if b.status == 'pending' %}selected{% endif %}>待聯繫確認</option>
+                      <option value="contacted" {% if b.status == 'contacted' %}selected{% endif %}>已約定時段</option>
+                      <option value="completed" {% if b.status == 'completed' %}selected{% endif %}>已完成帶看</option>
+                      <option value="cancelled" {% if b.status == 'cancelled' %}selected{% endif %}>已取消</option>
+                    </select>
+                  </form>
+                </td>
+                <td>
+                  <form method="POST" action="/admin/bookings/delete/{{ b.id }}" style="margin: 0;" onsubmit="return confirm('確定刪除此預約紀錄？');">
+                    <button type="submit" class="btn-admin" style="background: #edf2f7; color: #718096; border: none; padding: 4px 8px; font-size: 12px; border-radius: 4px; cursor: pointer;">
+                      刪除
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              {% else %}
+              <tr>
+                <td colspan="8" style="text-align: center; padding: 48px; color: #888;">
+                  尚無房客預約帶看紀錄。前台租客於招租網提交預約後將即時於此呈現。
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Add New Rental Modal -->
+  <div id="addRentalModal" style="display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); padding: 20px; overflow-y: auto;">
+    <div style="max-width: 680px; margin: 40px auto; background: #fff; border-radius: 12px; padding: 32px; position: relative;">
+      <button onclick="closeAddRentalModal()" style="position: absolute; top: 16px; right: 20px; font-size: 26px; border: none; background: none; cursor: pointer;">&times;</button>
+      <h2 style="font-family: var(--font-serif); font-size: 22px; color: var(--color-dark-bg); margin-bottom: 20px;">
+        + 新增上架待租好宅
+      </h2>
+
+      <form method="POST" action="/admin/rentals/add">
+        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 14px; margin-bottom: 14px;">
+          <div>
+            <label class="form-label">房源編號 *</label>
+            <input type="text" name="code" required placeholder="如：WOO-YK108" class="form-control">
+          </div>
+          <div>
+            <label class="form-label">房源標題 *</label>
+            <input type="text" name="title" required placeholder="如：永康大橋 ｜ 侘寂風景觀套房" class="form-control">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+          <div>
+            <label class="form-label">行政區域 *</label>
+            <select name="district" class="form-control">
+              <option value="永康區">永康區</option>
+              <option value="東區">東區</option>
+              <option value="中西區">中西區</option>
+              <option value="善化區">善化區</option>
+              <option value="北區">北區</option>
+              <option value="安南區">安南區</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">物業型態 *</label>
+            <select name="category" class="form-control">
+              <option value="suite">獨立套房 (Suites)</option>
+              <option value="apartment">整層家庭宅 (Apartment)</option>
+              <option value="townhouse">整棟透天 (Townhouse)</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">月租金 (NTD) *</label>
+            <input type="number" name="rent_price" required placeholder="如：15000" class="form-control">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+          <div>
+            <label class="form-label">管理費 (NTD)</label>
+            <input type="number" name="management_fee" value="0" class="form-control">
+          </div>
+          <div>
+            <label class="form-label">權狀/室內坪數</label>
+            <input type="number" step="0.1" name="area_ping" placeholder="如：14.5" class="form-control">
+          </div>
+          <div>
+            <label class="form-label">所在樓層</label>
+            <input type="text" name="floor_info" placeholder="如：3F / 5F" class="form-control">
+          </div>
+        </div>
+
+        <div style="margin-bottom: 14px;">
+          <label class="form-label">格局說明</label>
+          <input type="text" name="layout" placeholder="如：1房 1衛 1獨立景觀陽台" class="form-control">
+        </div>
+
+        <div style="margin-bottom: 14px;">
+          <label class="form-label">地址或地段摘要</label>
+          <input type="text" name="address_summary" placeholder="如：台南市永康區中華路 (近大橋火車站)" class="form-control">
+        </div>
+
+        <div style="margin-bottom: 14px;">
+          <label class="form-label">封面圖片路徑</label>
+          <input type="text" name="cover_image" value="/static/images/original/b69b8c178e35c3f16221d53195f625c28.jpg" class="form-control">
+          <div style="font-size: 11.5px; color: #888; margin-top: 2px;">可指定 /static/images/original/ 下的照片或自訂 URL</div>
+        </div>
+
+        <div style="margin-bottom: 14px;">
+          <label class="form-label">特色標籤 (以逗號隔開)</label>
+          <input type="text" name="features" value="獨立陽台,乾濕分離,獨立洗脫烘,智慧門禁密碼鎖,一級變頻冷暖,可申請租金補貼" class="form-control">
+        </div>
+
+        <div style="margin-bottom: 14px;">
+          <label class="form-label">詳細說明 *</label>
+          <textarea name="description" rows="3" required class="form-control" placeholder="全室水電重拉、採光極佳、附贈品牌節能家電..."></textarea>
+        </div>
+
+        <div style="margin-bottom: 22px;">
+          <label class="form-label">周邊生活機能</label>
+          <input type="text" name="traffic_surroundings" placeholder="步行 3 分鐘到全聯、騎車 5 分鐘抵達南科或車站" class="form-control">
+        </div>
+
+        <div style="display: flex; gap: 12px; justify-content: flex-end;">
+          <button type="button" onclick="closeAddRentalModal()" class="btn-admin btn-admin-outline">取消</button>
+          <button type="submit" class="btn-admin btn-admin-primary">+ 確認建立並上架</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+      if (tabId === 'rentals-list') {
+        document.querySelectorAll('.tab-btn')[0].classList.add('active');
+        document.getElementById('tab-rentals-list').classList.add('active');
+      } else {
+        document.querySelectorAll('.tab-btn')[1].classList.add('active');
+        document.getElementById('tab-viewings-list').classList.add('active');
+      }
+    }
+
+    function openAddRentalModal() {
+      document.getElementById('addRentalModal').style.display = 'block';
+    }
+
+    function closeAddRentalModal() {
+      document.getElementById('addRentalModal').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

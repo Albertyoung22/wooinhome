@@ -794,6 +794,92 @@ def admin_rental_toggle_status(rental_id):
     db.session.commit()
     return redirect(url_for('admin_dashboard') + '#rentals-tab')
 
+@app.route('/admin/rentals')
+@login_required
+def admin_rentals():
+    rentals = RentalListing.query.order_by(RentalListing.id.desc()).all()
+    bookings = RentalViewingBooking.query.order_by(RentalViewingBooking.created_at.desc()).all()
+    active_count = RentalListing.query.filter_by(status='available').count()
+    rented_count = RentalListing.query.filter_by(status='rented').count()
+    pending_bookings = RentalViewingBooking.query.filter_by(status='pending').count()
+
+    return render_template(
+        'admin/rentals.html',
+        rentals=rentals,
+        bookings=bookings,
+        active_count=active_count,
+        rented_count=rented_count,
+        pending_bookings=pending_bookings
+    )
+
+@app.route('/admin/rentals/add', methods=['POST'])
+@login_required
+def admin_rentals_add():
+    code = request.form.get('code', '').strip()
+    title = request.form.get('title', '').strip()
+    rent_price = int(request.form.get('rent_price', 0))
+    if not code or not title or not rent_price:
+        return redirect(url_for('admin_rentals'))
+
+    cover_img = request.form.get('cover_image', '').strip() or '/static/images/original/b69b8c178e35c3f16221d53195f625c28.jpg'
+    new_rental = RentalListing(
+        code=code,
+        title=title,
+        district=request.form.get('district', '永康區'),
+        category=request.form.get('category', 'suite'),
+        rent_price=rent_price,
+        management_fee=int(request.form.get('management_fee') or 0),
+        area_ping=float(request.form.get('area_ping') or 12.0),
+        floor_info=request.form.get('floor_info', '3F/5F'),
+        layout=request.form.get('layout', '1房1衛'),
+        address_summary=request.form.get('address_summary', ''),
+        cover_image=cover_img,
+        gallery=json.dumps([cover_img]),
+        features=request.form.get('features', '獨立陽台,乾濕分離,洗脫烘,變頻冷暖'),
+        description=request.form.get('description', ''),
+        traffic_surroundings=request.form.get('traffic_surroundings', ''),
+        status='available'
+    )
+    db.session.add(new_rental)
+    db.session.commit()
+    return redirect(url_for('admin_rentals'))
+
+@app.route('/admin/rentals/status/<int:rental_id>', methods=['POST'])
+@login_required
+def admin_rentals_update_status(rental_id):
+    rental = RentalListing.query.get_or_404(rental_id)
+    new_status = request.form.get('status')
+    if new_status in ['available', 'reserved', 'rented']:
+        rental.status = new_status
+        db.session.commit()
+    return redirect(url_for('admin_rentals'))
+
+@app.route('/admin/rentals/delete/<int:rental_id>', methods=['POST'])
+@login_required
+def admin_rentals_delete(rental_id):
+    rental = RentalListing.query.get_or_404(rental_id)
+    db.session.delete(rental)
+    db.session.commit()
+    return redirect(url_for('admin_rentals'))
+
+@app.route('/admin/bookings/status/<int:booking_id>', methods=['POST'])
+@login_required
+def admin_bookings_update_status(booking_id):
+    booking = RentalViewingBooking.query.get_or_404(booking_id)
+    new_status = request.form.get('status')
+    if new_status:
+        booking.status = new_status
+        db.session.commit()
+    return redirect(url_for('admin_rentals'))
+
+@app.route('/admin/bookings/delete/<int:booking_id>', methods=['POST'])
+@login_required
+def admin_bookings_delete(booking_id):
+    booking = RentalViewingBooking.query.get_or_404(booking_id)
+    db.session.delete(booking)
+    db.session.commit()
+    return redirect(url_for('admin_rentals'))
+
 @app.route('/admin/rfq/<int:rfq_id>')
 @login_required
 def admin_rfq_detail(rfq_id):

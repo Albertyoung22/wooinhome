@@ -41,20 +41,28 @@ function initUI() {
   const hamburger = document.getElementById('mobile-menu-btn');
   const mobileDrawer = document.getElementById('mobile-nav-drawer');
   const mobileClose = document.getElementById('mobile-nav-close');
+  const mobileOverlay = document.getElementById('mobile-nav-overlay');
 
-  if (hamburger && mobileDrawer) {
-    hamburger.addEventListener('click', () => {
-      mobileDrawer.classList.toggle('active');
-      document.body.classList.toggle('menu-open');
-    });
+  function openMobileMenu() {
+    mobileDrawer?.classList.add('active');
+    mobileOverlay?.classList.add('active');
+    document.body.classList.add('menu-open');
   }
 
-  if (mobileClose && mobileDrawer) {
-    mobileClose.addEventListener('click', () => {
-      mobileDrawer.classList.remove('active');
-      document.body.classList.remove('menu-open');
-    });
+  function closeMobileMenu() {
+    mobileDrawer?.classList.remove('active');
+    mobileOverlay?.classList.remove('active');
+    document.body.classList.remove('menu-open');
   }
+
+  if (hamburger) hamburger.addEventListener('click', openMobileMenu);
+  if (mobileClose) mobileClose.addEventListener('click', closeMobileMenu);
+  if (mobileOverlay) mobileOverlay.addEventListener('click', closeMobileMenu);
+
+  // Close menu when clicking nav links in mobile drawer
+  mobileDrawer?.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', closeMobileMenu);
+  });
 
   // Portfolio Filters
   bindPortfolioFilters();

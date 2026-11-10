@@ -36,7 +36,7 @@
     <div style="background: #fff; border-radius: var(--radius-md); padding: 24px; box-shadow: var(--shadow-sm); border: 1px solid rgba(110, 103, 95, 0.12); margin-bottom: 36px;">
       
       <!-- Search Input & Quick Filters Row -->
-      <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+      <div class="rental-filter-grid" style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px;">
         <div>
           <label style="display: block; font-size: 12.5px; font-weight: 600; color: #777; margin-bottom: 6px;">關鍵字快速搜尋</label>
           <input type="text" id="rental-search-input" placeholder="輸入地段、南科、透天、套房..." class="form-control" style="font-size: 14px; padding: 10px 14px;">
@@ -317,6 +317,16 @@
   color: #fff;
   border-color: var(--color-dark-bg);
 }
+@media (max-width: 900px) {
+  .rental-filter-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+@media (max-width: 600px) {
+  .rental-filter-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
 </style>
 
 <script>
@@ -508,3 +518,4 @@ function closeRentalGallery() {
 }
 </script>
 {% endblock %}
+
