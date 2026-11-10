@@ -1,8 +1,22 @@
+import os
+import sys
+import ctypes
 import threading
 import time
 import socket
 import webview
 from app import app
+
+# Set dedicated Windows Taskbar Application Model ID so taskbar shows custom icon instead of generic Python
+if sys.platform == 'win32':
+    try:
+        app_id = 'wooinhome.asset.management.enterprise.v2'
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(app_id)
+    except Exception as e:
+        print(f"[Notice] Could not set Windows AppUserModelID: {e}")
+
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+ICON_PATH = os.path.join(BASE_DIR, 'app_icon.ico')
 
 def find_free_port():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
