@@ -844,6 +844,39 @@ def admin_rentals_add():
     db.session.commit()
     return redirect(url_for('admin_rentals'))
 
+@app.route('/admin/rentals/edit/<int:rental_id>', methods=['POST'])
+@login_required
+def admin_rentals_edit(rental_id):
+    rental = RentalListing.query.get_or_404(rental_id)
+    rental.code = request.form.get('code', rental.code).strip()
+    rental.title = request.form.get('title', rental.title).strip()
+    rental.district = request.form.get('district', rental.district)
+    rental.category = request.form.get('category', rental.category)
+    rental.rent_price = int(request.form.get('rent_price') or rental.rent_price)
+    rental.management_fee = int(request.form.get('management_fee') or rental.management_fee)
+    rental.area_ping = float(request.form.get('area_ping') or rental.area_ping)
+    rental.floor_info = request.form.get('floor_info', rental.floor_info)
+    rental.layout = request.form.get('layout', rental.layout)
+    rental.address_summary = request.form.get('address_summary', rental.address_summary)
+    
+    cover_image = request.form.get('cover_image', '').strip()
+    if cover_image:
+        rental.cover_image = cover_image
+        gallery = json.loads(rental.gallery) if rental.gallery else []
+        if cover_image not in gallery:
+            gallery.insert(0, cover_image)
+        rental.gallery = json.dumps(gallery)
+        
+    rental.features = request.form.get('features', rental.features)
+    rental.description = request.form.get('description', rental.description)
+    rental.traffic_surroundings = request.form.get('traffic_surroundings', rental.traffic_surroundings)
+    status_val = request.form.get('status')
+    if status_val in ['available', 'reserved', 'rented']:
+        rental.status = status_val
+
+    db.session.commit()
+    return redirect(url_for('admin_rentals'))
+
 @app.route('/admin/rentals/status/<int:rental_id>', methods=['POST'])
 @login_required
 def admin_rentals_update_status(rental_id):

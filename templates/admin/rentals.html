@@ -147,9 +147,13 @@
                   </form>
                 </td>
                 <td>
-                  <div style="display: flex; gap: 6px;">
+                  <script id="rental-data-{{ r.id }}" type="application/json">{{ r.to_dict()|tojson }}</script>
+                  <div style="display: flex; gap: 6px; align-items: center;">
+                    <button type="button" onclick="openEditRentalModal({{ r.id }})" class="btn-admin" style="background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; padding: 4px 8px; font-size: 12px; border-radius: 4px; cursor: pointer;" title="編輯房源資料">
+                      ✏️ 編輯
+                    </button>
                     <a href="/rentals/{{ r.code }}" target="_blank" class="btn-admin btn-admin-outline" style="padding: 4px 8px; font-size: 12px;" title="預覽房源詳情">
-                      檢視
+                      檢視 ↗
                     </a>
                     <form method="POST" action="/admin/rentals/delete/{{ r.id }}" style="margin: 0;" onsubmit="return confirm('確定要刪除房源 【{{ r.title }}】 嗎？此操作無法撤銷。');">
                       <button type="submit" class="btn-admin" style="background: #fed7d7; color: #9b2c2c; border: none; padding: 4px 8px; font-size: 12px; border-radius: 4px; cursor: pointer;">
@@ -342,6 +346,115 @@
     </div>
   </div>
 
+  <!-- Edit Existing Rental Modal -->
+  <div id="editRentalModal" style="display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); padding: 20px; overflow-y: auto;">
+    <div style="max-width: 680px; margin: 40px auto; background: #fff; border-radius: 12px; padding: 32px; position: relative;">
+      <button onclick="closeEditRentalModal()" style="position: absolute; top: 16px; right: 20px; font-size: 26px; border: none; background: none; cursor: pointer;">&times;</button>
+      <h2 style="font-family: var(--font-serif); font-size: 22px; color: var(--color-dark-bg); margin-bottom: 20px;">
+        ✏️ 編輯待租房源案件
+      </h2>
+
+      <form id="editRentalForm" method="POST" action="">
+        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 14px; margin-bottom: 14px;">
+          <div>
+            <label class="form-label">房源編號 *</label>
+            <input type="text" id="edit_code" name="code" required class="form-control">
+          </div>
+          <div>
+            <label class="form-label">房源標題 *</label>
+            <input type="text" id="edit_title" name="title" required class="form-control">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+          <div>
+            <label class="form-label">行政區域 *</label>
+            <select id="edit_district" name="district" class="form-control">
+              <option value="永康區">永康區</option>
+              <option value="東區">東區</option>
+              <option value="中西區">中西區</option>
+              <option value="善化區">善化區</option>
+              <option value="北區">北區</option>
+              <option value="安南區">安南區</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">物業型態 *</label>
+            <select id="edit_category" name="category" class="form-control">
+              <option value="suite">獨立套房 (Suites)</option>
+              <option value="apartment">整層家庭宅 (Apartment)</option>
+              <option value="townhouse">整棟透天 (Townhouse)</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">月租金 (NTD) *</label>
+            <input type="number" id="edit_rent_price" name="rent_price" required class="form-control">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+          <div>
+            <label class="form-label">管理費 (NTD)</label>
+            <input type="number" id="edit_management_fee" name="management_fee" class="form-control">
+          </div>
+          <div>
+            <label class="form-label">權狀/室內坪數</label>
+            <input type="number" step="0.1" id="edit_area_ping" name="area_ping" class="form-control">
+          </div>
+          <div>
+            <label class="form-label">所在樓層</label>
+            <input type="text" id="edit_floor_info" name="floor_info" class="form-control">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 14px; margin-bottom: 14px;">
+          <div>
+            <label class="form-label">格局說明</label>
+            <input type="text" id="edit_layout" name="layout" class="form-control">
+          </div>
+          <div>
+            <label class="form-label">房源目前狀態</label>
+            <select id="edit_status" name="status" class="form-control">
+              <option value="available">🟢 招租中</option>
+              <option value="reserved">🟡 已預約</option>
+              <option value="rented">⚪ 已出租</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 14px;">
+          <label class="form-label">地址或地段摘要</label>
+          <input type="text" id="edit_address_summary" name="address_summary" class="form-control">
+        </div>
+
+        <div style="margin-bottom: 14px;">
+          <label class="form-label">封面圖片路徑</label>
+          <input type="text" id="edit_cover_image" name="cover_image" class="form-control">
+        </div>
+
+        <div style="margin-bottom: 14px;">
+          <label class="form-label">特色標籤 (以逗號隔開)</label>
+          <input type="text" id="edit_features" name="features" class="form-control">
+        </div>
+
+        <div style="margin-bottom: 14px;">
+          <label class="form-label">詳細說明 *</label>
+          <textarea id="edit_description" name="description" rows="3" required class="form-control"></textarea>
+        </div>
+
+        <div style="margin-bottom: 22px;">
+          <label class="form-label">周邊生活機能</label>
+          <input type="text" id="edit_traffic_surroundings" name="traffic_surroundings" class="form-control">
+        </div>
+
+        <div style="display: flex; gap: 12px; justify-content: flex-end;">
+          <button type="button" onclick="closeEditRentalModal()" class="btn-admin btn-admin-outline">取消</button>
+          <button type="submit" class="btn-admin btn-admin-primary">💾 儲存修改</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script>
     function switchTab(tabId) {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -362,6 +475,38 @@
 
     function closeAddRentalModal() {
       document.getElementById('addRentalModal').style.display = 'none';
+    }
+
+    function openEditRentalModal(rentalId) {
+      const scriptTag = document.getElementById('rental-data-' + rentalId);
+      if (!scriptTag) return;
+      try {
+        const data = JSON.parse(scriptTag.textContent);
+        document.getElementById('editRentalForm').action = '/admin/rentals/edit/' + data.id;
+        document.getElementById('edit_code').value = data.code || '';
+        document.getElementById('edit_title').value = data.title || '';
+        document.getElementById('edit_district').value = data.district || '永康區';
+        document.getElementById('edit_category').value = data.category || 'suite';
+        document.getElementById('edit_rent_price').value = data.rent_price || 0;
+        document.getElementById('edit_management_fee').value = data.management_fee || 0;
+        document.getElementById('edit_area_ping').value = data.area_ping || 0;
+        document.getElementById('edit_floor_info').value = data.floor_info || '';
+        document.getElementById('edit_layout').value = data.layout || '';
+        document.getElementById('edit_status').value = data.status || 'available';
+        document.getElementById('edit_address_summary').value = data.address_summary || '';
+        document.getElementById('edit_cover_image').value = data.cover_image || '';
+        document.getElementById('edit_features').value = data.features || '';
+        document.getElementById('edit_description').value = data.description || '';
+        document.getElementById('edit_traffic_surroundings').value = data.traffic_surroundings || '';
+        
+        document.getElementById('editRentalModal').style.display = 'block';
+      } catch (err) {
+        console.error('Error opening edit modal:', err);
+      }
+    }
+
+    function closeEditRentalModal() {
+      document.getElementById('editRentalModal').style.display = 'none';
     }
   </script>
 </body>
