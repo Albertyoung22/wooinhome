@@ -639,6 +639,10 @@ def api_admin_test_smtp():
 # SEO: Robots.txt & Dynamic Sitemap.xml
 # ==============================================================================
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_file(os.path.join(app.root_path, 'static', 'favicon.ico'), mimetype='image/vnd.microsoft.icon')
+
 @app.route('/robots.txt')
 def robots_txt():
     content = "User-agent: *\nAllow: /\nDisallow: /admin\nSitemap: " + request.url_root.rstrip('/') + "/sitemap.xml\n"
