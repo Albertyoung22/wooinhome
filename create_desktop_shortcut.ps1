@@ -33,3 +33,4 @@ Write-Host "圖標來源：$iconPath" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "提示：您現在可以直接在桌面雙擊「窩在家包租代管」啟動，" -ForegroundColor Yellow
 Write-Host "也可以「按右鍵 ➔ 釘選到工作列 (Pin to taskbar)」！" -ForegroundColor Yellow
+
