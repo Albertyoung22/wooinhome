@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section" style="padding-top: 60px;">
+  <div style="max-width: 1280px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 40px;">
+      <span class="section-tag">PORTFOLIO & TRACK RECORD</span>
+      <h1 class="section-title">實績案例展示中心 ｜ 台南空間活化實證</h1>
+      <p class="section-desc">累積超過 150 處精選實績，涵蓋整棟透天改套、公寓家庭宅、高質感景觀宅與商圈文創店面。</p>
+    </div>
+
+    <!-- Filter Buttons -->
+    <div class="portfolio-filters">
+      <button class="filter-tab-btn active" data-filter="all">全部案場 (All)</button>
+      <button class="filter-tab-btn" data-filter="townhouse">整棟透天 (Townhouse)</button>
+      <button class="filter-tab-btn" data-filter="apartment">電梯大樓/公寓 (Apartment)</button>
+      <button class="filter-tab-btn" data-filter="suite">分租精品套房 (Suites)</button>
+      <button class="filter-tab-btn" data-filter="commercial">商圈店面/複合 (Commercial)</button>
+    </div>
+
+    <!-- Portfolio Grid -->
+    <div class="portfolio-grid">
+      {% for case in cases %}
+      <div class="portfolio-card" data-category="{{ case.category }}">
+        <div class="portfolio-img-box">
+          <div style="background: linear-gradient(135deg, #2b2823, #151310); width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--color-accent-light);">
+            <span style="font-size: 34px;">🏡</span>
+            <span style="font-size: 13px; margin-top: 6px; letter-spacing: 1px;">WOO IN HOME PORTFOLIO</span>
+          </div>
+          <span class="portfolio-tag">{{ case.location }} ｜ {{ case.area_ping }} 坪</span>
+        </div>
+        <div class="portfolio-body">
+          <h3 class="portfolio-title">{{ case.title }}</h3>
+          <p style="font-size: 13.5px; color: var(--color-text-muted); line-height: 1.6; margin-bottom: 16px;">
+            {{ case.summary }}
+          </p>
+          <div style="background: #faf8f5; padding: 12px; border-radius: var(--radius-sm); margin-bottom: 16px; font-size: 13px; border: 1px solid #ede8e0;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+              <span>改造前原月租：</span>
+              <strong style="text-decoration: line-through; color: #888;">NT$ {{ "{:,}".format(case.before_rent) }}</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+              <span>活化後現月租：</span>
+              <strong style="color: var(--color-accent-dark); font-size: 15px;">NT$ {{ "{:,}".format(case.after_rent) }}</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span>年投報增長幅度：</span>
+              <strong style="color: #38a169;">{{ case.roi_boost }}</strong>
+            </div>
+          </div>
+          <button class="btn-primary" style="width: 100%; padding: 10px 14px; font-size: 13px;" onclick="RFQCart.addItem({code:'case_{{ case.slug }}', title:'【同級案例方案】{{ case.title }}', specs:{'地點':'{{ case.location }}','坪數':'{{ case.area_ping }}坪','投報增幅':'{{ case.roi_boost }}'}, price:'專人評估同等規劃'}); RFQCart.openDrawer();">
+            + 將此案型加入詢價清單
+          </button>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

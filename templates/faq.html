@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section" style="padding-top: 60px;">
+  <div style="max-width: 960px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 50px;">
+      <span class="section-tag">FREQUENTLY ASKED QUESTIONS</span>
+      <h1 class="section-title">常見問題 Q&A 知識庫</h1>
+      <p class="section-desc">彙整屋主在委託包租代管、代租代管與老屋裝修時最關心的關鍵問題。</p>
+    </div>
+
+    <!-- FAQ Accordion List -->
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      
+      <div class="faq-item" style="background: #fff; border-radius: var(--radius-sm); border: 1px solid rgba(110, 103, 95, 0.15); overflow: hidden;">
+        <div class="faq-item-header" style="padding: 20px 24px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 16px;">
+          <span>Q1. 委託「包租代管」後，如果房客欠租或退租空屋，房東會受到損失嗎？</span>
+          <span style="font-size: 20px; color: var(--color-accent);">+</span>
+        </div>
+        <div class="faq-item-body" style="padding: 0 24px 20px; font-size: 14.5px; color: var(--color-text-muted); line-height: 1.8;">
+          <strong>完全不會！</strong>在「包租代管（Manage Host）」模式下，窩在家就是承租方。契約期間內，無論該月是否有房客承租、或是房客發生遲繳或欠租情況，窩在家皆會按月全額撥付固定協議租金至房東戶頭，所有空置風險與催收程序全權由窩在家承擔。
+        </div>
+      </div>
+
+      <div class="faq-item" style="background: #fff; border-radius: var(--radius-sm); border: 1px solid rgba(110, 103, 95, 0.15); overflow: hidden;">
+        <div class="faq-item-header" style="padding: 20px 24px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 16px;">
+          <span>Q2. 委託合法專業租賃管理公司，房東可以享有那些稅務減免？</span>
+          <span style="font-size: 20px; color: var(--color-accent);">+</span>
+        </div>
+        <div class="faq-item-body" style="padding: 0 24px 20px; font-size: 14.5px; color: var(--color-text-muted); line-height: 1.8;">
+          依據《租賃住宅市場發展及條例》，房東委託合法包租代管可享三重法定賦稅減免：<br>
+          1. <strong>租賃所得稅</strong>：每屋每月享有最高 1.5 萬元免稅額度，超過 1.5 萬元部分再享有 60% 必要費用扣除額。<br>
+          2. <strong>房屋稅優惠</strong>：房屋稅比照自用住宅稅率 1.2%（非自住稅率最高達 4.8%），大幅降低持有成本。<br>
+          3. <strong>地價稅優惠</strong>：適用自用住宅千分之二優惠稅率！
+        </div>
+      </div>
+
+      <div class="faq-item" style="background: #fff; border-radius: var(--radius-sm); border: 1px solid rgba(110, 103, 95, 0.15); overflow: hidden;">
+        <div class="faq-item-header" style="padding: 20px 24px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 16px;">
+          <span>Q3. 如果老屋委託翻新改造，需要房東親自監工嗎？有工程保固嗎？</span>
+          <span style="font-size: 20px; color: var(--color-accent);">+</span>
+        </div>
+        <div class="faq-item-body" style="padding: 0 24px 20px; font-size: 14.5px; color: var(--color-text-muted); line-height: 1.8;">
+          <strong>房東完全不需要到場監工！</strong>窩在家提供一站式工程統包，每週由專案工務主管上傳即時施工照片、進度驗收報告至雲端相簿。衛浴防水工程更具備嚴格 48 小時試水規範，完工後出具完整的工程防水與水電管線保固書，讓您安心省心。
+        </div>
+      </div>
+
+      <div class="faq-item" style="background: #fff; border-radius: var(--radius-sm); border: 1px solid rgba(110, 103, 95, 0.15); overflow: hidden;">
+        <div class="faq-item-header" style="padding: 20px 24px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 16px;">
+          <span>Q4. 委託契約一定要到法院公證嗎？公證費用如何計算？</span>
+          <span style="font-size: 20px; color: var(--color-accent);">+</span>
+        </div>
+        <div class="faq-item-body" style="padding: 0 24px 20px; font-size: 14.5px; color: var(--color-text-muted); line-height: 1.8;">
+          窩在家秉持透明合規原則，<strong>所有租賃契約均強烈建議並協助辦理地方法院公證</strong>。經公證之契約對「給付租金、交還房屋、返還押金」具有直接聲請法院強制執行的法律效力，能徹底杜絕租屋霸王與糾紛。公證費用依照法定標的金額級距收取，經濟透明。
+        </div>
+      </div>
+
+      <div class="faq-item" style="background: #fff; border-radius: var(--radius-sm); border: 1px solid rgba(110, 103, 95, 0.15); overflow: hidden;">
+        <div class="faq-item-header" style="padding: 20px 24px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 16px;">
+          <span>Q5. 房東長住外縣市或人在國外，如何簽約與掌握即時屋況？</span>
+          <span style="font-size: 20px; color: var(--color-accent);">+</span>
+        </div>
+        <div class="faq-item-body" style="padding: 0 24px 20px; font-size: 14.5px; color: var(--color-text-muted); line-height: 1.8;">
+          我們服務的房東中有超過 40% 長期居住於雙北、台中或海外。我們支援合規之電子郵寄公證文件與線上視訊對保，每月財務對帳單、修繕檢視報告與點交照片均透過雲端系統完整呈現，讓您無論身在何方，都能掌握物業動態。
+        </div>
+      </div>
+
+      <div class="faq-item" style="background: #fff; border-radius: var(--radius-sm); border: 1px solid rgba(110, 103, 95, 0.15); overflow: hidden;">
+        <div class="faq-item-header" style="padding: 20px 24px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 16px;">
+          <span>Q6. 想要委託窩在家，第一步該怎麼開始？需要收取評估費嗎？</span>
+          <span style="font-size: 20px; color: var(--color-accent);">+</span>
+        </div>
+        <div class="faq-item-body" style="padding: 0 24px 20px; font-size: 14.5px; color: var(--color-text-muted); line-height: 1.8;">
+          <strong>前期屋況勘驗與市場行情評估完全免費！</strong>您只需點擊本站「專人詢價」，填寫基本物業位置與聯絡時段，或直接撥打 (06) 289-4168。我們的資深顧問將與您預約時間實地到府丈量，出具完整的租金收益與空間改造建議書。
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CTA Box -->
+    <div style="text-align: center; margin-top: 50px;">
+      <a href="/contact" class="btn-primary" data-spa style="padding: 14px 36px; font-size: 16px;">
+        還有其他問題？立即預約真人顧問一對一解答 →
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}

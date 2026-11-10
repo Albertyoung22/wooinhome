@@ -1,0 +1,180 @@
+/* CRM Admin Dashboard Stylesheet */
+.admin-body {
+  background-color: #f4f2ee;
+  color: #2b2823;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  min-height: 100vh;
+}
+
+.admin-header {
+  background: #1c1a17;
+  color: #ffffff;
+  padding: 14px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #b89158;
+}
+
+.admin-brand {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #e5c99e;
+}
+
+.admin-nav {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.admin-nav a {
+  color: #c9c3b8;
+  font-size: 14px;
+}
+
+.admin-nav a:hover, .admin-nav a.active {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.admin-container {
+  max-width: 1400px;
+  margin: 32px auto;
+  padding: 0 24px;
+}
+
+.admin-stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.admin-stat-card {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 24px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  border-left: 4px solid #b89158;
+}
+
+.admin-stat-val {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1c1a17;
+  margin-bottom: 4px;
+}
+
+.admin-stat-title {
+  font-size: 13px;
+  color: #7a736a;
+  text-transform: uppercase;
+}
+
+.admin-card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  padding: 28px;
+  margin-bottom: 30px;
+}
+
+.admin-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.admin-table th {
+  background: #f8f6f2;
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 2px solid #e2ddd5;
+  color: #555;
+  font-weight: 600;
+}
+
+.admin-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #eee;
+  vertical-align: middle;
+}
+
+.admin-table tr:hover td {
+  background: #faf8f5;
+}
+
+.badge-status {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge-pending { background: #feebc8; color: #7b341e; }
+.badge-contacting { background: #bee3f8; color: #2c5282; }
+.badge-quoted { background: #e9d8fd; color: #553c9a; }
+.badge-signed { background: #c6f6d5; color: #22543d; }
+.badge-closed { background: #edf2f7; color: #4a5568; }
+
+.btn-admin {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-admin-primary {
+  background: #b89158;
+  color: #ffffff;
+}
+
+.btn-admin-primary:hover {
+  background: #9a743e;
+}
+
+.btn-admin-outline {
+  background: transparent;
+  border: 1px solid #ccc;
+  color: #333;
+}
+
+.btn-admin-outline:hover {
+  background: #eee;
+}
+
+/* Detail page layout */
+.detail-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 28px;
+}
+
+.note-box {
+  background: #fcfbf9;
+  border: 1px solid #e8e3dc;
+  border-radius: 8px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+
+.note-meta {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 6px;
+}

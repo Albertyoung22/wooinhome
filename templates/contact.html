@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section" style="padding-top: 60px;">
+  <div style="max-width: 1000px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 40px;">
+      <span class="section-tag">REQUEST FOR QUOTATION ｜ RFQ</span>
+      <h1 class="section-title">線上委託與智慧詢價單</h1>
+      <p class="section-desc">
+        填寫您的物業條件或隨附已選取的方案，專業物業顧問將於您指定時段主動與您聯繫，提供免費屋況勘查與租金收益評估。
+      </p>
+    </div>
+
+    <!-- Quick LINE / Phone Contact Banner -->
+    <div style="background: #faf8f5; border: 1px solid rgba(184, 145, 88, 0.3); border-radius: var(--radius-md); padding: 18px 24px; margin-bottom: 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+      <div>
+        <div style="font-weight: 700; color: var(--color-dark-bg); font-size: 15px;">💬 想直接用 LINE 聊聊屋況、傳照片？</div>
+        <div style="font-size: 13.5px; color: var(--color-text-muted);">歡迎直接加入窩在家官方 LINE 專人一對一即時諮詢：<strong>@wooinhome</strong></div>
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <a href="https://line.me" target="_blank" class="btn-primary" style="background: #06c755; border-color: #06c755; padding: 10px 18px; font-size: 13.5px;">
+          加 LINE 專人快速評估
+        </a>
+        <a href="tel:06-289-4168" class="btn-secondary" style="padding: 10px 18px; font-size: 13.5px;">
+          📞 (06) 289-4168
+        </a>
+      </div>
+    </div>
+
+    <!-- Main RFQ Form Container -->
+    <div style="background: #ffffff; border-radius: var(--radius-lg); padding: 40px; box-shadow: var(--shadow-md); border: 1px solid rgba(110, 103, 95, 0.12);">
+      <form id="rfq-main-form" enctype="multipart/form-data">
+        
+        <!-- Attached RFQ Cart Items Box -->
+        <div id="rfq-form-items-summary" style="margin-bottom: 28px;">
+          <!-- Auto-filled by rfq_cart.js -->
+        </div>
+
+        <h3 style="font-family: var(--font-serif); font-size: 19px; color: var(--color-text-main); margin-bottom: 20px; border-bottom: 2px solid var(--color-accent); padding-bottom: 8px;">
+          1. 貴賓聯絡資料
+        </h3>
+
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+          <div class="form-group">
+            <label class="form-label">* 您的姓名 (Name)</label>
+            <div style="display: flex; gap: 10px;">
+              <input type="text" name="customer_name" class="form-control" placeholder="例：林先生 / 陳小姐" required>
+              <select name="gender" class="form-control" style="width: 100px;">
+                <option value="先生">先生</option>
+                <option value="小姐">小姐</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">* 聯絡電話 (Phone)</label>
+            <input type="tel" name="phone" class="form-control" placeholder="例：0912-345-678" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">電子信箱 (Email，用於接收詢價回執)</label>
+            <input type="email" name="email" class="form-control" placeholder="例：yourname@example.com">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">LINE ID (方便專人傳送評估簡報)</label>
+            <input type="text" name="line_id" class="form-control" placeholder="例：wooinhome888">
+          </div>
+
+          <div class="form-group" style="grid-column: span 2;">
+            <label class="form-label">方便電話聯繫時段</label>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+              <label><input type="radio" name="preferred_contact_time" value="上午時段 (09:00~12:00)"> 上午時段 (09:00~12:00)</label>
+              <label><input type="radio" name="preferred_contact_time" value="下午時段 (12:00~18:00)"> 下午時段 (12:00~18:00)</label>
+              <label><input type="radio" name="preferred_contact_time" value="全天時段皆可" checked> 全天時段皆可</label>
+            </div>
+          </div>
+        </div>
+
+        <h3 style="font-family: var(--font-serif); font-size: 19px; color: var(--color-text-main); margin: 32px 0 20px; border-bottom: 2px solid var(--color-accent); padding-bottom: 8px;">
+          2. 物業基本現況
+        </h3>
+
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+          <div class="form-group">
+            <label class="form-label">* 所在縣市</label>
+            <select name="city" class="form-control">
+              <option value="台南市" selected>台南市 (窩在家深耕總部)</option>
+              <option value="高雄市">高雄市</option>
+              <option value="其他縣市">其他縣市</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">行政區</label>
+            <input type="text" name="district" class="form-control" placeholder="例：中西區、東區、安南區、永康區">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">物業型態</label>
+            <select name="property_type" class="form-control">
+              <option value="整棟透天厝">整棟透天厝</option>
+              <option value="電梯大樓/華廈">電梯大樓 / 華廈</option>
+              <option value="無電梯公寓">無電梯公寓</option>
+              <option value="獨立套房">獨立套房</option>
+              <option value="黃金店面/商業空間">黃金店面 / 商業空間</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">使用/權狀坪數 (約幾坪)</label>
+            <input type="number" name="size_ping" class="form-control" value="35" step="1">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">目前屋況現狀</label>
+            <select name="current_status" class="form-control">
+              <option value="空屋閒置中，期望儘速出租">空屋閒置中，期望儘速出租</option>
+              <option value="目前有房客出租中，即將到期">目前有房客出租中，即將到期</option>
+              <option value="自住中，預計近期移出">自住中，預計近期移出</option>
+              <option value="屋況老舊，想評估翻新改裝">屋況老舊，想評估翻新改裝</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">概略街道地址 (初步諮詢無須填精確號數)</label>
+            <input type="text" name="address" class="form-control" placeholder="例：公園路附近、文化中心周邊">
+          </div>
+        </div>
+
+        <h3 style="font-family: var(--font-serif); font-size: 19px; color: var(--color-text-main); margin: 32px 0 20px; border-bottom: 2px solid var(--color-accent); padding-bottom: 8px;">
+          3. 附言需求與屋況照片/文件上傳
+        </h3>
+
+        <div class="form-group">
+          <label class="form-label">備註與具體需求描述</label>
+          <textarea name="requirements" class="form-control" rows="3" placeholder="例如：透天老宅想改為外商工程師分租套房，或是想了解包租代管保證月租試算..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">隨附屋況圖檔或權狀平面圖 (可選，支援 JPG, PNG, WEBP, PDF，上限 32MB)</label>
+          <input type="file" name="attachment" class="form-control" accept="image/*,application/pdf">
+          <div style="font-size: 12px; color: #888; margin-top: 6px;">
+            💡 附上照片可讓顧問更精準為您試算翻新裝修預算與租金成長潛力。
+          </div>
+        </div>
+
+        <div style="margin-top: 36px; text-align: center;">
+          <button type="submit" class="btn-primary" style="padding: 16px 48px; font-size: 16px;">
+            🚀 確認送出線上詢價與評估申請
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Success Modal -->
+<div class="rfq-drawer-overlay" id="rfq-success-modal">
+  <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 480px; max-width: 90vw; background: #fff; border-radius: var(--radius-md); padding: 36px; box-shadow: var(--shadow-lg); text-align: center; z-index: 99999;">
+    <div style="font-size: 52px; margin-bottom: 16px;">🎉</div>
+    <h3 style="font-family: var(--font-serif); font-size: 22px; margin-bottom: 10px;">委託詢價單已成功送出！</h3>
+    <p style="font-size: 14.5px; color: #666; line-height: 1.6; margin-bottom: 20px;">
+      您的專屬委託單號為：<br>
+      <strong id="success-rfq-no" style="font-size: 20px; color: var(--color-accent-dark); font-family: monospace;">#RFQ-20261110-XXXX</strong>
+    </p>
+    <p style="font-size: 13.5px; color: #777; margin-bottom: 24px;">
+      窩在家專業物業團隊已收到您的委託。我們將於您指定時段由專人與您聯繫。
+    </p>
+    <div style="display: flex; gap: 12px; justify-content: center;">
+      <a href="/" class="btn-secondary" style="font-size: 14px;" data-spa>返回首頁</a>
+      <a href="/works" class="btn-primary" style="font-size: 14px;" data-spa>瀏覽精選實績案例</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

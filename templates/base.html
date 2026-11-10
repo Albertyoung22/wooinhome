@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>{{ page_title or '台南包租代管公司【窩在家包租代管】專業包租代管與空間活化一站式服務' }}</title>
+  
+  <meta name="description" content="{{ page_description or '台南包租代管首選【窩在家】，深耕台南15年租賃管理經驗，百位房東信賴推薦。提供包租代管、代租代管、老屋空間活化改造、房東租稅優惠試算與線上智慧詢價服務。' }}">
+  <meta name="keywords" content="{{ page_keywords or '台南包租代管,代租代管,老屋翻新,空間活化,房東免稅,窩在家,物業管理' }}">
+  <meta name="author" content="窩在家物業管理顧問有限公司">
+  
+  <!-- Open Graph / Facebook / LINE -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ request.url }}">
+  <meta property="og:title" content="{{ page_title or '台南包租代管公司【窩在家包租代管】' }}">
+  <meta property="og:description" content="{{ page_description or '專業台南包租代管一站式服務，老屋翻新增值，合法租稅減免' }}">
+  <meta property="og:image" content="{{ url_for('static', filename='images/og_banner.jpg', _external=True) }}">
+  <meta property="og:locale" content="zh_TW">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ page_title or '窩在家包租代管' }}">
+  <meta name="twitter:description" content="{{ page_description or '台南包租代管與空間活化一站式專家' }}">
+  <meta name="twitter:image" content="{{ url_for('static', filename='images/og_banner.jpg', _external=True) }}">
+
+  <!-- Canonical Link -->
+  <link rel="canonical" href="{{ request.base_url }}">
+
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+  <!-- JSON-LD Structured Data -->
+  {% block json_ld %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "RealEstateAgent",
+    "name": "窩在家物業管理顧問有限公司",
+    "alternateName": "窩在家包租代管",
+    "image": "https://www.wooinhome.com.tw/assets/images/logo_white.svg",
+    "url": "https://www.wooinhome.com.tw",
+    "telephone": "+886-6-289-4168",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "中西區公園路56號1樓",
+      "addressLocality": "台南市",
+      "postalCode": "700",
+      "addressCountry": "TW"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 22.9950132,
+      "longitude": 120.2056948
+    },
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "09:00",
+      "closes": "18:00"
+    },
+    "sameAs": [
+      "https://www.facebook.com/profile.php?id=100057121195192"
+    ]
+  }
+  </script>
+  {% endblock %}
+</head>
+<body>
+  <!-- Top Navigation Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <a href="/" class="brand-logo-wrap" data-spa>
+        <div class="brand-icon-box">窩</div>
+        <div class="brand-text">
+          <span class="brand-title" data-i18n="brand_name">窩在家包租代管</span>
+          <span class="brand-subtitle" data-i18n="brand_sub">專業資產管理 ｜ 空間活化顧問</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="nav-links-wrap">
+        <a href="/" class="nav-link" data-i18n="nav_home" data-spa>首頁</a>
+        <a href="/manage-host" class="nav-link" data-i18n="nav_host" data-spa>包租代管</a>
+        <a href="/manage-agent" class="nav-link" data-i18n="nav_agent" data-spa>代租代管</a>
+        <a href="/spatial-renovation" class="nav-link" data-i18n="nav_renovate" data-spa>空間活化</a>
+        <a href="/works" class="nav-link" data-i18n="nav_works" data-spa>實績案例</a>
+        <a href="/calculator" class="nav-link" data-i18n="nav_calculator" data-spa>效益試算</a>
+        <a href="/blog" class="nav-link" data-i18n="nav_blog" data-spa>知識專欄</a>
+        <a href="/faq" class="nav-link" data-i18n="nav_faq" data-spa>常見問題</a>
+        <a href="/contact" class="nav-link" data-i18n="nav_contact" data-spa>專人詢價</a>
+      </nav>
+
+      <!-- Header Actions: Language & RFQ Cart -->
+      <div class="header-actions">
+        <!-- 4 Languages Selector -->
+        <div class="lang-selector-group">
+          <button class="lang-btn active" data-lang="zh-TW">繁中</button>
+          <button class="lang-btn" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="ja">日本語</button>
+          <button class="lang-btn" data-lang="ko">한국어</button>
+        </div>
+
+        <!-- RFQ Cart Trigger Pill -->
+        <button class="btn-rfq-cart-nav btn-open-rfq-drawer">
+          <span>📋 詢價單</span>
+          <span class="rfq-badge-count" style="display: none;">0</span>
+        </button>
+
+        <!-- Mobile Menu Hamburger -->
+        <button class="mobile-menu-toggle" id="mobile-menu-btn" aria-label="Toggle Navigation">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="rfq-drawer-overlay" id="mobile-nav-overlay"></div>
+  <div class="rfq-drawer" id="mobile-nav-drawer" style="left: -320px; right: auto; width: 300px;">
+    <div class="rfq-drawer-header">
+      <div class="brand-text">
+        <span class="brand-title">窩在家物業</span>
+        <span class="brand-subtitle">導覽選單</span>
+      </div>
+      <button class="rfq-item-remove" id="mobile-nav-close">✕</button>
+    </div>
+    <div class="rfq-drawer-body" style="display: flex; flex-direction: column; gap: 16px;">
+      <a href="/" class="nav-link" data-spa>首頁</a>
+      <a href="/manage-host" class="nav-link" data-spa>包租代管 (零空置保證)</a>
+      <a href="/manage-agent" class="nav-link" data-spa>代租代管 (收益極大化)</a>
+      <a href="/spatial-renovation" class="nav-link" data-spa>老屋空間活化改造</a>
+      <a href="/works" class="nav-link" data-spa>精選實績案例</a>
+      <a href="/calculator" class="nav-link" data-spa>空間活化效益試算</a>
+      <a href="/blog" class="nav-link" data-spa>房東法規與稅務專欄</a>
+      <a href="/faq" class="nav-link" data-spa>常見問題 Q&A</a>
+      <a href="/contact" class="nav-link" data-spa>專人到府評估與詢價</a>
+      <hr style="border: 0; border-top: 1px solid #eee; margin: 10px 0;">
+      <div style="font-size: 13px; color: #888; margin-bottom: 8px;">切換語言 (Language):</div>
+      <div class="lang-selector-group" style="width: 100%; justify-content: space-around;">
+        <button class="lang-btn active" data-lang="zh-TW">繁中</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="ja">日語</button>
+        <button class="lang-btn" data-lang="ko">韓語</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPA Main Dynamic Content Area -->
+  <main id="spa-main-content">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Slide-in RFQ Cart Drawer -->
+  <div class="rfq-drawer-overlay" id="rfq-drawer-overlay"></div>
+  <aside class="rfq-drawer" id="rfq-drawer">
+    <div class="rfq-drawer-header">
+      <h3 style="font-family: var(--font-serif); font-size: 18px;" data-i18n="rfq_drawer_title">我的詢價清單</h3>
+      <button class="rfq-item-remove" id="btn-close-rfq-drawer">✕</button>
+    </div>
+    <div class="rfq-drawer-body" id="rfq-drawer-list">
+      <!-- Populated dynamically via rfq_cart.js -->
+    </div>
+    <div class="rfq-drawer-footer">
+      <a href="/contact" class="btn-primary" style="width: 100%; text-align: center;" data-spa data-i18n="btn_submit_rfq">前往填寫詳細詢價單</a>
+    </div>
+  </aside>
+
+  <!-- Floating AI Chat Assistant -->
+  <button class="ai-chat-trigger-btn" id="ai-chat-trigger" title="智慧物業諮詢助手">
+    💬
+  </button>
+  <div class="ai-chat-modal" id="ai-chat-modal">
+    <div class="ai-chat-header">
+      <div>
+        <div class="ai-chat-header-title" data-i18n="ai_advisor_title">窩在家 智慧物業顧問</div>
+        <div style="font-size: 11px; color: #d0c8be;" data-i18n="ai_advisor_subtitle">即時解答法規、稅務優惠與老屋翻新</div>
+      </div>
+      <button class="rfq-item-remove" id="ai-chat-close" style="color: #fff;">✕</button>
+    </div>
+    <div class="ai-chat-pills-bar">
+      <button class="ai-prompt-pill" data-query="房東稅務優惠有哪些？" data-i18n="quick_tax">房東稅務優惠？</button>
+      <button class="ai-prompt-pill" data-query="包租代管與代租代管有何不同？" data-i18n="quick_diff">包租 vs 代租？</button>
+      <button class="ai-prompt-pill" data-query="老屋翻新預算與租金提升多少？" data-i18n="quick_renovate">老屋翻新效益？</button>
+      <button class="ai-prompt-pill" data-query="委託託管的流程怎麼進行？" data-i18n="quick_process">委託流程？</button>
+    </div>
+    <div class="ai-chat-messages" id="ai-chat-messages">
+      <div class="ai-msg bot">
+        <div class="msg-avatar">窩</div>
+        <div class="msg-content">
+          <div class="msg-bubble">
+            您好！我是窩在家的智慧資產顧問。深耕台南租賃市場15年，隨時為您解答包租代管、老宅活化或稅務抵免問題。請問今天有什麼我可以協助您的嗎？
+          </div>
+        </div>
+      </div>
+    </div>
+    <form class="ai-chat-input-bar" id="ai-chat-form">
+      <input type="text" id="ai-chat-input" class="form-control" style="padding: 9px 12px; font-size: 13.5px;" placeholder="請輸入您的問題..." data-i18n-placeholder="ai_input_placeholder">
+      <button type="submit" class="btn-primary" style="padding: 9px 16px; font-size: 13px;" data-i18n="btn_send">發送</button>
+    </form>
+  </div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="brand-logo-wrap" style="margin-bottom: 20px;">
+          <div class="brand-icon-box" style="background: transparent;">窩</div>
+          <div class="brand-text">
+            <span class="brand-title" style="color: #fff;">窩在家包租代管</span>
+            <span class="brand-subtitle" style="color: #a8a096;">窩在家物業管理顧問有限公司</span>
+          </div>
+        </div>
+        <p style="font-size: 14px; color: #a8a096; line-height: 1.8; margin-bottom: 20px;">
+          深耕台南在地第一家成立之包租代管品牌公司。擁有逾 15 年租賃管理與空間活化實績，透過專業契約公證、全方位維護與合法租稅規劃，為房東守護每一處資產的價值。
+        </p>
+        <div style="font-size: 13px; color: var(--color-accent-light);">
+          🏢 統一編號：42932814 ｜ 執業證號：(108)高市字第01385號
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>核心服務項目</h4>
+        <ul>
+          <li><a href="/manage-host" data-spa>包租代管 (保證租金・零空置)</a></li>
+          <li><a href="/manage-agent" data-spa>代租代管 (嚴選房客・投報最高)</a></li>
+          <li><a href="/spatial-renovation" data-spa>老屋翻新改造與坪效美學</a></li>
+          <li><a href="/calculator" data-spa>租金收益與裝修增值試算</a></li>
+          <li><a href="/works" data-spa>台南精選實績案例庫</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>房東知識與常見疑問</h4>
+        <ul>
+          <li><a href="/blog" data-spa>物業管理專欄與趨勢</a></li>
+          <li><a href="/blog" data-spa>房東三大法定租稅優惠解析</a></li>
+          <li><a href="/faq" data-spa>房客欠租或修繕糾紛處理</a></li>
+          <li><a href="/faq" data-spa>公證租約法律效力說明</a></li>
+          <li><a href="/contact" data-spa>預約專人到府勘查屋況</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>尊榮洽詢專線</h4>
+        <p style="font-size: 14px; color: #a8a096; margin-bottom: 10px;">📍 總部地址：臺南市中西區公園路56號1樓</p>
+        <p style="font-size: 14px; color: #a8a096; margin-bottom: 10px;">📞 客服電話：<a href="tel:06-289-4168" style="color: #fff; font-weight: bold;">(06) 289-4168</a></p>
+        <p style="font-size: 14px; color: #a8a096; margin-bottom: 10px;">💬 官方 LINE：<strong style="color: var(--color-accent-light);">@wooinhome</strong></p>
+        <p style="font-size: 14px; color: #a8a096; margin-bottom: 20px;">⏰ 服務時間：週一至週五 09:00 - 18:00</p>
+        <a href="/contact" class="btn-primary" style="padding: 10px 20px; font-size: 13.5px;" data-spa>立即送出委託詢價單 →</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>Copyright © 2026 窩在家物業管理顧問有限公司 (WOO IN HOME). All Rights Reserved.</div>
+      <div style="display: flex; gap: 20px;">
+        <a href="/privacy" style="color: #8c8479;">隱私權政策</a>
+        <a href="/terms" style="color: #8c8479;">服務條款</a>
+        <a href="/admin/login" style="color: #8c8479;">管理員登入 (CRM)</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="{{ url_for('static', filename='js/i18n.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/rfq_cart.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/calculator.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/tts_player.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/ai_chat.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/router.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

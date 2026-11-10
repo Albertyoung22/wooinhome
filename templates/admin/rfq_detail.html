@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8">
+  <title>詢價單詳情 #{{ rfq.rfq_number }} ｜ 窩在家 CRM</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body class="admin-body">
+  <header class="admin-header">
+    <div style="display: flex; align-items: center; gap: 14px;">
+      <span class="admin-brand">WOO IN HOME ｜ CRM 管理後台</span>
+    </div>
+    <nav class="admin-nav">
+      <a href="/admin/dashboard">← 返回詢價單清單</a>
+      <a href="/admin/logout" style="color: #fc8181;">登出</a>
+    </nav>
+  </header>
+
+  <main class="admin-container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+      <div>
+        <h1 style="font-size: 24px; font-weight: 700; color: #1c1a17;">
+          詢價單號：<span style="color: #b89158; font-family: monospace;">#{{ rfq.rfq_number }}</span>
+        </h1>
+        <div style="font-size: 13.5px; color: #777;">提交時間：{{ rfq.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</div>
+      </div>
+      <div>
+        <span class="badge-status badge-{{ rfq.status }}" style="font-size: 14px; padding: 6px 14px;">
+          處理狀態：
+          {% if rfq.status == 'pending' %}待處理 (New)
+          {% elif rfq.status == 'contacting' %}聯繫中
+          {% elif rfq.status == 'quoted' %}已提供報價
+          {% elif rfq.status == 'signed' %}已簽約委託
+          {% elif rfq.status == 'closed' %}已結案
+          {% else %}{{ rfq.status }}{% endif %}
+        </span>
+      </div>
+    </div>
+
+    <div class="detail-grid">
+      <!-- Left Column: Order Details -->
+      <div>
+        <!-- Customer & Property Info Card -->
+        <div class="admin-card">
+          <h3 style="font-size: 17px; margin-bottom: 16px; border-bottom: 2px solid #b89158; padding-bottom: 6px;">
+            👤 客戶聯絡資訊
+          </h3>
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; font-size: 14.5px;">
+            <div>客戶姓名：<strong>{{ rfq.customer_name }} {{ rfq.gender }}</strong></div>
+            <div>聯絡電話：<a href="tel:{{ rfq.phone }}" style="color: #2b6cb0; font-weight: bold;">{{ rfq.phone }}</a></div>
+            <div>電子郵件：{{ rfq.email or '未提供' }}</div>
+            <div>LINE ID：<strong style="color: #059669;">{{ rfq.line_id or '未提供' }}</strong></div>
+            <div style="grid-column: span 2;">便利通話時段：<strong>{{ rfq.preferred_contact_time }}</strong></div>
+          </div>
+
+          <h3 style="font-size: 17px; margin: 28px 0 16px; border-bottom: 2px solid #b89158; padding-bottom: 6px;">
+            🏠 物業標的與現況
+          </h3>
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; font-size: 14.5px;">
+            <div>物業座落：<strong>{{ rfq.city }} {{ rfq.district or '' }}</strong></div>
+            <div>概略地址：{{ rfq.address or '初步諮詢保密' }}</div>
+            <div>物業型態：{{ rfq.property_type }}</div>
+            <div>使用坪數：{{ rfq.size_ping }} 坪 ｜ {{ rfq.room_count }} 房</div>
+            <div style="grid-column: span 2;">目前屋況：<span style="background: #edf2f7; padding: 2px 8px; border-radius: 4px;">{{ rfq.current_status }}</span></div>
+          </div>
+
+          {% if rfq.requirements %}
+          <h3 style="font-size: 17px; margin: 28px 0 12px; border-bottom: 2px solid #b89158; padding-bottom: 6px;">
+            📝 客戶附言需求
+          </h3>
+          <div style="background: #faf8f5; border: 1px solid #e8e3dc; border-radius: 6px; padding: 14px; font-size: 14px; line-height: 1.7;">
+            {{ rfq.requirements }}
+          </div>
+          {% endif %}
+
+          {% if rfq.attachment_filename %}
+          <h3 style="font-size: 17px; margin: 28px 0 12px; border-bottom: 2px solid #b89158; padding-bottom: 6px;">
+            📎 客戶隨附圖檔/文件
+          </h3>
+          <div style="display: flex; align-items: center; gap: 16px; background: #f0f7ff; padding: 14px; border-radius: 6px;">
+            <span>📄</span>
+            <div>
+              <div style="font-weight: 600; font-size: 14px;">{{ rfq.attachment_orig_name or rfq.attachment_filename }}</div>
+              <a href="{{ url_for('static', filename='uploads/' + rfq.attachment_filename) }}" target="_blank" style="color: #2b6cb0; font-size: 13px;">點此下載或開新視窗預覽 ↗</a>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- RFQ Items Card -->
+        <div class="admin-card">
+          <h3 style="font-size: 17px; margin-bottom: 16px;">📋 詢價清單包含項目 ({{ rfq.items | length }} 項)</h3>
+          {% for item in rfq.items %}
+          <div style="border: 1px solid #e2ddd5; border-radius: 8px; padding: 16px; margin-bottom: 12px; background: #fff;">
+            <div style="font-weight: 700; font-size: 15px; margin-bottom: 6px;">{{ item.service_title }}</div>
+            {% set specs = item.get_specs_dict() %}
+            {% if specs %}
+            <div style="font-size: 13px; color: #666; margin-bottom: 6px;">
+              {% for k, v in specs.items() %}
+              <span>{{ k }}: <strong>{{ v }}</strong></span> {% if not loop.last %}｜{% endif %}
+              {% endfor %}
+            </div>
+            {% endif %}
+            <div style="font-size: 13px; color: #b89158; font-weight: 600;">預估/收費模式：{{ item.estimated_price }}</div>
+          </div>
+          {% else %}
+          <div style="color: #888; font-size: 14px;">此單無特定試算清單，為一般資產託管諮詢需求。</div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Right Column: Status Update & Admin Notes -->
+      <div>
+        <!-- Update Status Card -->
+        <div class="admin-card">
+          <h3 style="font-size: 17px; margin-bottom: 16px;">⚙️ 變更業務進度狀態</h3>
+          <form method="POST" action="/admin/rfq/{{ rfq.id }}/status">
+            <div class="form-group">
+              <select name="status" class="form-control" style="margin-bottom: 12px;">
+                <option value="pending" {% if rfq.status == 'pending' %}selected{% endif %}>待處理 (Pending)</option>
+                <option value="contacting" {% if rfq.status == 'contacting' %}selected{% endif %}>聯繫評估中 (Contacting)</option>
+                <option value="quoted" {% if rfq.status == 'quoted' %}selected{% endif %}>已出具規劃報價 (Quoted)</option>
+                <option value="signed" {% if rfq.status == 'signed' %}selected{% endif %}>已正式簽約委託 (Signed)</option>
+                <option value="closed" {% if rfq.status == 'closed' %}selected{% endif %}>已結案歸檔 (Closed)</option>
+              </select>
+              <button type="submit" class="btn-admin btn-admin-primary" style="width: 100%; justify-content: center;">
+                儲存狀態更新
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Internal Notes Card -->
+        <div class="admin-card">
+          <h3 style="font-size: 17px; margin-bottom: 16px;">📝 內部業務備忘筆記</h3>
+          
+          <form method="POST" action="/admin/rfq/{{ rfq.id }}/add-note" style="margin-bottom: 20px;">
+            <div class="form-group">
+              <textarea name="note" class="form-control" rows="3" placeholder="撰寫追蹤紀錄，例如：2/10已去電林先生約定週四下午2點現場丈量..." required></textarea>
+            </div>
+            <button type="submit" class="btn-admin btn-admin-primary" style="width: 100%; justify-content: center;">
+              + 新增內部備忘
+            </button>
+          </form>
+
+          <div>
+            {% for n in rfq.notes %}
+            <div class="note-box">
+              <div class="note-meta">
+                <strong>{{ n.author }}</strong> 于 {{ n.created_at.strftime('%Y-%m-%d %H:%M') }}
+              </div>
+              <div style="font-size: 13.5px; line-height: 1.6;">{{ n.content }}</div>
+            </div>
+            {% else %}
+            <div style="font-size: 13px; color: #888; text-align: center; padding: 12px;">目前暫無業務備忘紀錄。</div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8">
+  <title>CRM 儀表板 ｜ 窩在家物業管理顧問</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body class="admin-body">
+  <header class="admin-header">
+    <div style="display: flex; align-items: center; gap: 14px;">
+      <span class="admin-brand">WOO IN HOME ｜ CRM 管理後台</span>
+      <span style="font-size: 12px; background: rgba(184, 145, 88, 0.2); color: #e5c99e; padding: 2px 8px; border-radius: 4px;">企業專業版</span>
+    </div>
+    <nav class="admin-nav">
+      <a href="/admin/dashboard" class="active">詢價單管理 (RFQ)</a>
+      <a href="/admin/settings">系統參數與雲端備份</a>
+      <a href="/" target="_blank">預覽前台形象官網 ↗</a>
+      <a href="/admin/logout" style="color: #fc8181;">登出</a>
+    </nav>
+  </header>
+
+  <main class="admin-container">
+    <!-- Top Statistics Row -->
+    <div class="admin-stats-row">
+      <div class="admin-stat-card">
+        <div class="admin-stat-val">{{ stats.total }}</div>
+        <div class="admin-stat-title">累積總詢價單</div>
+      </div>
+      <div class="admin-stat-card" style="border-left-color: #dd6b20;">
+        <div class="admin-stat-val" style="color: #dd6b20;">{{ stats.pending }}</div>
+        <div class="admin-stat-title">待處理詢價單 (New Leads)</div>
+      </div>
+      <div class="admin-stat-card" style="border-left-color: #3182ce;">
+        <div class="admin-stat-val" style="color: #3182ce;">{{ stats.contacting }}</div>
+        <div class="admin-stat-title">聯繫與評估中 (In Progress)</div>
+      </div>
+      <div class="admin-stat-card" style="border-left-color: #38a169;">
+        <div class="admin-stat-val" style="color: #38a169;">{{ stats.signed }}</div>
+        <div class="admin-stat-title">已簽約託管 (Signed Deals)</div>
+      </div>
+    </div>
+
+    <!-- RFQ Table Card -->
+    <div class="admin-card">
+      <div class="admin-card-header">
+        <div>
+          <h2 style="font-size: 20px; font-weight: 700;">客戶詢價與託管委託清單</h2>
+          <div style="font-size: 13px; color: #777;">即時管理來自官網、試算機與購物車的客戶詢價單</div>
+        </div>
+        <div style="display: flex; gap: 12px;">
+          <a href="/admin/export-csv" class="btn-admin btn-admin-outline" download>
+            📥 匯出 Excel / CSV 報表
+          </a>
+          <button class="btn-admin btn-admin-primary" id="btn-trigger-cloud-backup">
+            ☁️ 立即同步備份至 GitHub
+          </button>
+        </div>
+      </div>
+
+      <!-- Search & Status Filter Filter Bar -->
+      <form method="GET" action="/admin/dashboard" style="display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;">
+        <input type="text" name="q" value="{{ search_query }}" placeholder="搜尋姓名、電話、LINE 或單號..." class="form-control" style="width: 280px; padding: 8px 12px; font-size: 13.5px;">
+        <select name="status" class="form-control" style="width: 150px; padding: 8px 12px; font-size: 13.5px;">
+          <option value="">全部處理狀態</option>
+          <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>待處理 (Pending)</option>
+          <option value="contacting" {% if status_filter == 'contacting' %}selected{% endif %}>聯繫中 (Contacting)</option>
+          <option value="quoted" {% if status_filter == 'quoted' %}selected{% endif %}>已報價 (Quoted)</option>
+          <option value="signed" {% if status_filter == 'signed' %}selected{% endif %}>已簽約 (Signed)</option>
+          <option value="closed" {% if status_filter == 'closed' %}selected{% endif %}>已結案 (Closed)</option>
+        </select>
+        <button type="submit" class="btn-admin btn-admin-primary">篩選</button>
+        {% if search_query or status_filter %}
+        <a href="/admin/dashboard" class="btn-admin btn-admin-outline">重設條件</a>
+        {% endif %}
+      </form>
+
+      <!-- Table -->
+      <div style="overflow-x: auto;">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>單號 (RFQ #)</th>
+              <th>客戶姓名</th>
+              <th>聯絡電話 / LINE</th>
+              <th>物業地區 / 格局</th>
+              <th>詢價項目</th>
+              <th>附件圖檔</th>
+              <th>處理狀態</th>
+              <th>提交時間</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in rfqs %}
+            <tr>
+              <td><strong style="font-family: monospace; color: #b89158;">#{{ r.rfq_number }}</strong></td>
+              <td><strong>{{ r.customer_name }}</strong> {{ r.gender }}</td>
+              <td>
+                <a href="tel:{{ r.phone }}" style="color: #2b6cb0; font-weight: bold;">{{ r.phone }}</a>
+                {% if r.line_id %}<div style="font-size: 12px; color: #059669;">LINE: {{ r.line_id }}</div>{% endif %}
+              </td>
+              <td>
+                <div>{{ r.city }} {{ r.district or '' }}</div>
+                <div style="font-size: 12px; color: #777;">{{ r.property_type }} ｜ {{ r.size_ping }} 坪</div>
+              </td>
+              <td>
+                <span style="background: #edf2f7; padding: 2px 8px; border-radius: 4px; font-size: 12px;">
+                  {{ r.items | length }} 項
+                </span>
+              </td>
+              <td>
+                {% if r.attachment_filename %}
+                <a href="{{ url_for('static', filename='uploads/' + r.attachment_filename) }}" target="_blank" style="color: #2b6cb0; font-weight: 600; font-size: 12.5px;">
+                  📎 檢視附件
+                </a>
+                {% else %}
+                <span style="color: #bbb; font-size: 12px;">無附件</span>
+                {% endif %}
+              </td>
+              <td>
+                <span class="badge-status badge-{{ r.status }}">
+                  {% if r.status == 'pending' %}待處理
+                  {% elif r.status == 'contacting' %}聯繫中
+                  {% elif r.status == 'quoted' %}已報價
+                  {% elif r.status == 'signed' %}已簽約
+                  {% elif r.status == 'closed' %}已結案
+                  {% else %}{{ r.status }}{% endif %}
+                </span>
+              </td>
+              <td style="font-size: 12.5px; color: #777;">{{ r.created_at.strftime('%Y-%m-%d %H:%M') if r.created_at else '' }}</td>
+              <td>
+                <a href="/admin/rfq/{{ r.id }}" class="btn-admin btn-admin-outline" style="padding: 4px 10px; font-size: 12.5px;">
+                  檢視詳情 / 備註 →
+                </a>
+              </td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="9" style="text-align: center; padding: 48px; color: #888;">
+                目前查無符合條件的詢價單資料。
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById('btn-trigger-cloud-backup')?.addEventListener('click', async () => {
+      const btn = document.getElementById('btn-trigger-cloud-backup');
+      const origText = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '⏳ 正在同步 GitHub 備份...';
+
+      try {
+        const res = await fetch('/api/admin/trigger-backup', { method: 'POST' });
+        const data = await res.json();
+        if (data.status === 'success') {
+          alert('✅ 雲端備份成功！已推送至 GitHub cloud-backup 分支 [skip ci]');
+        } else {
+          alert('ℹ️ 備份提示: ' + (data.message || '請確認 GitHub Token 與 Repository 設定'));
+        }
+      } catch (e) {
+        alert('❌ 備份通訊異常: ' + e);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = origText;
+      }
+    });
+  </script>
+</body>
+</html>

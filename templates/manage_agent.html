@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section" style="padding-top: 60px;">
+  <div style="max-width: 1100px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 50px;">
+      <span class="section-tag">MANAGE AGENT ｜ MAXIMUM YIELD</span>
+      <h1 class="section-title">台南代租代管 ｜ 嚴選優質房客，掌握市場最高租金行情</h1>
+      <p class="section-desc" id="tts-manage-agent">
+        「代租代管」適合期望保留租約主導權，並追求市場頂標租金回報的房東。窩在家團隊以專業行銷管道為您快速招租，透過 4 道嚴格徵信程序替您篩選房客，並全權代理點交、修繕、催繳與租後管家日常，收取合理的服務費，讓您的資產發揮最高投報潛能！
+      </p>
+      <div style="margin-top: 20px;">
+        <button class="btn-tts-tour" data-tts-target="#tts-manage-agent">
+          <span class="tts-icon">🔊</span>
+          <span class="tts-label">語音專人導覽本頁重點</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 4 Screening Filters -->
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-bottom: 60px;">
+      <div style="background: #fff; padding: 32px; border-radius: var(--radius-md); border-left: 4px solid var(--color-accent); box-shadow: var(--shadow-sm);">
+        <h3 style="font-family: var(--font-serif); font-size: 20px; margin-bottom: 12px;">🔍 4 重房客身分嚴格過濾</h3>
+        <p style="font-size: 14.5px; color: var(--color-text-muted); line-height: 1.7;">
+          查核雙身分證件、在職證明/名片（優先媒合南科工程師、外商企業高階主管、公教醫護人員），確保品性端正且具備穩定支付能力。
+        </p>
+      </div>
+      <div style="background: #fff; padding: 32px; border-radius: var(--radius-md); border-left: 4px solid var(--color-accent); box-shadow: var(--shadow-sm);">
+        <h3 style="font-family: var(--font-serif); font-size: 20px; margin-bottom: 12px;">📊 依市場實價創造頂規收益</h3>
+        <p style="font-size: 14.5px; color: var(--color-text-muted); line-height: 1.7;">
+          深耕台南各大商圈租賃成交大數據，為您的屋況進行專業定價與拍照行銷，平均 14 天內完成快速媒合，爭取租金上限。
+        </p>
+      </div>
+      <div style="background: #fff; padding: 32px; border-radius: var(--radius-md); border-left: 4px solid var(--color-accent); box-shadow: var(--shadow-sm);">
+        <h3 style="font-family: var(--font-serif); font-size: 20px; margin-bottom: 12px;">📱 雲端每月透明對帳單</h3>
+        <p style="font-size: 14.5px; color: var(--color-text-muted); line-height: 1.7;">
+          所有租金入帳、修繕單據、管理費結算皆透過專屬數位系統統籌，每月定期發送報表，收入明細清清楚楚、有跡可循。
+        </p>
+      </div>
+      <div style="background: #fff; padding: 32px; border-radius: var(--radius-md); border-left: 4px solid var(--color-accent); box-shadow: var(--shadow-sm);">
+        <h3 style="font-family: var(--font-serif); font-size: 20px; margin-bottom: 12px;">🤝 律師顧問群法務後盾</h3>
+        <p style="font-size: 14.5px; color: var(--color-text-muted); line-height: 1.7;">
+          窩在家聘任專業租賃住宅法規專屬法律顧問，協助審約、公證、催告等程序，確保所有管理行為均符合最新法規規範。
+        </p>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div style="display: flex; justify-content: center; gap: 20px;">
+      <button class="btn-primary" style="padding: 14px 32px; font-size: 16px;" onclick="RFQCart.addItem({code:'manage_agent_full', title:'代租代管 (市場頂標租金+嚴選房客)', specs:{'模式':'代租代管服務','徵信':'嚴格審查4道關卡'}, price:'依市場成交租金抽成'}); RFQCart.openDrawer();">
+        📋 加入代租代管詢價清單
+      </button>
+      <a href="/contact" class="btn-secondary" style="padding: 14px 32px; font-size: 16px;" data-spa>
+        直接預約專人到府勘查 →
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}

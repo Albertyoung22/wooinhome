@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8">
+  <title>系統參數與雲端持久化防護 ｜ 窩在家 CRM</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body class="admin-body">
+  <header class="admin-header">
+    <div style="display: flex; align-items: center; gap: 14px;">
+      <span class="admin-brand">WOO IN HOME ｜ CRM 管理後台</span>
+    </div>
+    <nav class="admin-nav">
+      <a href="/admin/dashboard">詢價單管理 (RFQ)</a>
+      <a href="/admin/settings" class="active">系統參數與雲端備份</a>
+      <a href="/admin/logout" style="color: #fc8181;">登出</a>
+    </nav>
+  </header>
+
+  <main class="admin-container" style="max-width: 900px;">
+    {% if msg %}
+    <div style="background: #c6f6d5; color: #22543d; padding: 14px; border-radius: 8px; margin-bottom: 20px;">
+      ✅ {{ msg }}
+    </div>
+    {% endif %}
+
+    <!-- GitHub Cloud Backup Persistence Setting -->
+    <div class="admin-card">
+      <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 6px; color: #1c1a17;">
+        ☁️ GitHub 專屬備份分支 (cloud-backup) 持久化防護設定
+      </h2>
+      <p style="font-size: 13.5px; color: #666; margin-bottom: 24px;">
+        針對雲端託管平台（如 Render、Railway、Fly.io）重新部署或重開機時清空容器硬碟的問題，系統支援自動透過 GitHub API 將所有客戶詢價單與設定檔同步推送至專屬 <code>cloud-backup</code> 分支（自帶 <code>[skip ci]</code> 避免無限循環構建），並於應用程式啟動時自動檢索還原！
+      </p>
+
+      <form method="POST" action="/admin/settings/github">
+        <div class="form-group">
+          <label class="form-label">GitHub 個人存取權杖 (Personal Access Token，需有 repo 權限)</label>
+          <input type="password" name="github_token" value="{{ github_token }}" class="form-control" placeholder="ghp_xxxxxxxxxxxx">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">GitHub 儲存庫 (格式：帳號/專案名稱)</label>
+          <input type="text" name="github_repo" value="{{ github_repo }}" class="form-control" placeholder="例：albert/wooinhome-backup">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">備份目標分支名稱 (預設 cloud-backup)</label>
+          <input type="text" name="github_branch" value="{{ github_branch }}" class="form-control" placeholder="cloud-backup">
+        </div>
+
+        <div style="background: #faf8f5; border: 1px solid #e8e3dc; border-radius: 6px; padding: 12px; margin-bottom: 20px; font-size: 13px;">
+          🕒 上次雲端同步備份時間：<strong>{{ last_backup_time or '尚未執行過備份' }}</strong>
+        </div>
+
+        <div style="display: flex; gap: 12px;">
+          <button type="submit" class="btn-admin btn-admin-primary">
+            💾 儲存 GitHub 備份參數
+          </button>
+          <button type="button" class="btn-admin btn-admin-outline" id="btn-run-backup-test">
+            🚀 立即測試推送備份
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Email SMTP Automation Settings -->
+    <div class="admin-card">
+      <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 6px; color: #1c1a17;">
+        📧 自動化郵件通知參數 (SMTP Automation)
+      </h2>
+      <p style="font-size: 13.5px; color: #666; margin-bottom: 24px;">
+        當客戶在前端送出詢價單時，系統將透過非同步執行緒自動發送通知信給管理員，並寄發預約回執信給客戶。
+      </p>
+
+      <form method="POST" action="/admin/settings/smtp">
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label">SMTP 伺服器主機</label>
+            <input type="text" name="smtp_server" value="{{ smtp_server }}" class="form-control" placeholder="smtp.gmail.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">連接埠 (Port)</label>
+            <input type="number" name="smtp_port" value="{{ smtp_port }}" class="form-control" placeholder="587">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label">寄件帳號 (User / Email)</label>
+            <input type="text" name="smtp_user" value="{{ smtp_user }}" class="form-control" placeholder="your-email@gmail.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">寄件密碼 / 應用程式密碼</label>
+            <input type="password" name="smtp_pass" value="{{ smtp_pass }}" class="form-control" placeholder="Gmail 16 位應用程式密碼">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">接收新詢價通知的管理員信箱 (Admin Recipient)</label>
+          <input type="email" name="admin_email" value="{{ admin_email }}" class="form-control" placeholder="wooinhome2015@gmail.com">
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-top: 20px;">
+          <button type="submit" class="btn-admin btn-admin-primary">
+            💾 儲存郵件設定
+          </button>
+          <button type="button" class="btn-admin btn-admin-outline" id="btn-test-smtp">
+            🔍 測試 SMTP 連線
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Keep-Alive Anti-Sleep Settings -->
+    <div class="admin-card">
+      <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 6px; color: #1c1a17;">
+        ⚡ 背景防休眠 (Keep-Alive) 與健康檢查
+      </h2>
+      <p style="font-size: 13.5px; color: #666; margin-bottom: 20px;">
+        雲端免費伺服器（如 Render Free Tier）通常會在 15 分鐘無連線時進入休眠狀態。內建防休眠輪詢器將定期自我呼叫 <code>/api/health</code>，維持運作常駐。
+      </p>
+
+      <form method="POST" action="/admin/settings/keepalive">
+        <div class="form-group">
+          <label class="form-label">對外公開網址 (Public URL，例如：https://wooinhome.onrender.com)</label>
+          <input type="url" name="keep_alive_url" value="{{ keep_alive_url }}" class="form-control" placeholder="https://your-app.onrender.com">
+        </div>
+        <button type="submit" class="btn-admin btn-admin-primary">
+          💾 儲存防休眠網址
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById('btn-run-backup-test')?.addEventListener('click', async () => {
+      const btn = document.getElementById('btn-run-backup-test');
+      btn.disabled = true;
+      btn.innerHTML = '⏳ 備份中...';
+      try {
+        const res = await fetch('/api/admin/trigger-backup', { method: 'POST' });
+        const data = await res.json();
+        alert(data.status === 'success' ? '✅ GitHub 備份測試成功！' : '提示：' + data.message);
+      } catch(e) {
+        alert('連線失敗: ' + e);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '🚀 立即測試推送備份';
+      }
+    });
+
+    document.getElementById('btn-test-smtp')?.addEventListener('click', async () => {
+      const btn = document.getElementById('btn-test-smtp');
+      btn.disabled = true;
+      btn.innerHTML = '⏳ 測試連線中...';
+      try {
+        const res = await fetch('/api/admin/test-smtp', { method: 'POST' });
+        const data = await res.json();
+        alert(data.message);
+      } catch(e) {
+        alert('測試通訊失敗: ' + e);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '🔍 測試 SMTP 連線';
+      }
+    });
+  </script>
+</body>
+</html>

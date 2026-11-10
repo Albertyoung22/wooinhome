@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section" style="padding-top: 60px;">
+  <div style="max-width: 1100px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 50px;">
+      <span class="section-tag">SPATIAL REVITALIZATION ｜ TURNKEY DESIGN</span>
+      <h1 class="section-title">老屋空間活化 ｜ 注入日式侘寂美學，實現租金倍數翻揚</h1>
+      <p class="section-desc" id="tts-spatial">
+        台南擁有大量具備歷史韻味的 30 至 50 年透天老宅與公寓。窩在家團隊由建築美學與資深室內設計師主持，專注「小額高坪效老屋翻新」。以日式侘寂的大地色調、隱藏式收納與高耐久材質，解決老宅管線腐朽與採光問題，平均提升租金收益達 80%~160%！
+      </p>
+      <div style="margin-top: 20px;">
+        <button class="btn-tts-tour" data-tts-target="#tts-spatial">
+          <span class="tts-icon">🔊</span>
+          <span class="tts-label">語音專人導覽老屋活化特色</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 4 Key Construction Features -->
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-bottom: 50px;">
+      <div style="background: #fff; padding: 32px; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid rgba(184, 145, 88, 0.2);">
+        <div style="font-size: 26px; margin-bottom: 10px;">⚡</div>
+        <h3 style="font-family: var(--font-serif); font-size: 19px; margin-bottom: 10px;">水電冷熱管線全面重拉</h3>
+        <p style="font-size: 14px; color: var(--color-text-muted); line-height: 1.7;">
+          徹底杜絕老宅用電走火與水管生鏽漏水風險。採用太平洋一級電線、日規不鏽鋼壓接水管，並配置獨立迴路與安全漏電斷路器。
+        </p>
+      </div>
+      <div style="background: #fff; padding: 32px; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid rgba(184, 145, 88, 0.2);">
+        <div style="font-size: 26px; margin-bottom: 10px;">💧</div>
+        <h3 style="font-family: var(--font-serif); font-size: 19px; margin-bottom: 10px;">衛浴打除重作與48小時試水</h3>
+        <p style="font-size: 14px; color: var(--color-text-muted); line-height: 1.7;">
+          老屋最怕浴室滲水漏到樓下。我們堅持打除見底重新塗布彈性水泥三道工法，並嚴格執行 48 小時滿水測試，出具防漏保固。
+        </p>
+      </div>
+      <div style="background: #fff; padding: 32px; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid rgba(184, 145, 88, 0.2);">
+        <div style="font-size: 26px; margin-bottom: 10px;">🛋️</div>
+        <h3 style="font-family: var(--font-serif); font-size: 19px; margin-bottom: 10px;">日式侘寂風格與模組化系統櫃</h3>
+        <p style="font-size: 14px; color: var(--color-text-muted); line-height: 1.7;">
+          運用奶茶大地色系特殊漆、木紋格柵與隱藏式燈帶，營造溫潤放鬆的居家光影。模組化系統櫃提升坪效收納，深受外商租客喜愛。
+        </p>
+      </div>
+      <div style="background: #fff; padding: 32px; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid rgba(184, 145, 88, 0.2);">
+        <div style="font-size: 26px; margin-bottom: 10px;">📸</div>
+        <h3 style="font-family: var(--font-serif); font-size: 19px; margin-bottom: 10px;">軟裝陳設與商業級攝影招租</h3>
+        <p style="font-size: 14px; color: var(--color-text-muted); line-height: 1.7;">
+          裝修完工後，由專業軟裝師進場搭配質感家飾，並由商業建築攝影師拍攝宣傳短影音與高清美照，上架即刻引爆帶看預約潮。
+        </p>
+      </div>
+    </div>
+
+    <!-- Renovation Tiers Selection Box -->
+    <div style="background: #fff; border-radius: var(--radius-lg); padding: 40px; box-shadow: var(--shadow-md); margin-bottom: 50px;">
+      <h3 style="font-family: var(--font-serif); font-size: 22px; text-align: center; margin-bottom: 30px;">
+        三大空間改造模組方案規格
+      </h3>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+        <div style="border: 1px solid #e2ddd5; border-radius: var(--radius-sm); padding: 24px; text-align: center;">
+          <h4 style="font-size: 18px; margin-bottom: 8px;">風格美學軟裝 (輕裝)</h4>
+          <div style="font-size: 24px; font-weight: 700; color: var(--color-accent); margin-bottom: 12px;">約 1.2 萬 / 坪</div>
+          <p style="font-size: 13px; color: #777; margin-bottom: 20px;">全室跳色粉刷、質感窗簾、風格燈具與成套家具軟裝配置。預計工期 14 天。</p>
+          <button class="btn-secondary" style="width: 100%; font-size: 13px;" onclick="RFQCart.addItem({code:'renovate_tier_1', title:'空間活化-風格美學軟裝方案', specs:{'方案':'輕裝修風格升級','預估每坪':'約1.2萬/坪'}, price:'依現場坪數計算'}); RFQCart.openDrawer();">
+            + 加入此規格詢價
+          </button>
+        </div>
+        <div style="border: 2px solid var(--color-accent); border-radius: var(--radius-sm); padding: 24px; text-align: center; background: #faf8f5;">
+          <span style="background: var(--color-accent); color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 9999px;">★ 房東首選推薦</span>
+          <h4 style="font-size: 18px; margin: 8px 0;">全室模組化管線翻新</h4>
+          <div style="font-size: 24px; font-weight: 700; color: var(--color-accent-dark); margin-bottom: 12px;">約 2.8 萬 / 坪</div>
+          <p style="font-size: 13px; color: #777; margin-bottom: 20px;">全室水電重拉、衛浴打除重作防水、超耐磨木地板、模組系統櫃。預計工期 45 天。</p>
+          <button class="btn-primary" style="width: 100%; font-size: 13px;" onclick="RFQCart.addItem({code:'renovate_tier_2', title:'空間活化-全室管線模組翻新方案', specs:{'方案':'全室水電+衛浴超耐磨地板','預估每坪':'約2.8萬/坪'}, price:'依現場坪數計算'}); RFQCart.openDrawer();">
+            + 加入此規格詢價
+          </button>
+        </div>
+        <div style="border: 1px solid #e2ddd5; border-radius: var(--radius-sm); padding: 24px; text-align: center;">
+          <h4 style="font-size: 18px; margin-bottom: 8px;">精品飯店式深度改裝</h4>
+          <div style="font-size: 24px; font-weight: 700; color: var(--color-accent); margin-bottom: 12px;">約 4.8 萬 / 坪</div>
+          <p style="font-size: 13px; color: #777; margin-bottom: 20px;">透天拆隔間重組高坪效套房、獨立乾濕分離衛浴、降噪氣密窗、全套家電。工期 75 天。</p>
+          <button class="btn-secondary" style="width: 100%; font-size: 13px;" onclick="RFQCart.addItem({code:'renovate_tier_3', title:'空間活化-精品飯店深度改裝方案', specs:{'方案':'透天改套+乾濕分離氣密窗','預估每坪':'約4.8萬/坪'}, price:'依現場坪數計算'}); RFQCart.openDrawer();">
+            + 加入此規格詢價
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div style="text-align: center;">
+      <a href="/calculator" class="btn-secondary" data-spa style="padding: 14px 28px; font-size: 15px; margin-right: 12px;">
+        前往試算工具模擬投報率
+      </a>
+      <a href="/contact" class="btn-primary" data-spa style="padding: 14px 32px; font-size: 15px;">
+        預約設計師到府免費丈量 →
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}
