@@ -9,7 +9,7 @@ from werkzeug.utils import secure_filename
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session, send_file, Response
 
 from config import Config
-from models import db, RFQQuotation, RFQItem, AdminNote, SystemSetting, CaseStudy, Article
+from models import db, RFQQuotation, RFQItem, AdminNote, SystemSetting, CaseStudy, Article, RentalListing, RentalViewingBooking
 from services.tts_service import generate_speech
 from services.email_service import send_rfq_notifications_async, test_smtp_connection
 from services.backup_service import backup_to_github, restore_from_github, start_keep_alive_worker
@@ -142,6 +142,162 @@ def seed_initial_data():
                     )
                     db.session.add(new_art)
 
+            # If no rental listings, populate 6 authentic high-quality listings
+            if RentalListing.query.count() == 0:
+                r1 = RentalListing(
+                    code='WOO-YK101',
+                    title='南科新貴首選 ｜ 永康機能升級宅 ｜ 獨立露台採光套房',
+                    category='suite',
+                    district='永康區',
+                    address_summary='台南市永康區中華路商圈 (近南科園區、奇美醫院)',
+                    rent_price=13800,
+                    management_fee=800,
+                    deposit_months=2,
+                    area_ping=12.5,
+                    floor_info='3F / 5F',
+                    layout='1房 1衛 1獨立景觀露台',
+                    status='available',
+                    cover_image='/static/images/original/b69b8c178e35c3f16221d53195f625c28.jpg',
+                    gallery=json.dumps([
+                        '/static/images/original/b69b8c178e35c3f16221d53195f625c28.jpg',
+                        '/static/images/original/bd954293a7422fd744b19c0cd24376239.jpg',
+                        '/static/images/original/be5236ed9c89f9637f229c4931044fe8b.jpg',
+                        '/static/images/original/b6eee3cf4698cde4ffcd1fbf60ed5ccc0.jpg'
+                    ], ensure_ascii=False),
+                    features='獨立陽台,乾濕分離,獨立洗脫烘,智慧門禁密碼鎖,一級變頻冷暖,代收垃圾,可申請租金補貼',
+                    description='全室全新日式侘寂與現代機能美學裝修。配置大面採光氣密窗、獨立洗脫烘滾筒洗衣機、瞬熱式儲熱水器，附高速光纖網路。近南科通勤 15 分鐘，生活機能極佳！',
+                    traffic_surroundings='步行 3 分鐘至全聯、7-11，騎車 5 分鐘抵達大橋火車站，南科通勤便利。',
+                    is_featured=True
+                )
+
+                r2 = RentalListing(
+                    code='WOO-ES202',
+                    title='東區老屋新生 ｜ 文化中心侘寂美透天 ｜ 整棟日光天井庭院宅',
+                    category='townhouse',
+                    district='東區',
+                    address_summary='台南市東區崇德路商圈 (近台南文化中心、巴克禮公園)',
+                    rent_price=48000,
+                    management_fee=0,
+                    deposit_months=2,
+                    area_ping=56.0,
+                    floor_info='整棟 1~3F',
+                    layout='4房 2廳 3衛 1日光天井茶席 1露天庭院',
+                    status='available',
+                    cover_image='/static/images/original/b6694bcd77359edcec0766d1462a91c02.jpg',
+                    gallery=json.dumps([
+                        '/static/images/original/b6694bcd77359edcec0766d1462a91c02.jpg',
+                        '/static/images/original/bf81634c6c30eb1fd6df99bb34fcd4641.jpg',
+                        '/static/images/original/b664b3850084a32e25dda11913749fafc.jpg',
+                        '/static/images/original/b57eccb9bfda2751aa3f9c72bb06b8d81.jpg'
+                    ], ensure_ascii=False),
+                    features='整棟透天,私有採光天井,日式侘寂茶席,全新水電管線,衛浴防水48H保固,可開伙,附平面車位',
+                    description='40 年老宅經窩在家建築團隊結構補強與風格活化。保留老台南天井光影與經典磨石子地坪，注入現代極簡軟裝。極適合追求生活美學之外商主管、設計建築團隊或自住家庭。',
+                    traffic_surroundings='鄰近文化中心、崇德黃昏市場，步行可達市立醫院與德安商圈，靜巷清幽不吵雜。',
+                    is_featured=True
+                )
+
+                r3 = RentalListing(
+                    code='WOO-ES303',
+                    title='東區林森路商圈 ｜ 綠憩景觀家庭宅 ｜ 24H物業保全景觀3房',
+                    category='apartment',
+                    district='東區',
+                    address_summary='台南市東區林森路二段 (近成功大學、南紡購物中心)',
+                    rent_price=32000,
+                    management_fee=2400,
+                    deposit_months=2,
+                    area_ping=38.0,
+                    floor_info='9F / 14F',
+                    layout='3房 2廳 2衛 2景觀陽台',
+                    status='available',
+                    cover_image='/static/images/original/bc854558e56f8590a1fa540c083fdcba9.jpg',
+                    gallery=json.dumps([
+                        '/static/images/original/bc854558e56f8590a1fa540c083fdcba9.jpg',
+                        '/static/images/original/bd0220ee78bfb2d77252bd14be0fcde41.jpg',
+                        '/static/images/original/b83485bea10e9f346148c79c2178f1afb.jpg'
+                    ], ensure_ascii=False),
+                    features='24H物業保全,子母車垃圾集中,平面汽車位,乾濕分離,超大客餐廳,可開伙,可寵物友善',
+                    description='東區核心地段景觀電梯大樓，高樓層通風採光極佳。客廳開闊大面落地窗，全室配備日立變頻冷暖空調與林內三口瓦斯爐，適合南科高階家庭或成大公教人員。',
+                    traffic_surroundings='車程 3 分鐘抵達南紡購物中心、成大校區，下樓即是林森路綠園道，機能無懈可擊。',
+                    is_featured=True
+                )
+
+                r4 = RentalListing(
+                    code='WOO-CW404',
+                    title='中西區文創慢活 ｜ 國華神農生活圈 ｜ 日光挑高設計一房一廳',
+                    category='apartment',
+                    district='中西區',
+                    address_summary='台南市中西區中正路商圈 (近神農街、國華街商圈)',
+                    rent_price=18500,
+                    management_fee=1000,
+                    deposit_months=2,
+                    area_ping=18.0,
+                    floor_info='2F / 4F',
+                    layout='1房 1廳 1衛 1開放式中島廚房',
+                    status='available',
+                    cover_image='/static/images/original/bad4aea4a3454db46874dc931a96bf1bb.jpg',
+                    gallery=json.dumps([
+                        '/static/images/original/bad4aea4a3454db46874dc931a96bf1bb.jpg',
+                        '/static/images/original/b14a3b522cd675ff4d257390eef0c2104.jpg',
+                        '/static/images/original/b708bb1991d4afcabde7b376254c10056.jpg'
+                    ], ensure_ascii=False),
+                    features='開放式中島廚房,可開伙,微型客廳,智慧電子鎖,變頻冷暖,近文創美食商圈,台南漫步首選',
+                    description='步入古都心臟地帶，挑高 3 米 2 現代日式小公寓。配備實木餐飲中島吧台、全套烘碗洗滌廚具與乾濕分離明亮衛浴，享受台南最道地的慢活時光。',
+                    traffic_surroundings='下樓步行 3 分鐘到國華街美食聚落，海安商圈散步即達，假日生活精彩豐富。',
+                    is_featured=False
+                )
+
+                r5 = RentalListing(
+                    code='WOO-SH505',
+                    title='善化南科LM特區 ｜ 台積工程師首選 ｜ 北歐簡約飯店式陽台套房',
+                    category='suite',
+                    district='善化區',
+                    address_summary='台南市善化區蓮潭北路 (LM特區核心、近善化火車站)',
+                    rent_price=14500,
+                    management_fee=600,
+                    deposit_months=2,
+                    area_ping=11.5,
+                    floor_info='4F / 6F',
+                    layout='1房 1衛 1景觀獨立陽台',
+                    status='available',
+                    cover_image='/static/images/original/b6eee3cf4698cde4ffcd1fbf60ed5ccc0.jpg',
+                    gallery=json.dumps([
+                        '/static/images/original/b6eee3cf4698cde4ffcd1fbf60ed5ccc0.jpg',
+                        '/static/images/original/bffb07e17f69ae1a798860ee39e840549.jpg',
+                        '/static/images/original/bdf689d5b1cc740f907da4c021d920db4.jpg'
+                    ], ensure_ascii=False),
+                    features='電梯大樓,機車專屬室內車位,子母車垃圾集中,代收包裹,獨立洗衣機,南科園區通勤5分',
+                    description='LM 特區全新景觀住宅。飯店式感應磁卡進出、垃圾專人清理，配備降噪雙層氣密窗與五星級獨立筒乳膠床墊，專為南科高壓工程師打造的極致好眠宅。',
+                    traffic_surroundings='騎車 5 分鐘抵達台積電晶圓廠區、善化火車站，生活機能純住宅高綠覆。',
+                    is_featured=True
+                )
+
+                r6 = RentalListing(
+                    code='WOO-NO606',
+                    title='北區鄭子寮重劃區 ｜ 公園首排 ｜ 輕奢簡約2房景觀電梯宅',
+                    category='apartment',
+                    district='北區',
+                    address_summary='台南市北區文成路 (近花園夜市、小北商圈)',
+                    rent_price=26000,
+                    management_fee=1800,
+                    deposit_months=2,
+                    area_ping=26.5,
+                    floor_info='7F / 12F',
+                    layout='2房 1廳 1衛 1獨立曬衣陽台',
+                    status='available',
+                    cover_image='/static/images/original/b0258c0719a0aaef27ae724f64e6edb39.jpg',
+                    gallery=json.dumps([
+                        '/static/images/original/b0258c0719a0aaef27ae724f64e6edb39.jpg',
+                        '/static/images/original/bde807cc872a5d658e6b1c47f4d79e083.jpg',
+                        '/static/images/original/b73a38e2161ab4b013e247e35d99eb50a.jpg'
+                    ], ensure_ascii=False),
+                    features='24H物業保全,健身房交誼廳,室內專屬機車位,乾濕分離日式浴缸,可開伙,全套系統收納櫃',
+                    description='北區高級住宅聚落鄭子寮，綠意環繞棟距開闊。格局方正樑柱外推，衛浴開窗配備日式深型浴缸與暖風機，採光滿分。',
+                    traffic_surroundings='步行 5 分鐘到文元國小與千坪公園，車程 3 分鐘到小北觀光夜市與星巴克。',
+                    is_featured=False
+                )
+
+                db.session.add_all([r1, r2, r3, r4, r5, r6])
+
             db.session.commit()
             return
         except Exception as e:
@@ -256,6 +412,39 @@ def works():
         '實績案例展示庫 ｜ 台南透天、公寓、套房空間活化精選 ｜ 窩在家'
     )
 
+@app.route('/rentals')
+def rentals():
+    district = request.args.get('district', '')
+    category = request.args.get('category', '')
+    max_price = request.args.get('max_price', type=int)
+    
+    query = RentalListing.query
+    if district:
+        query = query.filter_by(district=district)
+    if category:
+        query = query.filter_by(category=category)
+    if max_price:
+        query = query.filter(RentalListing.rent_price <= max_price)
+        
+    listings = query.order_by(RentalListing.is_featured.desc(), RentalListing.id.desc()).all()
+    return render_hybrid(
+        'rentals.html',
+        {'listings': listings, 'current_district': district, 'current_category': category, 'current_max_price': max_price},
+        '精選招租 ｜ 窩在好宅 ｜ 台南南科套房、家庭宅、質感透天出租 ｜ 窩在家'
+    )
+
+@app.route('/rentals/<identifier>')
+def rental_detail(identifier):
+    if identifier.isdigit():
+        listing = RentalListing.query.get_or_404(int(identifier))
+    else:
+        listing = RentalListing.query.filter_by(code=identifier).first_or_404()
+    return render_hybrid(
+        'rental_detail.html',
+        {'listing': listing},
+        f'{listing.title} ｜ 窩在家精選招租'
+    )
+
 @app.route('/calculator')
 def calculator():
     return render_hybrid(
@@ -301,6 +490,43 @@ def terms():
 # ==============================================================================
 # Dynamic Core API Endpoints
 # ==============================================================================
+
+@app.route('/api/rentals')
+def api_rentals():
+    listings = RentalListing.query.order_by(RentalListing.is_featured.desc(), RentalListing.id.desc()).all()
+    return jsonify([l.to_dict() for l in listings])
+
+@app.route('/api/rentals/booking', methods=['POST'])
+def api_rental_booking():
+    data = request.get_json() or request.form
+    renter_name = (data.get('renter_name') or '').strip()
+    renter_phone = (data.get('renter_phone') or '').strip()
+    if not renter_name or not renter_phone:
+        return jsonify({'success': False, 'message': '請填寫姓名與聯絡電話！'}), 400
+
+    rental_id = data.get('rental_id')
+    rental = RentalListing.query.get(rental_id) if rental_id else None
+
+    booking = RentalViewingBooking(
+        rental_id=rental.id if rental else None,
+        rental_code=rental.code if rental else data.get('rental_code'),
+        rental_title=rental.title if rental else data.get('rental_title'),
+        renter_name=renter_name,
+        renter_phone=renter_phone,
+        renter_line_id=data.get('renter_line_id'),
+        preferred_datetime=data.get('preferred_datetime'),
+        renter_occupation=data.get('renter_occupation'),
+        notes=data.get('notes'),
+        status='pending'
+    )
+    db.session.add(booking)
+    db.session.commit()
+
+    return jsonify({
+        'success': True,
+        'message': f'預約帶看成功！窩在家房務管家將於 24 小時內以電話或 LINE 確認看屋時段。',
+        'booking_id': booking.id
+    })
 
 @app.route('/api/tts/generate', methods=['POST'])
 def api_tts_generate():
@@ -528,16 +754,45 @@ def admin_dashboard():
         'total': RFQQuotation.query.count(),
         'pending': RFQQuotation.query.filter_by(status='pending').count(),
         'contacting': RFQQuotation.query.filter_by(status='contacting').count(),
-        'signed': RFQQuotation.query.filter_by(status='signed').count()
+        'signed': RFQQuotation.query.filter_by(status='signed').count(),
+        'rental_bookings': RentalViewingBooking.query.count(),
+        'available_rentals': RentalListing.query.filter_by(status='available').count()
     }
+
+    # Fetch recent rental bookings and listings
+    bookings = RentalViewingBooking.query.order_by(RentalViewingBooking.created_at.desc()).limit(20).all()
+    rentals = RentalListing.query.order_by(RentalListing.id.desc()).all()
 
     return render_template(
         'admin/dashboard.html',
         rfqs=rfqs,
         stats=stats,
         search_query=search_q,
-        status_filter=status_filter
+        status_filter=status_filter,
+        bookings=bookings,
+        rentals=rentals
     )
+
+@app.route('/admin/booking/<int:booking_id>/status', methods=['POST'])
+@login_required
+def admin_booking_status(booking_id):
+    booking = RentalViewingBooking.query.get_or_404(booking_id)
+    new_status = request.form.get('status')
+    if new_status:
+        booking.status = new_status
+        db.session.commit()
+    return redirect(url_for('admin_dashboard') + '#bookings-tab')
+
+@app.route('/admin/rental/<int:rental_id>/toggle-status', methods=['POST'])
+@login_required
+def admin_rental_toggle_status(rental_id):
+    rental = RentalListing.query.get_or_404(rental_id)
+    if rental.status == 'available':
+        rental.status = 'rented'
+    else:
+        rental.status = 'available'
+    db.session.commit()
+    return redirect(url_for('admin_dashboard') + '#rentals-tab')
 
 @app.route('/admin/rfq/<int:rfq_id>')
 @login_required

@@ -1,0 +1,510 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Rentals Warm Hero Banner -->
+<section style="background: linear-gradient(135deg, rgba(254, 253, 250, 0.94) 0%, rgba(246, 241, 233, 0.88) 100%), url('{{ url_for('static', filename='images/hero_home_bg.jpg') }}') center/cover no-repeat; padding: 65px 24px 45px; border-bottom: 1px solid rgba(220, 215, 205, 0.6);">
+  <div style="max-width: 1240px; margin: 0 auto; text-align: center;">
+    <span class="section-tag">CURATED RENTALS ｜ 窩在好宅</span>
+    <h1 class="section-title" style="font-size: 38px; margin-bottom: 14px;">窩在家精選招租 ｜ 台南極致居所，遇見理想的家</h1>
+    <p class="section-desc" style="max-width: 820px; margin: 0 auto; font-size: 15.5px; line-height: 1.8; color: #555;">
+      每間房源皆由窩在家專業物管團隊親自管理。嚴格把關水電結構安全、日式極簡侘寂風格裝潢、乾濕分離衛浴與全套一級節能變頻家電，提供優質租客真正安心、舒適且心曠神怡的居住體驗。
+    </p>
+
+    <!-- Rental Highlights Badges -->
+    <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 16px; margin-top: 26px;">
+      <span style="background: rgba(255,255,255,0.85); border: 1px solid #e0d8cb; padding: 6px 14px; border-radius: 20px; font-size: 13.5px; color: var(--color-dark-bg);">
+        ✨ 全室水電管線與防水檢驗
+      </span>
+      <span style="background: rgba(255,255,255,0.85); border: 1px solid #e0d8cb; padding: 6px 14px; border-radius: 20px; font-size: 13.5px; color: var(--color-dark-bg);">
+        🔒 法院公證合約，保障租客權益
+      </span>
+      <span style="background: rgba(255,255,255,0.85); border: 1px solid #e0d8cb; padding: 6px 14px; border-radius: 20px; font-size: 13.5px; color: var(--color-dark-bg);">
+        📑 可申辦 300 億中央租金補貼
+      </span>
+      <span style="background: rgba(255,255,255,0.85); border: 1px solid #e0d8cb; padding: 6px 14px; border-radius: 20px; font-size: 13.5px; color: var(--color-dark-bg);">
+        🧰 專屬管家 24H 線上修繕報修
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- Main Listings Section -->
+<section class="section" style="padding-top: 40px; padding-bottom: 80px;">
+  <div style="max-width: 1280px; margin: 0 auto;">
+
+    <!-- Filter Control Card -->
+    <div style="background: #fff; border-radius: var(--radius-md); padding: 24px; box-shadow: var(--shadow-sm); border: 1px solid rgba(110, 103, 95, 0.12); margin-bottom: 36px;">
+      
+      <!-- Search Input & Quick Filters Row -->
+      <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+        <div>
+          <label style="display: block; font-size: 12.5px; font-weight: 600; color: #777; margin-bottom: 6px;">關鍵字快速搜尋</label>
+          <input type="text" id="rental-search-input" placeholder="輸入地段、南科、透天、套房..." class="form-control" style="font-size: 14px; padding: 10px 14px;">
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 12.5px; font-weight: 600; color: #777; margin-bottom: 6px;">行政區域</label>
+          <select id="rental-filter-district" class="form-control" style="font-size: 14px; padding: 10px 14px;">
+            <option value="">全部區域 (All)</option>
+            <option value="永康區">永康區 (近南科/奇美)</option>
+            <option value="東區">東區 (文化中心/成大)</option>
+            <option value="中西區">中西區 (文創商圈)</option>
+            <option value="善化區">善化區 (LM特區/南科)</option>
+            <option value="北區">北區 (鄭子寮重劃區)</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 12.5px; font-weight: 600; color: #777; margin-bottom: 6px;">房屋型態</label>
+          <select id="rental-filter-category" class="form-control" style="font-size: 14px; padding: 10px 14px;">
+            <option value="">全部型態 (All)</option>
+            <option value="suite">獨立套房 (Suites)</option>
+            <option value="apartment">整層家庭宅 (Apartment)</option>
+            <option value="townhouse">整棟透天 (Townhouse)</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 12.5px; font-weight: 600; color: #777; margin-bottom: 6px;">租金預算區間</label>
+          <select id="rental-filter-price" class="form-control" style="font-size: 14px; padding: 10px 14px;">
+            <option value="">不限預算</option>
+            <option value="15000">1.5 萬元以下</option>
+            <option value="25000">2.5 萬元以下</option>
+            <option value="35000">3.5 萬元以下</option>
+            <option value="50000">5.0 萬元以下</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Quick Feature Chips -->
+      <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 10px; border-top: 1px solid #f0ede8; padding-top: 16px;">
+        <span style="font-size: 13px; font-weight: 600; color: #666;">特色篩選：</span>
+        <button class="filter-feature-btn" data-feature="獨立陽台">☀️ 獨立陽台</button>
+        <button class="filter-feature-btn" data-feature="洗脫烘">🧺 獨立洗脫烘</button>
+        <button class="filter-feature-btn" data-feature="乾濕分離">🚿 乾濕分離</button>
+        <button class="filter-feature-btn" data-feature="車位">🚗 附車位</button>
+        <button class="filter-feature-btn" data-feature="代收垃圾">🗑️ 代收垃圾</button>
+        <button class="filter-feature-btn" data-feature="可開伙">🍳 可開伙</button>
+        <button class="filter-feature-btn" data-feature="租補">📑 可申請租補</button>
+        <button id="btn-reset-filters" style="margin-left: auto; background: none; border: none; color: #888; font-size: 13px; cursor: pointer; text-decoration: underline;">
+          重設篩選條件
+        </button>
+      </div>
+    </div>
+
+    <!-- Listings Count & Status Header -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+      <div style="font-size: 16px; font-weight: 600; color: var(--color-dark-bg);">
+        共找到 <span id="rental-results-count" style="color: var(--color-accent-dark); font-size: 20px;">{{ listings|length }}</span> 間優質待租好宅
+      </div>
+      <div style="font-size: 13.5px; color: #777;">
+        更新時間：即時同步 ｜ 全物件實景拍攝、拒絕假房源
+      </div>
+    </div>
+
+    <!-- Rental Cards Grid -->
+    <div class="portfolio-grid" id="rental-cards-grid">
+      {% for item in listings %}
+      <div class="portfolio-card rental-item-card" 
+           data-district="{{ item.district }}" 
+           data-category="{{ item.category }}" 
+           data-price="{{ item.rent_price }}" 
+           data-features="{{ item.features }}"
+           data-title="{{ item.title }}"
+           data-address="{{ item.address_summary }}">
+        
+        <!-- Image Box -->
+        <div class="portfolio-img-box" style="position: relative; height: 260px; overflow: hidden; cursor: pointer;" 
+             onclick="openRentalGallery('{{ item.title }}', {{ item.gallery or '[]' }})">
+          <img src="{{ item.cover_image or url_for('static', filename='images/hero_living_cozy.jpg') }}" alt="{{ item.title }}" class="case-img" style="width: 100%; height: 100%; object-fit: cover;">
+          
+          <!-- Status Tag -->
+          {% if item.status == 'available' %}
+          <span style="position: absolute; top: 12px; left: 12px; background: #2f855a; color: #fff; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.25);">
+            🟢 招租中
+          </span>
+          {% elif item.status == 'reserved' %}
+          <span style="position: absolute; top: 12px; left: 12px; background: #d69e2e; color: #fff; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 4px;">
+            🟡 已有預約帶看
+          </span>
+          {% else %}
+          <span style="position: absolute; top: 12px; left: 12px; background: #718096; color: #fff; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 4px;">
+            ⚪ 已出租
+          </span>
+          {% endif %}
+
+          <span class="portfolio-tag" style="bottom: 12px; left: 12px;">{{ item.district }} ｜ {{ item.area_ping }} 坪 ｜ {{ item.floor_info }}</span>
+          
+          <div style="position: absolute; bottom: 12px; right: 12px; background: rgba(0,0,0,0.65); color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 12px; backdrop-filter: blur(4px);">
+            📷 實景相簿
+          </div>
+        </div>
+
+        <!-- Body -->
+        <div class="portfolio-body" style="padding: 22px;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px;">
+            <span style="font-size: 12px; font-weight: 600; color: var(--color-accent-dark); background: rgba(184, 145, 88, 0.12); padding: 2px 8px; border-radius: 4px;">
+              編號：{{ item.code }}
+            </span>
+            <div style="font-family: var(--font-serif); font-size: 24px; font-weight: 700; color: var(--color-accent-dark);">
+              NT$ {{ "{:,}".format(item.rent_price) }} <span style="font-size: 13px; font-family: var(--font-sans); color: #888; font-weight: 400;">/ 月</span>
+            </div>
+          </div>
+
+          <h3 class="portfolio-title" style="font-size: 17px; margin-bottom: 8px; line-height: 1.5;">
+            {{ item.title }}
+          </h3>
+
+          <p style="font-size: 13px; color: #888; margin-bottom: 12px; display: flex; align-items: center; gap: 4px;">
+            <span>📍</span> <span>{{ item.address_summary }}</span>
+          </p>
+
+          <!-- Layout & Spec Pills -->
+          <div style="display: flex; gap: 8px; margin-bottom: 14px; font-size: 12.5px; color: #555;">
+            <span style="background: #faf8f5; padding: 4px 8px; border-radius: 4px; border: 1px solid #eee;">🏠 {{ item.layout }}</span>
+            <span style="background: #faf8f5; padding: 4px 8px; border-radius: 4px; border: 1px solid #eee;">📐 {{ item.area_ping }} 坪</span>
+            <span style="background: #faf8f5; padding: 4px 8px; border-radius: 4px; border: 1px solid #eee;">🏢 {{ item.floor_info }}</span>
+          </div>
+
+          <!-- Feature Tags -->
+          <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px;">
+            {% for f in item.features.split(',') %}
+            <span style="font-size: 11.5px; color: #666; background: #f4efe8; padding: 3px 8px; border-radius: 12px;">
+              ✓ {{ f.strip() }}
+            </span>
+            {% endfor %}
+          </div>
+
+          <!-- Action Buttons Row -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <button class="btn-primary" style="padding: 10px; font-size: 13.5px;" 
+                    onclick="openBookingModal('{{ item.id }}', '{{ item.code }}', '{{ item.title }}', '{{ item.rent_price }}')">
+              📅 預約看屋
+            </button>
+            <button class="btn-secondary" style="padding: 10px; font-size: 13.5px;"
+                    onclick="openRentalGallery('{{ item.title }}', {{ item.gallery or '[]' }})">
+              📷 實景相簿
+            </button>
+          </div>
+
+          <div style="display: flex; gap: 8px;">
+            <button class="btn-tts-tour" style="flex: 1; padding: 8px; font-size: 12.5px; justify-content: center;"
+                    data-tts-text="您好，為您介紹{{ item.district }}的{{ item.title }}。租金每月 {{ item.rent_price }} 元，格局為 {{ item.layout }}，權狀約 {{ item.area_ping }} 坪。配備{{ item.features }}。全室由窩在家物業專業把關，歡迎預約現場帶看。">
+              <span class="tts-icon">🔊</span>
+              <span class="tts-label">語音聽房</span>
+            </button>
+            <button class="btn-secondary" style="flex: 1; padding: 8px; font-size: 12.5px;"
+                    onclick="RFQCart.addItem({code:'rental_{{ item.code }}', title:'【租屋諮詢】{{ item.title }}', specs:{'編號':'{{ item.code }}','區域':'{{ item.district }}','月租':'NT$ {{ item.rent_price }}','格局':'{{ item.layout }}'}, price:'NT$ {{ item.rent_price }}/月'}); RFQCart.openDrawer();">
+              + 儲存清單
+            </button>
+          </div>
+
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Empty State Warning (hidden by default) -->
+    <div id="rental-empty-state" style="display: none; text-align: center; padding: 60px 20px; background: #fff; border-radius: var(--radius-md); border: 1px dashed #dcd4c8;">
+      <div style="font-size: 40px; margin-bottom: 12px;">🏡</div>
+      <h3 style="font-size: 20px; color: var(--color-dark-bg); margin-bottom: 8px;">查無符合條件的房源</h3>
+      <p style="font-size: 14px; color: #777; margin-bottom: 20px;">嘗試放寬篩選條件或直接聯絡窩在家顧問為您尋找隱藏好宅！</p>
+      <button class="btn-primary" onclick="resetRentalFilters()">重設篩選條件</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- Schedule Viewing Modal (預約帶看彈窗) -->
+<div id="viewingBookingModal" style="display: none; position: fixed; inset: 0; z-index: 10000; background: rgba(18, 16, 14, 0.75); backdrop-filter: blur(6px); padding: 20px; overflow-y: auto;">
+  <div style="max-width: 580px; margin: 50px auto; background: #fff; border-radius: 12px; padding: 36px; position: relative; box-shadow: 0 25px 60px rgba(0,0,0,0.35);">
+    <button onclick="closeBookingModal()" style="position: absolute; top: 16px; right: 20px; font-size: 28px; background: none; border: none; cursor: pointer; color: #888;">&times;</button>
+    
+    <div style="margin-bottom: 24px;">
+      <span class="section-tag">SCHEDULE A VIEWING</span>
+      <h2 style="font-family: var(--font-serif); font-size: 24px; color: var(--color-dark-bg); margin-top: 6px;">線上預約專人實地賞屋</h2>
+      <p style="font-size: 13.5px; color: #666; margin-top: 4px;">由專屬管家一對一現場帶看與說明，全程免仲介爭議，真實透明。</p>
+    </div>
+
+    <!-- Selected Property Summary Card -->
+    <div style="background: #faf8f5; border: 1px solid #e8e2d8; border-radius: 8px; padding: 14px 18px; margin-bottom: 24px;">
+      <div style="font-size: 12px; color: var(--color-accent-dark); font-weight: 600;" id="modal-property-code">編號：--</div>
+      <div style="font-weight: 700; font-size: 15px; color: var(--color-dark-bg); margin: 4px 0;" id="modal-property-title">房源名稱</div>
+      <div style="font-size: 14px; color: var(--color-accent-dark); font-weight: 600;" id="modal-property-rent">租金：--</div>
+    </div>
+
+    <!-- Booking Form -->
+    <form id="viewing-booking-form" onsubmit="submitViewingBooking(event)">
+      <input type="hidden" id="booking-rental-id" name="rental_id">
+      <input type="hidden" id="booking-rental-code" name="rental_code">
+      <input type="hidden" id="booking-rental-title" name="rental_title">
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+        <div>
+          <label class="form-label" style="font-size: 13px;">真實姓名 <span style="color: #e53e3e;">*</span></label>
+          <input type="text" id="booking-name" name="renter_name" required placeholder="如：林先生 / 陳小姐" class="form-control" style="padding: 10px 12px; font-size: 14px;">
+        </div>
+        <div>
+          <label class="form-label" style="font-size: 13px;">聯絡電話 <span style="color: #e53e3e;">*</span></label>
+          <input type="tel" id="booking-phone" name="renter_phone" required placeholder="如：0912-345-678" class="form-control" style="padding: 10px 12px; font-size: 14px;">
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+        <div>
+          <label class="form-label" style="font-size: 13px;">LINE ID (方便發送定位與確認)</label>
+          <input type="text" id="booking-line" name="renter_line_id" placeholder="如：albert_lin88" class="form-control" style="padding: 10px 12px; font-size: 14px;">
+        </div>
+        <div>
+          <label class="form-label" style="font-size: 13px;">承租人職業 / 身分</label>
+          <input type="text" id="booking-occupation" name="renter_occupation" placeholder="如：南科工程師 / 公教人員" class="form-control" style="padding: 10px 12px; font-size: 14px;">
+        </div>
+      </div>
+
+      <div style="margin-bottom: 14px;">
+        <label class="form-label" style="font-size: 13px;">希望帶看時段</label>
+        <select id="booking-time" name="preferred_datetime" class="form-control" style="padding: 10px 12px; font-size: 14px;">
+          <option value="平日晚上 (18:30~20:30)">平日晚上 (18:30 ~ 20:30)</option>
+          <option value="平日下午 (14:00~17:00)">平日下午 (14:00 ~ 17:00)</option>
+          <option value="平日上午 (10:00~12:00)">平日上午 (10:00 ~ 12:00)</option>
+          <option value="週末全天皆可">週末全天皆可 (週六、週日)</option>
+          <option value="電話聯繫後討論">電話聯繫後討論詳細時間</option>
+        </select>
+      </div>
+
+      <div style="margin-bottom: 22px;">
+        <label class="form-label" style="font-size: 13px;">補充備註或預計起租日</label>
+        <textarea id="booking-notes" name="notes" rows="2" placeholder="如：預計下個月初起租、有養一隻安靜貓咪..." class="form-control" style="padding: 10px 12px; font-size: 13.5px;"></textarea>
+      </div>
+
+      <div style="display: flex; gap: 12px;">
+        <button type="button" onclick="closeBookingModal()" class="btn-secondary" style="flex: 1; padding: 12px;">取消</button>
+        <button type="submit" id="btn-submit-booking" class="btn-primary" style="flex: 2; padding: 12px; font-size: 15px;">確認送出預約申請</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Lightbox Gallery Modal for Rentals -->
+<div id="rentalGalleryModal" style="display: none; position: fixed; inset: 0; z-index: 10001; background: rgba(18, 16, 14, 0.94); backdrop-filter: blur(8px); padding: 24px; overflow-y: auto;">
+  <div style="max-width: 1080px; margin: 30px auto; background: #fff; border-radius: 12px; padding: 28px; position: relative;">
+    <button onclick="closeRentalGallery()" style="position: absolute; top: 16px; right: 20px; font-size: 28px; background: none; border: none; cursor: pointer; color: #666;">&times;</button>
+    <div style="margin-bottom: 20px;">
+      <span class="section-tag">PROPERTY GALLERY</span>
+      <h2 id="rentalGalleryModalTitle" style="font-family: var(--font-serif); font-size: 22px; color: var(--color-dark-bg); margin-top: 4px;">實景全景相簿</h2>
+    </div>
+    <div style="width: 100%; height: 480px; background: #1a1a1a; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; margin-bottom: 14px;">
+      <img id="rentalGalleryMainImg" src="" alt="Property Photo" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+    </div>
+    <div id="rentalGalleryThumbs" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(95px, 1fr)); gap: 10px; max-height: 180px; overflow-y: auto;">
+    </div>
+  </div>
+</div>
+
+<style>
+.filter-feature-btn {
+  background: #f7f4ee;
+  border: 1px solid #e2ddd3;
+  color: #555;
+  padding: 5px 12px;
+  border-radius: 16px;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.filter-feature-btn:hover, .filter-feature-btn.active {
+  background: var(--color-dark-bg);
+  color: #fff;
+  border-color: var(--color-dark-bg);
+}
+</style>
+
+<script>
+// Filter state
+let activeFeatures = [];
+
+document.addEventListener('DOMContentLoaded', function() {
+  initRentalFilters();
+});
+
+function initRentalFilters() {
+  const searchInput = document.getElementById('rental-search-input');
+  const districtSelect = document.getElementById('rental-filter-district');
+  const categorySelect = document.getElementById('rental-filter-category');
+  const priceSelect = document.getElementById('rental-filter-price');
+  const featureBtns = document.querySelectorAll('.filter-feature-btn');
+  const resetBtn = document.getElementById('btn-reset-filters');
+
+  if (searchInput) searchInput.addEventListener('input', applyRentalFilters);
+  if (districtSelect) districtSelect.addEventListener('change', applyRentalFilters);
+  if (categorySelect) categorySelect.addEventListener('change', applyRentalFilters);
+  if (priceSelect) priceSelect.addEventListener('change', applyRentalFilters);
+
+  featureBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const feat = this.dataset.feature;
+      if (activeFeatures.includes(feat)) {
+        activeFeatures = activeFeatures.filter(f => f !== feat);
+        this.classList.remove('active');
+      } else {
+        activeFeatures.push(feat);
+        this.classList.add('active');
+      }
+      applyRentalFilters();
+    });
+  });
+
+  if (resetBtn) resetBtn.addEventListener('click', resetRentalFilters);
+}
+
+function applyRentalFilters() {
+  const search = (document.getElementById('rental-search-input').value || '').trim().toLowerCase();
+  const district = document.getElementById('rental-filter-district').value;
+  const category = document.getElementById('rental-filter-category').value;
+  const maxPrice = parseInt(document.getElementById('rental-filter-price').value) || 0;
+
+  const cards = document.querySelectorAll('.rental-item-card');
+  let visibleCount = 0;
+
+  cards.forEach(card => {
+    const cDistrict = card.dataset.district;
+    const cCategory = card.dataset.category;
+    const cPrice = parseInt(card.dataset.price) || 0;
+    const cFeatures = card.dataset.features || '';
+    const cTitle = (card.dataset.title || '').toLowerCase();
+    const cAddress = (card.dataset.address || '').toLowerCase();
+
+    let match = true;
+
+    if (search && !cTitle.includes(search) && !cAddress.includes(search) && !cDistrict.toLowerCase().includes(search)) {
+      match = false;
+    }
+    if (district && cDistrict !== district) match = false;
+    if (category && cCategory !== category) match = false;
+    if (maxPrice > 0 && cPrice > maxPrice) match = false;
+
+    if (activeFeatures.length > 0) {
+      const cardFeats = cFeatures.split(',');
+      for (let feat of activeFeatures) {
+        if (!cardFeats.some(f => f.includes(feat))) {
+          match = false;
+          break;
+        }
+      }
+    }
+
+    if (match) {
+      card.style.display = 'block';
+      visibleCount++;
+    } else {
+      card.style.display = 'none';
+    }
+  });
+
+  const countEl = document.getElementById('rental-results-count');
+  if (countEl) countEl.textContent = visibleCount;
+
+  const emptyEl = document.getElementById('rental-empty-state');
+  if (emptyEl) emptyEl.style.display = visibleCount === 0 ? 'block' : 'none';
+}
+
+function resetRentalFilters() {
+  document.getElementById('rental-search-input').value = '';
+  document.getElementById('rental-filter-district').value = '';
+  document.getElementById('rental-filter-category').value = '';
+  document.getElementById('rental-filter-price').value = '';
+  activeFeatures = [];
+  document.querySelectorAll('.filter-feature-btn').forEach(b => b.classList.remove('active'));
+  applyRentalFilters();
+}
+
+// Modal Booking Logic
+function openBookingModal(id, code, title, price) {
+  document.getElementById('booking-rental-id').value = id;
+  document.getElementById('booking-rental-code').value = code;
+  document.getElementById('booking-rental-title').value = title;
+  
+  document.getElementById('modal-property-code').textContent = '房源編號：' + code;
+  document.getElementById('modal-property-title').textContent = title;
+  document.getElementById('modal-property-rent').textContent = '月租金：NT$ ' + Number(price).toLocaleString() + ' / 月';
+
+  document.getElementById('viewingBookingModal').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeBookingModal() {
+  document.getElementById('viewingBookingModal').style.display = 'none';
+  document.body.style.overflow = 'auto';
+}
+
+function submitViewingBooking(e) {
+  e.preventDefault();
+  const btn = document.getElementById('btn-submit-booking');
+  btn.disabled = true;
+  btn.textContent = '預約資料傳送中...';
+
+  const formData = new FormData(document.getElementById('viewing-booking-form'));
+
+  fetch('/api/rentals/booking', {
+    method: 'POST',
+    body: formData
+  })
+  .then(res => res.json())
+  .then(data => {
+    btn.disabled = false;
+    btn.textContent = '確認送出預約申請';
+    if (data.success) {
+      alert(data.message);
+      closeBookingModal();
+      document.getElementById('viewing-booking-form').reset();
+    } else {
+      alert('預約失敗：' + (data.message || '請檢查網路連線'));
+    }
+  })
+  .catch(err => {
+    btn.disabled = false;
+    btn.textContent = '確認送出預約申請';
+    alert('系統傳輸異常，請稍後再試或致電專線：(06) 289-4168');
+  });
+}
+
+// Gallery Lightbox Logic
+function openRentalGallery(title, imgs) {
+  const modal = document.getElementById('rentalGalleryModal');
+  const titleEl = document.getElementById('rentalGalleryModalTitle');
+  const mainImg = document.getElementById('rentalGalleryMainImg');
+  const thumbs = document.getElementById('rentalGalleryThumbs');
+
+  titleEl.textContent = title + ' ｜ 實景相簿';
+  thumbs.innerHTML = '';
+
+  if (!imgs || imgs.length === 0) {
+    mainImg.src = '/static/images/hero_living_cozy.jpg';
+    return;
+  }
+
+  mainImg.src = imgs[0];
+
+  imgs.forEach((src, idx) => {
+    const thumb = document.createElement('img');
+    thumb.src = src;
+    thumb.alt = 'Photo ' + (idx + 1);
+    thumb.style.cssText = 'width: 100%; height: 75px; object-fit: cover; border-radius: 6px; cursor: pointer; border: 2px solid ' + (idx === 0 ? 'var(--color-accent)' : 'transparent') + ';';
+    thumb.onclick = function() {
+      mainImg.src = src;
+      Array.from(thumbs.children).forEach(t => t.style.borderColor = 'transparent');
+      thumb.style.borderColor = 'var(--color-accent)';
+    };
+    thumbs.appendChild(thumb);
+  });
+
+  modal.style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeRentalGallery() {
+  document.getElementById('rentalGalleryModal').style.display = 'none';
+  document.body.style.overflow = 'auto';
+}
+</script>
+{% endblock %}

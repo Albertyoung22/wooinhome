@@ -23,22 +23,30 @@
 
   <main class="admin-container">
     <!-- Top Statistics Row -->
-    <div class="admin-stats-row">
+    <div class="admin-stats-row" style="grid-template-columns: repeat(6, 1fr);">
       <div class="admin-stat-card">
         <div class="admin-stat-val">{{ stats.total }}</div>
         <div class="admin-stat-title">累積總詢價單</div>
       </div>
       <div class="admin-stat-card" style="border-left-color: #dd6b20;">
         <div class="admin-stat-val" style="color: #dd6b20;">{{ stats.pending }}</div>
-        <div class="admin-stat-title">待處理詢價單 (New Leads)</div>
+        <div class="admin-stat-title">待處理詢價單</div>
       </div>
       <div class="admin-stat-card" style="border-left-color: #3182ce;">
         <div class="admin-stat-val" style="color: #3182ce;">{{ stats.contacting }}</div>
-        <div class="admin-stat-title">聯繫與評估中 (In Progress)</div>
+        <div class="admin-stat-title">聯繫評估中</div>
       </div>
       <div class="admin-stat-card" style="border-left-color: #38a169;">
         <div class="admin-stat-val" style="color: #38a169;">{{ stats.signed }}</div>
-        <div class="admin-stat-title">已簽約託管 (Signed Deals)</div>
+        <div class="admin-stat-title">已簽約託管</div>
+      </div>
+      <div class="admin-stat-card" style="border-left-color: #805ad5;">
+        <div class="admin-stat-val" style="color: #805ad5;">{{ stats.rental_bookings }}</div>
+        <div class="admin-stat-title">房客預約帶看</div>
+      </div>
+      <div class="admin-stat-card" style="border-left-color: #319795;">
+        <div class="admin-stat-val" style="color: #319795;">{{ stats.available_rentals }}</div>
+        <div class="admin-stat-title">在架招租好宅</div>
       </div>
     </div>
 
@@ -140,6 +148,134 @@
             <tr>
               <td colspan="9" style="text-align: center; padding: 48px; color: #888;">
                 目前查無符合條件的詢價單資料。
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Rental Viewing Bookings Management Card -->
+    <div class="admin-card" id="bookings-tab" style="margin-top: 36px;">
+      <div class="admin-card-header">
+        <div>
+          <h2 style="font-size: 20px; font-weight: 700; color: #6b46c1;">房客預約實地賞屋清單 (Viewing Requests)</h2>
+          <div style="font-size: 13px; color: #777;">線上即時進單，由房務管家安排一對一帶看並追蹤成交</div>
+        </div>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>申請時間</th>
+              <th>預約房客姓名</th>
+              <th>聯絡電話 / LINE</th>
+              <th>預約房源物件</th>
+              <th>希望時段 / 職業</th>
+              <th>補充備註</th>
+              <th>處理狀態</th>
+              <th>變更狀態</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for b in bookings %}
+            <tr>
+              <td style="font-size: 12.5px; color: #777;">{{ b.created_at.strftime('%Y-%m-%d %H:%M') if b.created_at else '' }}</td>
+              <td><strong>{{ b.renter_name }}</strong></td>
+              <td>
+                <a href="tel:{{ b.renter_phone }}" style="color: #2b6cb0; font-weight: bold;">{{ b.renter_phone }}</a>
+                {% if b.renter_line_id %}<div style="font-size: 12px; color: #059669;">LINE: {{ b.renter_line_id }}</div>{% endif %}
+              </td>
+              <td>
+                <strong style="color: var(--color-accent-dark);">{{ b.rental_code or '' }}</strong>
+                <div style="font-size: 13px;">{{ b.rental_title or '一般房源諮詢' }}</div>
+              </td>
+              <td>
+                <div style="font-weight: 600;">{{ b.preferred_datetime or '皆可' }}</div>
+                {% if b.renter_occupation %}<div style="font-size: 12px; color: #666;">身分：{{ b.renter_occupation }}</div>{% endif %}
+              </td>
+              <td style="font-size: 13px; color: #666;">{{ b.notes or '-' }}</td>
+              <td>
+                <span class="badge-status" style="{% if b.status == 'pending' %}background:#feebc8; color:#c05621;{% elif b.status == 'contacted' %}background:#bee3f8; color:#2c5282;{% elif b.status == 'completed' %}background:#c6f6d5; color:#22543d;{% else %}background:#edf2f7; color:#4a5568;{% endif %}">
+                  {% if b.status == 'pending' %}待聯繫確認
+                  {% elif b.status == 'contacted' %}已約定時段
+                  {% elif b.status == 'completed' %}已完成帶看
+                  {% elif b.status == 'cancelled' %}已取消
+                  {% else %}{{ b.status }}{% endif %}
+                </span>
+              </td>
+              <td>
+                <form method="POST" action="/admin/booking/{{ b.id }}/status" style="display: flex; gap: 4px;">
+                  <select name="status" class="form-control" style="font-size: 12px; padding: 4px 6px;">
+                    <option value="pending" {% if b.status == 'pending' %}selected{% endif %}>待聯繫</option>
+                    <option value="contacted" {% if b.status == 'contacted' %}selected{% endif %}>已約定</option>
+                    <option value="completed" {% if b.status == 'completed' %}selected{% endif %}>已帶看</option>
+                    <option value="cancelled" {% if b.status == 'cancelled' %}selected{% endif %}>已取消</option>
+                  </select>
+                  <button type="submit" class="btn-admin btn-admin-outline" style="padding: 4px 8px; font-size: 11px;">更新</button>
+                </form>
+              </td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="8" style="text-align: center; padding: 32px; color: #888;">
+                尚無新的預約帶看紀錄。前台租客送出預約後將在此即時顯示。
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Rentals Active Status Management Card -->
+    <div class="admin-card" id="rentals-tab" style="margin-top: 36px;">
+      <div class="admin-card-header">
+        <div>
+          <h2 style="font-size: 20px; font-weight: 700; color: #319795;">招租房源狀態管理 (Active Rental Listings)</h2>
+          <div style="font-size: 13px; color: #777;">快速切換房源「招租中 / 已出租」狀態</div>
+        </div>
+        <a href="/rentals" target="_blank" class="btn-admin btn-admin-outline">
+          前往前台招租專區 ↗
+        </a>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>編號</th>
+              <th>房源標題</th>
+              <th>行政區 / 型態</th>
+              <th>月租金</th>
+              <th>坪數 / 格局</th>
+              <th>目前狀態</th>
+              <th>切換狀態</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in rentals %}
+            <tr>
+              <td><strong style="color: #b89158;">{{ r.code }}</strong></td>
+              <td><strong>{{ r.title }}</strong></td>
+              <td>{{ r.district }} ｜ {{ r.category }}</td>
+              <td><strong style="color: #b89158;">NT$ {{ "{:,}".format(r.rent_price) }}</strong></td>
+              <td>{{ r.area_ping }} 坪 ｜ {{ r.layout }}</td>
+              <td>
+                {% if r.status == 'available' %}
+                <span class="badge-status" style="background: #c6f6d5; color: #22543d;">🟢 招租中</span>
+                {% else %}
+                <span class="badge-status" style="background: #edf2f7; color: #4a5568;">⚪ 已出租</span>
+                {% endif %}
+              </td>
+              <td>
+                <form method="POST" action="/admin/rental/{{ r.id }}/toggle-status" style="margin: 0;">
+                  <button type="submit" class="btn-admin btn-admin-outline" style="padding: 4px 10px; font-size: 12px;">
+                    {% if r.status == 'available' %}標記為已出租{% else %}重新上架招租{% endif %}
+                  </button>
+                </form>
               </td>
             </tr>
             {% endfor %}

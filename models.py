@@ -156,3 +156,68 @@ class Article(db.Model):
     content = db.Column(db.Text, nullable=False)
     tags = db.Column(db.String(200), default='房東稅務,包租代管,租稅優惠')
 
+class RentalListing(db.Model):
+    __tablename__ = 'rental_listings'
+
+    id = db.Column(db.Integer, primary_key=True)
+    code = db.Column(db.String(32), unique=True, nullable=False) # e.g. WOO-R201
+    title = db.Column(db.String(180), nullable=False)
+    category = db.Column(db.String(50), nullable=False, default='suite') # suite, apartment, townhouse, studio
+    district = db.Column(db.String(50), nullable=False, default='永康區')
+    address_summary = db.Column(db.String(150), nullable=True)
+    rent_price = db.Column(db.Integer, nullable=False) # e.g. 13500
+    management_fee = db.Column(db.Integer, default=0)
+    deposit_months = db.Column(db.Integer, default=2)
+    area_ping = db.Column(db.Float, default=12.0)
+    floor_info = db.Column(db.String(50), default='3F/5F')
+    layout = db.Column(db.String(50), default='1房1衛1陽台')
+    status = db.Column(db.String(30), default='available') # available, reserved, rented
+    cover_image = db.Column(db.String(255), nullable=True)
+    gallery = db.Column(db.Text, nullable=True) # JSON list of images
+    features = db.Column(db.String(300), default='獨立陽台,乾濕分離,獨立洗脫烘,智慧門禁,一級變頻冷暖,可申請租補')
+    description = db.Column(db.Text, nullable=False)
+    traffic_surroundings = db.Column(db.String(300), nullable=True)
+    is_featured = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'code': self.code,
+            'title': self.title,
+            'category': self.category,
+            'district': self.district,
+            'address_summary': self.address_summary,
+            'rent_price': self.rent_price,
+            'management_fee': self.management_fee,
+            'deposit_months': self.deposit_months,
+            'area_ping': self.area_ping,
+            'floor_info': self.floor_info,
+            'layout': self.layout,
+            'status': self.status,
+            'cover_image': self.cover_image,
+            'gallery': json.loads(self.gallery) if self.gallery else [],
+            'features': [f.strip() for f in self.features.split(',') if f.strip()],
+            'description': self.description,
+            'traffic_surroundings': self.traffic_surroundings,
+            'is_featured': self.is_featured,
+            'created_at': self.created_at.strftime('%Y-%m-%d') if self.created_at else ''
+        }
+
+class RentalViewingBooking(db.Model):
+    __tablename__ = 'rental_viewing_bookings'
+
+    id = db.Column(db.Integer, primary_key=True)
+    rental_id = db.Column(db.Integer, db.ForeignKey('rental_listings.id'), nullable=True)
+    rental_code = db.Column(db.String(32), nullable=True)
+    rental_title = db.Column(db.String(180), nullable=True)
+    renter_name = db.Column(db.String(100), nullable=False)
+    renter_phone = db.Column(db.String(50), nullable=False)
+    renter_line_id = db.Column(db.String(100), nullable=True)
+    preferred_datetime = db.Column(db.String(100), nullable=True)
+    renter_occupation = db.Column(db.String(100), nullable=True)
+    notes = db.Column(db.Text, nullable=True)
+    status = db.Column(db.String(30), default='pending') # pending, contacted, completed, cancelled
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+
