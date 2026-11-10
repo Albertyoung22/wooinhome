@@ -6,13 +6,13 @@
   <div class="hero-container">
     <div class="hero-content">
       <div class="hero-badge-pill" data-i18n="hero_badge">
-        ✨ 深耕台南 ｜ 15 年資產管理實績 ｜ 百位房東信賴首選
+        ✨ 讓閒置老屋重生為溫暖歸所 ｜ 15 年深耕台南資產管理
       </div>
       <h1 class="hero-title" data-i18n="hero_title">
-        讓閒置老屋重生，為房東創造穩定豐厚被動收益
+        讓老宅煥發新生，為生活注入溫暖，為房東創造豐厚被動收益
       </h1>
       <p class="hero-subtitle" id="hero-narrative-text" data-i18n="hero_subtitle">
-        窩在家自 2019 年在台南成立，是在地第一家包租代管專業品牌。團隊結合 15 年租賃管理與老屋翻新工程實務，提供「包租保證收益」、「代租精準管理」與「老宅美學改造」一站式尊榮服務。為您處理帶看、修繕、催收與稅務，實現真正的甩手房東！
+        每間房子，都是承載幸福生活的容器。窩在家自 2019 年在台南成立，是在地第一家包租代管專業品牌。團隊結合 15 年租賃管理與老屋活化工程，以日式侘寂美學、專業公證契約與管家式貼心維護，為房東排解空屋招租與管線修繕煩惱，打造讓人一走進就想長住的溫暖好宅。
       </p>
 
       <div class="hero-cta-group">
@@ -25,32 +25,38 @@
       </div>
     </div>
 
-    <!-- Hero Visual Metric Card -->
+    <!-- Hero Visual Showcase Card (Warm Home Ambiance) -->
     <div class="hero-visual-card">
-      <div style="font-size: 13px; font-weight: 700; color: var(--color-accent); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px;">
-        PROVEN TRACK RECORD ｜ 卓越實績
-      </div>
-      <div class="stats-grid">
-        <div class="stat-item">
-          <div class="stat-value">15+</div>
-          <div class="stat-label" data-i18n="stats_years">年資產管理深厚經驗</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-value">150+</div>
-          <div class="stat-label" data-i18n="stats_landlords">位長約託管安心房東</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-value">98.5%</div>
-          <div class="stat-label" data-i18n="stats_occupancy">全年度平均滿租稼動率</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-value">+120%</div>
-          <div class="stat-label" data-i18n="stats_roi">老宅翻新後租金平均提升</div>
+      <div class="hero-showcase-image-wrap">
+        <img src="{{ url_for('static', filename='images/hero_living_cozy.jpg') }}" alt="窩在家 溫暖住宅實景" class="hero-showcase-img">
+        <div class="hero-showcase-badge">
+          🌿 實景空間 ｜ 自然採光・溫暖實木・日式侘寂
         </div>
       </div>
-      <div style="margin-top: 24px; padding: 14px; background: rgba(184, 145, 88, 0.08); border-radius: var(--radius-sm); font-size: 13px; color: var(--color-accent-dark); display: flex; align-items: center; gap: 10px;">
-        <span>🛡️</span>
-        <span>符合內政部租賃住宅服務業規範 ｜ 契約全數經法院公證</span>
+
+      <div class="stats-glass-panel">
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-value">15+</div>
+            <div class="stat-label" data-i18n="stats_years">年空間託管經驗</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">150+</div>
+            <div class="stat-label" data-i18n="stats_landlords">位信賴託管屋主</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">98.5%</div>
+            <div class="stat-label" data-i18n="stats_occupancy">全年度平均滿租率</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">+120%</div>
+            <div class="stat-label" data-i18n="stats_roi">老宅翻新租金提升</div>
+          </div>
+        </div>
+        <div class="guarantee-pill">
+          <span>🛡️</span>
+          <span>內政部合規租賃住宅服務業 ｜ 契約全數經法院公證保障</span>
+        </div>
       </div>
     </div>
   </div>
@@ -221,22 +227,20 @@
     <!-- Case 1 -->
     <div class="portfolio-card">
       <div class="portfolio-img-box">
-        <div style="background: linear-gradient(135deg, #3d372e, #1c1a17); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--color-accent-light); font-size: 28px;">
-          🏠
-        </div>
+        <img src="{{ url_for('static', filename='images/case_townhouse.jpg') }}" alt="中西區公園路 侘寂美學透天改套" class="case-img">
         <span class="portfolio-tag">台南中西區 ｜ 40年透天活化</span>
       </div>
       <div class="portfolio-body">
         <h3 class="portfolio-title">中西區公園路 侘寂美學透天改套</h3>
-        <p style="font-size: 14px; color: var(--color-text-muted); line-height: 1.6; margin-bottom: 16px;">
-          原本閒置多年的壁癌老宅，透過管線全面更新、日式格柵與大地色系軟裝，改裝為 5 間獨立精品套房，完工 10 天內全數滿租。
+        <p style="font-size: 14px; color: var(--color-text-muted); line-height: 1.7; margin-bottom: 16px;">
+          原本壁癌嚴重的閒置老宅，透過水電全面重拉、日式格柵與大地色系軟裝，改裝為 5 間獨立精品套房，完工 10 天內全數滿租。
         </p>
         <div class="portfolio-stats">
           <div>原月租：<strong style="text-decoration: line-through; color: #888;">$18,000</strong></div>
           <div>現月租：<strong style="color: var(--color-accent-dark); font-size: 16px;">$52,000</strong></div>
           <div>投報增長：<strong style="color: #38a169;">+188%</strong></div>
         </div>
-        <button class="btn-secondary" style="width: 100%; margin-top: 16px; padding: 8px 12px; font-size: 13px;" onclick="RFQCart.addItem({code:'case_park_rd', title:'中西區公園路透天改套同級方案', specs:{'坪數':'52坪','房間數':'5間套房','原月租':'$18,000','現月租':'$52,000'}, price:'專人到府規劃'})">
+        <button class="btn-secondary" style="width: 100%; margin-top: 16px; padding: 10px 14px; font-size: 13.5px;" onclick="RFQCart.addItem({code:'case_park_rd', title:'中西區公園路透天改套同級方案', specs:{'坪數':'52坪','房間數':'5間套房','原月租':'$18,000','現月租':'$52,000'}, price:'專人到府規劃'}); RFQCart.openDrawer();">
           + 依此案例規格加入詢價
         </button>
       </div>
@@ -245,22 +249,20 @@
     <!-- Case 2 -->
     <div class="portfolio-card">
       <div class="portfolio-img-box">
-        <div style="background: linear-gradient(135deg, #2b3a42, #182228); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #a0d2eb; font-size: 28px;">
-          🏢
-        </div>
+        <img src="{{ url_for('static', filename='images/case_apartment.jpg') }}" alt="東區文化中心 高質感家庭宅代管" class="case-img">
         <span class="portfolio-tag">東區文化中心 ｜ 景觀3房</span>
       </div>
       <div class="portfolio-body">
         <h3 class="portfolio-title">東區文化中心 高質感家庭宅代管</h3>
-        <p style="font-size: 14px; color: var(--color-text-muted); line-height: 1.6; margin-bottom: 16px;">
-          房東定居台北無暇往返，委託窩在家代租代管。嚴格審核承租人信用與公司職務，成功媒合南科外商主管簽約三年，免除遠距煩惱。
+        <p style="font-size: 14px; color: var(--color-text-muted); line-height: 1.7; margin-bottom: 16px;">
+          房東定居台北無暇往返帶看，委託窩在家代租代管。嚴格審核承租人信用與在職證明，成功媒合南科外商主管簽約三年，免除遠距煩惱。
         </p>
         <div class="portfolio-stats">
           <div>原月租：<strong style="text-decoration: line-through; color: #888;">$26,000</strong></div>
           <div>現月租：<strong style="color: var(--color-accent-dark); font-size: 16px;">$38,000</strong></div>
           <div>託管期：<strong>3 年長期</strong></div>
         </div>
-        <button class="btn-secondary" style="width: 100%; margin-top: 16px; padding: 8px 12px; font-size: 13px;" onclick="RFQCart.addItem({code:'case_east_dist', title:'東區景觀家庭宅代管方案', specs:{'格局':'3房2廳','客群':'外商主管/南科主管'}, price:'專人評估代租'})">
+        <button class="btn-secondary" style="width: 100%; margin-top: 16px; padding: 10px 14px; font-size: 13.5px;" onclick="RFQCart.addItem({code:'case_east_dist', title:'東區景觀家庭宅代管方案', specs:{'格局':'3房2廳','客群':'外商主管/南科主管'}, price:'專人評估代租'}); RFQCart.openDrawer();">
           + 依此案例規格加入詢價
         </button>
       </div>
@@ -269,22 +271,20 @@
     <!-- Case 3 -->
     <div class="portfolio-card">
       <div class="portfolio-img-box">
-        <div style="background: linear-gradient(135deg, #44372e, #221c17); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #e5b98a; font-size: 28px;">
-          🏪
-        </div>
+        <img src="{{ url_for('static', filename='images/case_commercial.jpg') }}" alt="國華街老屋 一樓文創咖啡與樓上旅宿" class="case-img">
         <span class="portfolio-tag">國華商圈 ｜ 文創店住複合</span>
       </div>
       <div class="portfolio-body">
         <h3 class="portfolio-title">國華街老屋 一樓文創咖啡與樓上旅宿</h3>
-        <p style="font-size: 14px; color: var(--color-text-muted); line-height: 1.6; margin-bottom: 16px;">
-          老舊店面改裝為複合式設計空間，協助屋主重新配置電力結構與消防法規，吸引品牌獨立咖啡廳長期進駐，創造穩定店面租金。
+        <p style="font-size: 14px; color: var(--color-text-muted); line-height: 1.7; margin-bottom: 16px;">
+          老舊街屋改裝為複合式設計空間，重組電力結構與消防法規，吸引品牌獨立咖啡廳長期進駐，創造穩定店面租金與人潮亮點。
         </p>
         <div class="portfolio-stats">
           <div>原月租：<strong style="text-decoration: line-through; color: #888;">$35,000</strong></div>
           <div>現月租：<strong style="color: var(--color-accent-dark); font-size: 16px;">$78,000</strong></div>
           <div>價值躍升：<strong style="color: #38a169;">+122%</strong></div>
         </div>
-        <button class="btn-secondary" style="width: 100%; margin-top: 16px; padding: 8px 12px; font-size: 13px;" onclick="RFQCart.addItem({code:'case_guohua', title:'商圈店住複合老屋改裝方案', specs:{'商圈':'國華海安熱門商圈','用途':'文創店面+精品樓層'}, price:'專人商圈估價'})">
+        <button class="btn-secondary" style="width: 100%; margin-top: 16px; padding: 10px 14px; font-size: 13.5px;" onclick="RFQCart.addItem({code:'case_guohua', title:'商圈店住複合老屋改裝方案', specs:{'商圈':'國華海安熱門商圈','用途':'文創店面+精品樓層'}, price:'專人商圈估價'}); RFQCart.openDrawer();">
           + 依此案例規格加入詢價
         </button>
       </div>
