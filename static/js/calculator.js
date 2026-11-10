@@ -102,3 +102,4 @@ function initCalculator() {
 
 document.addEventListener('DOMContentLoaded', initCalculator);
 window.addEventListener('contentLoaded', initCalculator);
+

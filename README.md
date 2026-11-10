@@ -165,3 +165,4 @@ wooinhome/
         ├── rfq_detail.html     # 詢價單詳情與備註追蹤
         └── settings.html       # 郵件通知與 GitHub 備份持久化設定
 ```
+

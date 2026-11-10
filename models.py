@@ -153,3 +153,4 @@ class Article(db.Model):
     summary = db.Column(db.Text, nullable=False)
     content = db.Column(db.Text, nullable=False)
     tags = db.Column(db.String(200), default='房東稅務,包租代管,租稅優惠')
+

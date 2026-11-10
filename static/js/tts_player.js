@@ -108,3 +108,4 @@ const TTSPlayer = {
 
 document.addEventListener('DOMContentLoaded', () => TTSPlayer.init());
 window.addEventListener('contentLoaded', () => TTSPlayer.bindButtons());
+

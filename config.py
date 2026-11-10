@@ -59,3 +59,4 @@ class Config:
     def verify_password(provided_password: str, stored_hash: str) -> bool:
         computed = Config.hash_password(provided_password)
         return hmac.compare_digest(computed, stored_hash)
+

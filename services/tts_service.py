@@ -58,3 +58,4 @@ def generate_speech(text: str, lang: str = 'zh-TW', voice: str = None) -> dict:
         print(f"[TTS Error] {e}")
         # Fallback or re-raise
         raise e
+

@@ -142,3 +142,4 @@ def get_ai_response(query: str, lang: str = 'zh-TW') -> str:
 歡迎填寫線上詢價單或預約專人到府勘查評估！"""
 
     return DEFAULT_REPLY.get(lang, DEFAULT_REPLY['zh-TW'])
+

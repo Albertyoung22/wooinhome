@@ -140,3 +140,4 @@ document.addEventListener('DOMContentLoaded', () => {
     overlay.addEventListener('click', () => RFQCart.closeDrawer());
   }
 });
+

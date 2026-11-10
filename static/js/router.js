@@ -149,3 +149,4 @@ const SPARouter = {
 };
 
 document.addEventListener('DOMContentLoaded', () => SPARouter.init());
+

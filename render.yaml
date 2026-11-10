@@ -19,3 +19,4 @@ services:
         value: cloud-backup
       - key: KEEP_ALIVE_INTERVAL
         value: 600
+

@@ -182,3 +182,4 @@ function bindContactForm() {
 
 document.addEventListener('DOMContentLoaded', initUI);
 window.addEventListener('contentLoaded', initUI);
+
