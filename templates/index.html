@@ -218,77 +218,48 @@
 <!-- Portfolio / Case Studies Section -->
 <section class="section">
   <div class="section-header">
-    <span class="section-tag">CASE STUDIES</span>
+    <span class="section-tag">CASE STUDIES ｜ 原站實績</span>
     <h2 class="section-title">實績案例 ｜ 見證空間價值躍升</h2>
-    <p class="section-desc">從台南中西區 40 年老透天，到南科周邊青年住宅，我們為每間房屋量身打造專屬定位。</p>
+    <p class="section-desc">台南老屋新生、透天改套、機能大樓家庭宅真實成果，結合日式侘寂與現代極簡美學。</p>
   </div>
 
   <div class="portfolio-grid">
-    <!-- Case 1 -->
+    {% for case in cases %}
     <div class="portfolio-card">
-      <div class="portfolio-img-box">
-        <img src="{{ url_for('static', filename='images/case_townhouse.jpg') }}" alt="中西區公園路 侘寂美學透天改套" class="case-img">
-        <span class="portfolio-tag">台南中西區 ｜ 40年透天活化</span>
+      <div class="portfolio-img-box" style="position: relative; overflow: hidden; height: 260px;">
+        <img src="{{ case.image_after or url_for('static', filename='images/case_townhouse.jpg') }}" alt="{{ case.title }}" class="case-img" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
+        <span class="portfolio-tag">{{ case.location }} ｜ {{ case.area_ping }} 坪</span>
       </div>
       <div class="portfolio-body">
-        <h3 class="portfolio-title">中西區公園路 侘寂美學透天改套</h3>
-        <p style="font-size: 14px; color: var(--color-text-muted); line-height: 1.7; margin-bottom: 16px;">
-          原本壁癌嚴重的閒置老宅，透過水電全面重拉、日式格柵與大地色系軟裝，改裝為 5 間獨立精品套房，完工 10 天內全數滿租。
+        <h3 class="portfolio-title" style="font-size: 18px; margin-bottom: 10px;">{{ case.title }}</h3>
+        <p style="font-size: 13.5px; color: var(--color-text-muted); line-height: 1.7; margin-bottom: 16px;">
+          {{ case.summary }}
         </p>
-        <div class="portfolio-stats">
-          <div>原月租：<strong style="text-decoration: line-through; color: #888;">$18,000</strong></div>
-          <div>現月租：<strong style="color: var(--color-accent-dark); font-size: 16px;">$52,000</strong></div>
-          <div>投報增長：<strong style="color: #38a169;">+188%</strong></div>
+        <div class="portfolio-stats" style="background: #faf8f5; padding: 12px 14px; border-radius: var(--radius-sm); border: 1px solid #ede8e0; font-size: 13px; margin-bottom: 14px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+            <span>原月租：</span>
+            <strong style="text-decoration: line-through; color: #888;">NT$ {{ "{:,}".format(case.before_rent) }}</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+            <span>現月租：</span>
+            <strong style="color: var(--color-accent-dark); font-size: 16px;">NT$ {{ "{:,}".format(case.after_rent) }}</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span>投報增長：</span>
+            <strong style="color: #38a169; font-weight: 700;">{{ case.roi_boost }}</strong>
+          </div>
         </div>
-        <button class="btn-secondary" style="width: 100%; margin-top: 16px; padding: 10px 14px; font-size: 13.5px;" onclick="RFQCart.addItem({code:'case_park_rd', title:'中西區公園路透天改套同級方案', specs:{'坪數':'52坪','房間數':'5間套房','原月租':'$18,000','現月租':'$52,000'}, price:'專人到府規劃'}); RFQCart.openDrawer();">
-          + 依此案例規格加入詢價
-        </button>
+        <div style="display: flex; gap: 8px;">
+          <a href="/works" class="btn-secondary" style="flex: 1; text-align: center; padding: 9px 12px; font-size: 13px;" data-spa>
+            📷 查看實景相簿
+          </a>
+          <button class="btn-primary" style="flex: 1.2; padding: 9px 12px; font-size: 13px;" onclick="RFQCart.addItem({code:'case_{{ case.slug }}', title:'【同級方案】{{ case.title }}', specs:{'地點':'{{ case.location }}','坪數':'{{ case.area_ping }}坪','投報增幅':'{{ case.roi_boost }}'}, price:'專人評估同等規劃'}); RFQCart.openDrawer();">
+            + 立即詢價
+          </button>
+        </div>
       </div>
     </div>
-
-    <!-- Case 2 -->
-    <div class="portfolio-card">
-      <div class="portfolio-img-box">
-        <img src="{{ url_for('static', filename='images/case_apartment.jpg') }}" alt="東區文化中心 高質感家庭宅代管" class="case-img">
-        <span class="portfolio-tag">東區文化中心 ｜ 景觀3房</span>
-      </div>
-      <div class="portfolio-body">
-        <h3 class="portfolio-title">東區文化中心 高質感家庭宅代管</h3>
-        <p style="font-size: 14px; color: var(--color-text-muted); line-height: 1.7; margin-bottom: 16px;">
-          房東定居台北無暇往返帶看，委託窩在家代租代管。嚴格審核承租人信用與在職證明，成功媒合南科外商主管簽約三年，免除遠距煩惱。
-        </p>
-        <div class="portfolio-stats">
-          <div>原月租：<strong style="text-decoration: line-through; color: #888;">$26,000</strong></div>
-          <div>現月租：<strong style="color: var(--color-accent-dark); font-size: 16px;">$38,000</strong></div>
-          <div>託管期：<strong>3 年長期</strong></div>
-        </div>
-        <button class="btn-secondary" style="width: 100%; margin-top: 16px; padding: 10px 14px; font-size: 13.5px;" onclick="RFQCart.addItem({code:'case_east_dist', title:'東區景觀家庭宅代管方案', specs:{'格局':'3房2廳','客群':'外商主管/南科主管'}, price:'專人評估代租'}); RFQCart.openDrawer();">
-          + 依此案例規格加入詢價
-        </button>
-      </div>
-    </div>
-
-    <!-- Case 3 -->
-    <div class="portfolio-card">
-      <div class="portfolio-img-box">
-        <img src="{{ url_for('static', filename='images/case_commercial.jpg') }}" alt="國華街老屋 一樓文創咖啡與樓上旅宿" class="case-img">
-        <span class="portfolio-tag">國華商圈 ｜ 文創店住複合</span>
-      </div>
-      <div class="portfolio-body">
-        <h3 class="portfolio-title">國華街老屋 一樓文創咖啡與樓上旅宿</h3>
-        <p style="font-size: 14px; color: var(--color-text-muted); line-height: 1.7; margin-bottom: 16px;">
-          老舊街屋改裝為複合式設計空間，重組電力結構與消防法規，吸引品牌獨立咖啡廳長期進駐，創造穩定店面租金與人潮亮點。
-        </p>
-        <div class="portfolio-stats">
-          <div>原月租：<strong style="text-decoration: line-through; color: #888;">$35,000</strong></div>
-          <div>現月租：<strong style="color: var(--color-accent-dark); font-size: 16px;">$78,000</strong></div>
-          <div>價值躍升：<strong style="color: #38a169;">+122%</strong></div>
-        </div>
-        <button class="btn-secondary" style="width: 100%; margin-top: 16px; padding: 10px 14px; font-size: 13.5px;" onclick="RFQCart.addItem({code:'case_guohua', title:'商圈店住複合老屋改裝方案', specs:{'商圈':'國華海安熱門商圈','用途':'文創店面+精品樓層'}, price:'專人商圈估價'}); RFQCart.openDrawer();">
-          + 依此案例規格加入詢價
-        </button>
-      </div>
-    </div>
+    {% endfor %}
   </div>
 </section>
 

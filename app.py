@@ -50,108 +50,141 @@ def render_hybrid(template_name: str, context: dict, title: str):
     return render_template(template_name, **context)
 
 def seed_initial_data():
-    """Initializes rich seed data for cases, articles, and settings"""
+    """Initializes rich authentic seed data from wooinhome_crawled_data.json or defaults"""
+    crawled_file = os.path.join(app.root_path, 'data', 'wooinhome_crawled_data.json')
+    if os.path.exists(crawled_file):
+        try:
+            with open(crawled_file, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            
+            # If no cases or placeholder cases, populate authentic cases
+            if CaseStudy.query.count() == 0 or CaseStudy.query.filter_by(slug='park-rd-townhouse').first() is not None:
+                CaseStudy.query.delete()
+                
+                # Case 1: 永康機能升級宅
+                c1_imgs = data['cases'][0]['images'] if len(data.get('cases', [])) > 0 else []
+                c1 = CaseStudy(
+                    slug='yongkang-upgrade',
+                    title='永康機能升級宅 ｜ 空間重構與高質感美學租賃',
+                    category='suite',
+                    location='台南市永康區 (近科技園區)',
+                    area_ping=48.0,
+                    before_rent=16000,
+                    after_rent=39000,
+                    roi_boost='+143%',
+                    vacancy_rate='0% (完工即滿租)',
+                    tags='永康區,機能升級,獨立套房,科技菁英',
+                    image_before=c1_imgs[0] if len(c1_imgs) > 0 else '/static/images/case_townhouse.jpg',
+                    image_after=c1_imgs[1] if len(c1_imgs) > 1 else '/static/images/hero_living_cozy.jpg',
+                    gallery=json.dumps(c1_imgs, ensure_ascii=False),
+                    summary='針對南科與科技菁英租客需求，將原本格局破碎的老舊空間重新調整動線，導入模組化收納系統與日式乾濕分離衛浴，提升出租坪效。',
+                    highlights='全室配置一級節能變頻冷暖空調、獨立洗脫烘滾筒洗衣機與智慧門禁密碼鎖，完工一週內即全數滿租。'
+                )
+
+                # Case 2: 東區老屋新生宅
+                c2_imgs = data['cases'][1]['images'] if len(data.get('cases', [])) > 1 else []
+                c2 = CaseStudy(
+                    slug='east-rebirth',
+                    title='東區老屋新生宅 ｜ 40年透天老宅 侘寂風格改造',
+                    category='townhouse',
+                    location='台南市東區 (近文化中心)',
+                    area_ping=56.0,
+                    before_rent=18000,
+                    after_rent=52000,
+                    roi_boost='+188%',
+                    vacancy_rate='100% 穩定託管中',
+                    tags='東區,老屋新生,整棟透天,日式侘寂',
+                    image_before=c2_imgs[0] if len(c2_imgs) > 0 else '/static/images/case_townhouse.jpg',
+                    image_after=c2_imgs[1] if len(c2_imgs) > 1 else '/static/images/hero_living_cozy.jpg',
+                    gallery=json.dumps(c2_imgs, ensure_ascii=False),
+                    summary='40年台南傳統磨石子老透天，經窩在家工程團隊水電全室換新、加強結構防水試水48小時，保留老宅採光天井並注入現代極簡軟裝。',
+                    highlights='分層獨立規劃，每層均具備開闊陽台與優雅茶席空間，兼具住宅質感與極高租金抗跌性。'
+                )
+
+                # Case 3: 東區租屋優化宅
+                c3_imgs = data['cases'][2]['images'] if len(data.get('cases', [])) > 2 else []
+                c3 = CaseStudy(
+                    slug='east-rental-optimized',
+                    title='東區租屋優化宅 ｜ 大樓家庭宅 精準代租代管',
+                    category='apartment',
+                    location='台南市東區 (林森路商圈)',
+                    area_ping=38.0,
+                    before_rent=24000,
+                    after_rent=36000,
+                    roi_boost='+50%',
+                    vacancy_rate='外商主管長期簽約',
+                    tags='東區大樓,代租代管,家庭住宅,外商主管',
+                    image_before=c3_imgs[0] if len(c3_imgs) > 0 else '/static/images/case_apartment.jpg',
+                    image_after=c3_imgs[1] if len(c3_imgs) > 1 else '/static/images/case_commercial.jpg',
+                    gallery=json.dumps(c3_imgs, ensure_ascii=False),
+                    summary='屋主長住台北無暇往返帶看，委託窩在家代租代管。運用 4 道嚴格徵信程序，迅速媒合南科外商高階主管簽訂 3 年長期租約。',
+                    highlights='每月提供數位化對帳單，日常水電修繕由專屬管家即時抵達排除，屋主真正實現零負擔收租。'
+                )
+
+                db.session.add_all([c1, c2, c3])
+
+            # If no articles or placeholder articles, populate all 8 authentic articles
+            if Article.query.count() < len(data.get('articles', [])):
+                Article.query.delete()
+                for art_data in data.get('articles', []):
+                    cover_img = art_data['images'][0] if art_data.get('images') else '/static/images/hero_living_cozy.jpg'
+                    new_art = Article(
+                        slug=art_data['slug'],
+                        title=art_data['title'],
+                        cover_image=cover_img,
+                        category='法規與稅務' if '稅' in art_data['title'] or '法規' in art_data['title'] else '包租代管實務',
+                        author='窩在家資產管理團隊',
+                        date_published=art_data.get('date') or '2026-03-01',
+                        read_time='5 分鐘閱讀',
+                        summary=art_data.get('summary', ''),
+                        content=art_data.get('content', ''),
+                        tags='台南包租代管,房東稅務,合法收租,老屋翻新'
+                    )
+                    db.session.add(new_art)
+
+            db.session.commit()
+            return
+        except Exception as e:
+            print(f"[Seed Authentic Data Warning] {e}")
+
+    # Fallback default seed if json not present
     if CaseStudy.query.count() == 0:
         c1 = CaseStudy(
-            slug='park-rd-townhouse',
-            title='台南中西區公園路 40年透天老宅 侘寂美學改套',
-            category='townhouse',
-            location='台南市中西區',
-            area_ping=52.0,
-            before_rent=18000,
-            after_rent=52000,
-            roi_boost='+188%',
-            vacancy_rate='0% (完工即滿租)',
-            tags='整棟透天,老屋翻新,日式侘寂,高投報',
-            summary='原本壁癌嚴重的閒置老透天，全室管線換新後改裝為5間獨立精品套房，吸引南科外商工程師進駐。',
-            highlights='衛浴重新做三道防水試水48小時，配置獨立冷暖變頻冷氣與大容量儲熱式熱水器。'
-        )
-        c2 = CaseStudy(
-            slug='east-culture-center',
-            title='東區文化中心 綠憩景觀家庭宅 代租代管',
-            category='apartment',
-            location='台南市東區',
-            area_ping=38.0,
-            before_rent=26000,
-            after_rent=38000,
-            roi_boost='+46%',
-            vacancy_rate='長期穩定委託',
-            tags='代租代管,電梯大樓,外商主管,高素質',
-            summary='屋主長住台北無暇往返帶看，委託窩在家代租代管。4重徵信媒合優質外商家庭長期簽約三年。',
-            highlights='每月提供數位化對帳單，日常水電修繕由管家即時抵達排除，屋主零負擔。'
-        )
-        c3 = CaseStudy(
-            slug='guohua-street-store',
-            title='國華海安熱門商圈 老屋複合文創店住',
-            category='commercial',
-            location='台南市中西區',
-            area_ping=45.0,
-            before_rent=35000,
-            after_rent=78000,
-            roi_boost='+122%',
-            vacancy_rate='品牌長期承租',
-            tags='店面活化,商業空間,老宅復古,文創商圈',
-            summary='一樓老店面規劃為特色獨立咖啡廳，二三樓保留磨石子地坪打造成精品旅宿空間，租金倍增。',
-            highlights='重組電力專用迴路，符合現代商業與消防法規，協助取得相關合規營業證明。'
-        )
-        c4 = CaseStudy(
-            slug='annan-science-park',
-            title='安南區南科園區周邊 智慧青年分租套房',
+            slug='yongkang-upgrade',
+            title='永康機能升級宅 ｜ 空間重構與高質感美學租賃',
             category='suite',
-            location='台南市安南區',
-            area_ping=60.0,
-            before_rent=22000,
-            after_rent=64000,
-            roi_boost='+190%',
-            vacancy_rate='100% 滿租排隊中',
-            tags='南科租屋,青年套房,電子門鎖,高坪效',
-            summary='專為南科台積電工程師量身定制。導入全室電子感應門禁、高速光纖與智能家電管家。',
-            highlights='平均帶看成交天數僅 3 天，零空置期無縫銜接。'
+            location='台南市永康區 (近科技園區)',
+            area_ping=48.0,
+            before_rent=16000,
+            after_rent=39000,
+            roi_boost='+143%',
+            vacancy_rate='0% (完工即滿租)',
+            tags='永康區,機能升級,獨立套房,科技菁英',
+            image_before='/static/images/case_townhouse.jpg',
+            image_after='/static/images/hero_living_cozy.jpg',
+            summary='針對南科與科技菁英租客需求，將原本格局破碎的老舊空間重新調整動線，導入模組化收納系統與日式乾濕分離衛浴，提升出租坪效。',
+            highlights='全室配置一級節能變頻冷暖空調、獨立洗脫烘滾筒洗衣機與智慧門禁密碼鎖，完工一週內即全數滿租。'
         )
-        db.session.add_all([c1, c2, c3, c4])
-
-    if Article.query.count() == 0:
-        a1 = Article(
-            slug='landlord-tax-benefits-2026',
-            title='2026 房東租稅優惠全攻略：委託包租代管如何年省數萬元稅金？',
-            category='法規與稅務',
-            author='窩在家資產法務部',
-            date_published='2026-03-01',
-            read_time='6 分鐘閱讀',
-            summary='依據《租賃住宅市場發展及條例》，合法委託包租代管享有每月 1.5 萬免稅額、房屋稅自住 1.2% 與地價稅千分之二優惠，精算直接省下的實質收益！',
-            content="""<p>許多屋主最擔心的問題就是「房子報稅會不會被課重稅？」。事實上，政府為了鼓勵閒置空屋釋出，給予合法包租代管極大的賦稅優勢：</p>
-            <ol>
-              <li><strong>綜合所得稅免稅額</strong>：每屋每月最高可享 15,000 元租金免稅。若是租金超過 1.5 萬元，超出部分還可以再扣除 60% 必要費用（一般自行出租僅能扣除 43%）。</li>
-              <li><strong>房屋稅減免</strong>：在多數縣市，非自用出租房屋稅率高達 3.6%~4.8%，而委託包租代管後直接適用<strong>自住住宅稅率 1.2%</strong>，每年現省數萬元。</li>
-              <li><strong>地價稅優待</strong>：適用自用住宅千分之二特別稅率，避免累進稅率增加持有成本。</li>
-            </ol>
-            <p>透過專業包租代管合法登記，既免除被國稅局追稅檢舉的焦慮，又實質享有合法稅盾！</p>""",
-            tags='房東稅務,包租代管,租稅優惠,房屋稅減免'
-        )
-        a2 = Article(
-            slug='old-house-renovation-roi',
-            title='台南老屋改造學：如何用 30 萬小額裝修換取每月多收 2 萬租金？',
-            category='空間活化',
-            author='窩在家設計總監',
-            date_published='2026-02-15',
-            read_time='5 分鐘閱讀',
-            summary='老屋翻新不是花大錢大拆大改，掌握「管線安全、風格美學、收納坪效」三大核心原則，就能創造最高投報率！',
-            content="""<p>很多房東誤以為老屋翻新一定要花兩三百萬，其實只要精準投資在房客最在意的重點上：</p>
-            <ul>
-              <li><strong>燈光氛圍取代繁複木作</strong>：利用軌道燈、3000K 暖光燈帶與日式奶茶色牆面，花費不到木作五分之一，視覺質感立顯。</li>
-              <li><strong>衛浴乾淨防臭是成交關鍵</strong>：換裝大面鏡櫃、瞬熱除臭抽風機與現代簡約面盆，看屋好感度立刻提升 80%。</li>
-              <li><strong>安全水電給房客最大信任</strong>：換裝全新配電箱與獨立迴路，為高耗能家電預留安全插座，高薪工程師最重視住得安全！</li>
-            </ul>""",
-            tags='老屋翻修,坪效提升,侘寂美學,裝潢成本'
-        )
-        db.session.add_all([a1, a2])
-
-    db.session.commit()
+        db.session.add(c1)
+        db.session.commit()
 
 # Application startup initialization
 with app.app_context():
     try:
         db.create_all()
+        # Ensure migration columns exist
+        import sqlite3
+        conn = db.engine.raw_connection()
+        cur = conn.cursor()
+        try:
+            cur.execute("ALTER TABLE case_studies ADD COLUMN gallery TEXT")
+        except Exception:
+            pass
+        try:
+            cur.execute("ALTER TABLE articles ADD COLUMN cover_image VARCHAR(255)")
+        except Exception:
+            pass
+        conn.commit()
     except Exception as e:
         if "already exists" in str(e).lower():
             pass

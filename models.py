@@ -137,6 +137,7 @@ class CaseStudy(db.Model):
     tags = db.Column(db.String(200), default='包租代管,老屋翻新,日式侘寂,高投報')
     image_before = db.Column(db.String(255), nullable=True)
     image_after = db.Column(db.String(255), nullable=True)
+    gallery = db.Column(db.Text, nullable=True) # JSON list of all high-res photos
     summary = db.Column(db.Text, nullable=False)
     highlights = db.Column(db.Text, nullable=True)
 
@@ -146,6 +147,7 @@ class Article(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     slug = db.Column(db.String(64), unique=True, nullable=False)
     title = db.Column(db.String(200), nullable=False)
+    cover_image = db.Column(db.String(255), nullable=True)
     category = db.Column(db.String(50), default='法規與稅務')
     author = db.Column(db.String(50), default='窩在家資產管理團隊')
     date_published = db.Column(db.String(20), default='2026-03-15')
