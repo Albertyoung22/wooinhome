@@ -658,6 +658,8 @@ img {
 
 .calc-inputs {
   padding: 48px;
+  color: #2b2823;
+  background: #ffffff;
 }
 
 .calc-results {
@@ -678,7 +680,7 @@ img {
   font-size: 14px;
   font-weight: 600;
   margin-bottom: 8px;
-  color: var(--color-text-main);
+  color: #2b2823;
 }
 
 .form-control {
@@ -689,7 +691,7 @@ img {
   background: #ffffff;
   font-family: var(--font-sans);
   font-size: 15px;
-  color: var(--color-text-main);
+  color: #2b2823;
   transition: var(--transition-smooth);
 }
 
@@ -709,16 +711,31 @@ img {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 16px;
-  border: 1px solid rgba(110, 103, 95, 0.15);
+  padding: 13px 16px;
+  border: 1.5px solid rgba(110, 103, 95, 0.2);
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: var(--transition-smooth);
+  color: #2b2823 !important;
+  background: #ffffff;
+}
+
+.tier-option-label span {
+  color: #2b2823 !important;
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.4;
 }
 
 .tier-option-label:hover {
   background: var(--color-surface-subtle);
   border-color: var(--color-accent);
+}
+
+.tier-option-label:has(input:checked) {
+  border-color: var(--color-accent) !important;
+  background: #faf7f2 !important;
+  box-shadow: 0 2px 8px rgba(184, 145, 88, 0.12);
 }
 
 .res-metric-box {
@@ -1358,9 +1375,35 @@ img {
     font-size: 14px !important;
   }
 
-  /* Calculator Form */
+  /* Calculator & Blog Form on Mobile */
   .calc-card-container {
+    padding: 0 !important;
+    border-radius: 16px !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+  }
+  .calc-inputs {
+    padding: 24px 18px !important;
+  }
+  .calc-results {
+    padding: 28px 18px !important;
+  }
+  .section-dark .section-header {
+    margin-bottom: 24px !important;
+  }
+  .section-dark .section-title {
+    font-size: 24px !important;
+    color: #ffffff !important;
+    margin-bottom: 8px !important;
+  }
+  .section-dark .section-desc {
+    font-size: 13.5px !important;
+    color: #cbd5e0 !important;
+  }
+  .blog-card {
     padding: 20px 16px !important;
+  }
+  .blog-cover-box {
+    height: 190px !important;
   }
 
   /* Mobile Full-width Drawers & Modals */
@@ -1402,11 +1445,12 @@ img {
     height: 75vh !important;
   }
   .ai-chat-trigger-btn {
-    bottom: 18px !important;
-    right: 18px !important;
-    width: 52px !important;
-    height: 52px !important;
-    font-size: 22px !important;
+    bottom: 16px !important;
+    right: 16px !important;
+    width: 48px !important;
+    height: 48px !important;
+    font-size: 20px !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
   }
 
   /* Footer */

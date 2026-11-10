@@ -23,8 +23,12 @@
   <meta name="twitter:description" content="{{ page_description or '台南包租代管與空間活化一站式專家' }}">
   <meta name="twitter:image" content="{{ url_for('static', filename='images/og_banner.jpg', _external=True) }}">
 
-  <!-- Canonical Link -->
+  <!-- Canonical & PWA Mobile App Support -->
   <link rel="canonical" href="{{ request.base_url }}">
+  <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="窩在家">
 
   <!-- Google Web Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">

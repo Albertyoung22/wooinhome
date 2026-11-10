@@ -1,0 +1,16 @@
+{
+  "name": "窩在家包租代管",
+  "short_name": "窩在家",
+  "description": "台南包租代管專業資產管理、老屋空間活化與精選招租平台",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fefdfa",
+  "theme_color": "#1c1a17",
+  "icons": [
+    {
+      "src": "/static/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}
